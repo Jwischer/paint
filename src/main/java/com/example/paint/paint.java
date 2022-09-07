@@ -104,7 +104,9 @@ public class paint extends Application {
 
         save.setOnAction(e -> {
             System.out.println(path[0]);
-            saveToFile(myImageView.getImage(), path[0]);
+            WritableImage writableImage = new WritableImage((int) canvas.getWidth(), (int) canvas.getHeight());
+            writableImage = canvas.snapshot(null,writableImage);
+            saveToFileCanvas(writableImage, path[0]);
         });
 
         saveas.setOnAction((ActionEvent event) -> {
