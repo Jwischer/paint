@@ -22,6 +22,6 @@
 
 -  Allow user to set any color for border
 
-# Links:
+### Links:
 
 https://github.com/Jwischer/paint
