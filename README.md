@@ -21,3 +21,5 @@
 ### Plans:
 
 -  Allow user to set any color for border
+
+https://github.com/Jwischer/paint
