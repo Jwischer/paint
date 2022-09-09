@@ -1,6 +1,6 @@
-# Pain(t)
+# JPaint
 
-## Pain(t) v0.5
+## JPaint v0.5
 
 ### Features:
 
@@ -10,7 +10,7 @@
   
 -  Save File As
   
--  Add Red Border to Image
+-  Add Border to Image
   
   
 ### Bugs:
