@@ -1,23 +1,23 @@
 # Pain(t)
 
-Pain(t) v0.5
+## Pain(t) v0.5
 
-Features:
+### Features:
 
-  Open File
+-  Open File
   
-  Save File
+-  Save File
   
-  Save File As
+-  Save File As
   
-  Add Red Border to Image
+-  Add Red Border to Image
   
   
-Bugs:
+### Bugs:
 
-  None Known
+-  None Known
   
   
-Plans:
+### Plans:
 
-  Allow user to set any color for border
+-  Allow user to set any color for border
