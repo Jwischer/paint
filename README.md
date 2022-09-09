@@ -1,6 +1,6 @@
 # JPaint
 
-## JPaint v0.5
+## Version 0.5 - 09/09/2022
 
 ### Features:
 
