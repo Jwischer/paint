@@ -28,7 +28,7 @@ public class ButtonFunctions {
         //Open File Menu Function
         openfile.setOnAction(e -> {
             //Set up file chooser to default to all images and only open images
-            fileChooser.getExtensionFilters().addAll(
+            fileChooser.getExtensionFilters().setAll(
                     new FileChooser.ExtensionFilter("All Images", "*.*"),
                     new FileChooser.ExtensionFilter("PNG", "*.png"),
                     new FileChooser.ExtensionFilter("JPG", "*.jpg")
@@ -51,11 +51,6 @@ public class ButtonFunctions {
 
         //Save Menu Function
         save.setOnAction(e -> {
-            //Save as either jpg or png with png as default
-            fileChooser.getExtensionFilters().addAll(
-                    new FileChooser.ExtensionFilter("PNG", "*.png"),
-                    new FileChooser.ExtensionFilter("JPG", "*.jpg")
-            );
             //Convert current state of canvas to a writable image
             WritableImage writableImage = canvasToWritableImage(canvas);
             //Save the writable image to the same location as the file that was opened
@@ -64,7 +59,12 @@ public class ButtonFunctions {
 
         //Save As Menu Function
         saveas.setOnAction((ActionEvent event) -> {
-
+            //Save as either jpg or png with png as default
+            fileChooser.getExtensionFilters().setAll(
+                    new FileChooser.ExtensionFilter("PNG", "*.png"),
+                    new FileChooser.ExtensionFilter("JPG", "*.jpg"),
+                    new FileChooser.ExtensionFilter("Other Format", "*.*")
+            );
             //Create file at the path given by fileChooser
             File file = fileChooser.showSaveDialog(null);
             //Get the save location as a string
