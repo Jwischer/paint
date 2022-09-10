@@ -23,7 +23,7 @@
 ### Plans:
 
 - [X] Allow user to set any color for border
-- [ ] Allow user to draw a line
+- [X] Allow user to draw a line
 - [X] Save Image
 - [X] Have a working space that resizes to fit the image being opened
 - [ ] Have scroll bars 
