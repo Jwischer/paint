@@ -3,6 +3,7 @@ package com.example.paint;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
@@ -15,8 +16,8 @@ public class paint extends Application {
         MenuBar menu = new MenuBar();
         //set up border pane
         BorderPane border = new BorderPane();
-        StackPane center = new StackPane();
-        StackPane left = new StackPane();
+        StackPane stackPane = new StackPane();
+        ScrollPane center = new ScrollPane();
         //Create a new window
         Scene scene = new Scene(border, 320, 240);
         stage.setTitle("JPaint");
@@ -25,13 +26,14 @@ public class paint extends Application {
 
         //Set the menu variable of MyMenu to the top
         border.setTop(menuBar.menuBar);
-        //Set the canvas to the center
+        //Set the stack pane to the center
         border.setCenter(center);
-        //Set Color Picker to be left
-        border.setLeft(left);
+        center.setContent(stackPane);
+        center.setFitToWidth(true);
+        center.setFitToHeight(true);
 
         //add objects to scene
-        center.getChildren().add(canvas);
+        stackPane.getChildren().add(canvas);
 
         //Load Window
         stage.setScene(scene);

@@ -165,7 +165,6 @@ public class ButtonFunctions {
             }
         });
 
-
         //Event Handler for color picker
         colorPicker.setOnAction(new EventHandler() {
             public void handle(Event t) {
