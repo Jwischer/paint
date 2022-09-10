@@ -11,6 +11,8 @@
 -  Save File As
   
 -  Add Border to Image
+
+-  Clear Canvas
   
   
 ### Bugs:
