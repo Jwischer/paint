@@ -40,11 +40,14 @@ public class MyMenu {
         //Create and add Color Picker option to tools menu
         MenuItem pickColor = new MenuItem("Choose Color");
         toolsmenu.getItems().add(pickColor);
+        //Create and add Line option to tools menu
+        MenuItem line = new MenuItem("Draw Line");
+        toolsmenu.getItems().add(line);
         //add menus to menu bar
         menuBar.getMenus().addAll(filemenu);
         menuBar.getMenus().addAll(toolsmenu);
 
         //Instantiate ButtonFunctions using the menu options
-        ButtonFunctions buttonFunctions = new ButtonFunctions(openfile, save, saveas, exit, border, clear, pickColor, canvas, stage);
+        ButtonFunctions buttonFunctions = new ButtonFunctions(openfile, save, saveas, exit, border, clear, pickColor, line, canvas, stage);
     }
 }

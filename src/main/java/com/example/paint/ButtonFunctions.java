@@ -12,9 +12,11 @@ import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
+import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -24,7 +26,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class ButtonFunctions {
-    ButtonFunctions(MenuItem openfile, MenuItem save, MenuItem saveas, MenuItem exit, MenuItem border, MenuItem clear, MenuItem pickColor, Canvas canvas, Stage stage){
+    ButtonFunctions(MenuItem openfile, MenuItem save, MenuItem saveas, MenuItem exit, MenuItem border, MenuItem clear, MenuItem pickColor, MenuItem drawLine, Canvas canvas, Stage stage){
         //Create a fileChooser for opening and saving images
         FileChooser fileChooser = new FileChooser();
         //Create a string array to store the path to the opened image
@@ -39,6 +41,9 @@ public class ButtonFunctions {
         flow.getChildren().add(colorPicker);
         pickerStage.setScene(pickerScene);
         final Color[] pickerColor = new Color[1];
+        final boolean[] lineDrawing = {false, false};
+        final double[] firstPos = {0,0};
+        final double[] lastPos = {0,0};
 
         //Open File Menu Function
         openfile.setOnAction(e -> {
@@ -105,11 +110,7 @@ public class ButtonFunctions {
             canvas.setHeight(canvas.getHeight()+50);
             canvas.setWidth(canvas.getWidth()+50);
             //Set stroke color and line width
-            if(pickerColor != null){
-                gc.setStroke(pickerColor[0]);
-            } else {
-                gc.setStroke(Color.BLACK);
-            }
+            gc.setStroke(pickerColor[0]);
             gc.setLineWidth(50);
             //Draw the rectangle around the edge of the canvas
             gc.strokeRect(0, 0, canvas.getWidth(), canvas.getHeight());
@@ -128,6 +129,42 @@ public class ButtonFunctions {
             System.out.println("T");
             pickerStage.show();
         });
+
+
+        drawLine.setOnAction(e -> {
+            lineDrawing[0] = true;
+        });
+
+        canvas.setOnMousePressed((MouseEvent event) -> {
+            System.out.println("Mouse Pressed");
+            //If drawing a line
+            if(lineDrawing[0]){
+                //Record first position
+                firstPos[0] = event.getX();
+                firstPos[1] = event.getY();
+                //Start looking for mouse release
+                lineDrawing[0] = false;
+                lineDrawing[1] = true;
+                System.out.println("1");
+            }
+        });
+
+        canvas.setOnMouseReleased((MouseEvent event) -> {
+            System.out.println("Mouse Released");
+            //if looking for end of line
+            if(lineDrawing[1]){
+                //Record first position
+                lastPos[0] = event.getX();
+                lastPos[1] = event.getY();
+                //Stop looking for mouse events
+                lineDrawing[1] = false;
+                System.out.println("2");
+                gc.setStroke(pickerColor[0]);
+                gc.setLineWidth(5); //CHANGE TO VARIABLE LATER
+                gc.strokeLine(firstPos[0], firstPos[1], lastPos[0], lastPos[1]);
+            }
+        });
+
 
         //Event Handler for color picker
         colorPicker.setOnAction(new EventHandler() {
