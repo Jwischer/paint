@@ -37,11 +37,14 @@ public class MyMenu {
         //Create and add Clear Canvas option to tools menu
         MenuItem clear = new MenuItem("Clear Canvas");
         toolsmenu.getItems().add(clear);
+        //Create and add Color Picker option to tools menu
+        MenuItem pickColor = new MenuItem("Choose Color");
+        toolsmenu.getItems().add(pickColor);
         //add menus to menu bar
         menuBar.getMenus().addAll(filemenu);
         menuBar.getMenus().addAll(toolsmenu);
 
         //Instantiate ButtonFunctions using the menu options
-        ButtonFunctions buttonFunctions = new ButtonFunctions(openfile, save, saveas, exit, border, clear, canvas, stage);
+        ButtonFunctions buttonFunctions = new ButtonFunctions(openfile, save, saveas, exit, border, clear, pickColor, canvas, stage);
     }
 }

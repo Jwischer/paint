@@ -2,11 +2,18 @@ package com.example.paint;
 
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
+import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.ColorPicker;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -17,13 +24,21 @@ import java.io.File;
 import java.io.IOException;
 
 public class ButtonFunctions {
-    ButtonFunctions(MenuItem openfile, MenuItem save, MenuItem saveas, MenuItem exit, MenuItem border, MenuItem clear, Canvas canvas, Stage stage){
+    ButtonFunctions(MenuItem openfile, MenuItem save, MenuItem saveas, MenuItem exit, MenuItem border, MenuItem clear, MenuItem pickColor, Canvas canvas, Stage stage){
         //Create a fileChooser for opening and saving images
         FileChooser fileChooser = new FileChooser();
         //Create a string array to store the path to the opened image
         final String[] path = new String[1];
         //obtain Canvas graphics context for drawing
         GraphicsContext gc = canvas.getGraphicsContext2D();
+        //Create new Color Pickers
+        Stage pickerStage = new Stage();
+        FlowPane flow = new FlowPane();
+        Scene pickerScene = new Scene(flow, 300, 300);
+        ColorPicker colorPicker = new ColorPicker();
+        flow.getChildren().add(colorPicker);
+        pickerStage.setScene(pickerScene);
+        final Color[] pickerColor = new Color[1];
 
         //Open File Menu Function
         openfile.setOnAction(e -> {
@@ -90,7 +105,11 @@ public class ButtonFunctions {
             canvas.setHeight(canvas.getHeight()+50);
             canvas.setWidth(canvas.getWidth()+50);
             //Set stroke color and line width
-            gc.setStroke(Color.BLACK);
+            if(pickerColor != null){
+                gc.setStroke(pickerColor[0]);
+            } else {
+                gc.setStroke(Color.BLACK);
+            }
             gc.setLineWidth(50);
             //Draw the rectangle around the edge of the canvas
             gc.strokeRect(0, 0, canvas.getWidth(), canvas.getHeight());
@@ -102,6 +121,19 @@ public class ButtonFunctions {
         clear.setOnAction(e -> {
             //Clear the canvas
             clearCanvas(canvas);
+        });
+
+        //Pick Color Menu Function
+        pickColor.setOnAction(e -> {
+            System.out.println("T");
+            pickerStage.show();
+        });
+
+        //Event Handler for color picker
+        colorPicker.setOnAction(new EventHandler() {
+            public void handle(Event t) {
+                pickerColor[0] = colorPicker.getValue();
+            }
         });
 
     }

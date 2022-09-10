@@ -16,6 +16,7 @@ public class paint extends Application {
         //set up border pane
         BorderPane border = new BorderPane();
         StackPane center = new StackPane();
+        StackPane left = new StackPane();
         //Create a new window
         Scene scene = new Scene(border, 320, 240);
         stage.setTitle("JPaint");
@@ -26,6 +27,8 @@ public class paint extends Application {
         border.setTop(menuBar.menuBar);
         //Set the canvas to the center
         border.setCenter(center);
+        //Set Color Picker to be left
+        border.setLeft(left);
 
         //add objects to scene
         center.getChildren().add(canvas);
