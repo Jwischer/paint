@@ -13,17 +13,19 @@ public class paint extends Application {
     public void start(Stage stage) throws IOException {
         Canvas canvas = new Canvas(320,240);
         MenuBar menu = new MenuBar();
-        MyMenu menuBar = new MyMenu(canvas, menu);
-
         //set up border pane
         BorderPane border = new BorderPane();
         StackPane center = new StackPane();
-        border.setTop(menu);
-        border.setCenter(center);
-
         //Create a new window
         Scene scene = new Scene(border, 320, 240);
-        stage.setTitle("Pain(t)");
+        stage.setTitle("JPaint");
+        //Instantiate MyMenu
+        MyMenu menuBar = new MyMenu(canvas, menu, stage);
+
+        //Set the menu variable of MyMenu to the top
+        border.setTop(menuBar.menuBar);
+        //Set the canvas to the center
+        border.setCenter(center);
 
         //add objects to scene
         center.getChildren().add(canvas);
@@ -35,7 +37,7 @@ public class paint extends Application {
 
     }
 
-
+    //Launch the scene on program start
     public static void main(String[] args) {
         launch();
     }
