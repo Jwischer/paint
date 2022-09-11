@@ -10,7 +10,6 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 
 import javafx.scene.control.MenuBar;
 
