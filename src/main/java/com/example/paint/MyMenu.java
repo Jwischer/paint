@@ -1,10 +1,17 @@
 package com.example.paint;
 
+import javafx.scene.Group;
+import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.Slider;
+import javafx.scene.layout.Pane;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
+
+import java.awt.*;
 
 public class MyMenu {
     Canvas canvas;
@@ -14,10 +21,10 @@ public class MyMenu {
         //Set variables equal to pass through variables
         this.canvas = canvas;
         this.menuBar = menuBar;
-
         //Menu Bar
         Menu filemenu = new Menu("File");
         Menu toolsmenu = new Menu("Tools");
+        Menu settingsmenu = new Menu("Settings");
 
         //Create and add Open File option to file menu
         MenuItem openfile = new MenuItem("Open File...");
@@ -43,11 +50,15 @@ public class MyMenu {
         //Create and add Line option to tools menu
         MenuItem line = new MenuItem("Draw Line");
         toolsmenu.getItems().add(line);
+        //Create and add Line option to tools menu
+        MenuItem strokeWidth = new MenuItem("Stroke Width");
+        settingsmenu.getItems().add(strokeWidth);
         //add menus to menu bar
         menuBar.getMenus().addAll(filemenu);
         menuBar.getMenus().addAll(toolsmenu);
+        menuBar.getMenus().addAll(settingsmenu);
 
         //Instantiate ButtonFunctions using the menu options
-        ButtonFunctions buttonFunctions = new ButtonFunctions(openfile, save, saveas, exit, border, clear, pickColor, line, canvas, stage);
+        ButtonFunctions buttonFunctions = new ButtonFunctions(openfile, save, saveas, exit, border, clear, pickColor, line, strokeWidth, canvas, stage);
     }
 }

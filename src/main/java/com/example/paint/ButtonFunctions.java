@@ -1,5 +1,7 @@
 package com.example.paint;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -10,6 +12,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseDragEvent;
@@ -21,12 +24,21 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
 
 public class ButtonFunctions {
-    ButtonFunctions(MenuItem openfile, MenuItem save, MenuItem saveas, MenuItem exit, MenuItem border, MenuItem clear, MenuItem pickColor, MenuItem drawLine, Canvas canvas, Stage stage){
+    ButtonFunctions(MenuItem openfile, MenuItem save, MenuItem saveas, MenuItem exit, MenuItem border, MenuItem clear, MenuItem pickColor, MenuItem drawLine, MenuItem strokeWidth, Canvas canvas, Stage stage){
+        Slider strokeSlider = new Slider(0,50,10);
+        System.out.println(strokeSlider.getStyle());
+        strokeSlider.setShowTickMarks(true);
+        strokeSlider.setShowTickLabels(true);
+        strokeSlider.setSnapToTicks(true);
+        strokeSlider.setMinorTickCount(10);
+        strokeSlider.setMajorTickUnit(10);
+        strokeWidth.setGraphic(strokeSlider);
         //Create a fileChooser for opening and saving images
         FileChooser fileChooser = new FileChooser();
         //Create a string array to store the path to the opened image
@@ -41,9 +53,13 @@ public class ButtonFunctions {
         flow.getChildren().add(colorPicker);
         pickerStage.setScene(pickerScene);
         final Color[] pickerColor = new Color[1];
+        //lineDrawing[0] - if line drawing has begun
+        //lineDrawing[1] - if firstPos has been set
         final boolean[] lineDrawing = {false, false};
+        //Stores the positions for drawing a line
         final double[] firstPos = {0,0};
         final double[] lastPos = {0,0};
+        final double[] drawWidth = {0};
 
         //Open File Menu Function
         openfile.setOnAction(e -> {
@@ -160,7 +176,7 @@ public class ButtonFunctions {
                 lineDrawing[1] = false;
                 System.out.println("2");
                 gc.setStroke(pickerColor[0]);
-                gc.setLineWidth(5); //CHANGE TO VARIABLE LATER
+                gc.setLineWidth(drawWidth[0]); //CHANGE TO VARIABLE LATER
                 gc.strokeLine(firstPos[0], firstPos[1], lastPos[0], lastPos[1]);
             }
         });
@@ -169,6 +185,12 @@ public class ButtonFunctions {
         colorPicker.setOnAction(new EventHandler() {
             public void handle(Event t) {
                 pickerColor[0] = colorPicker.getValue();
+            }
+        });
+
+        strokeSlider.valueProperty().addListener(new ChangeListener<Number>() {
+            public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
+                drawWidth[0] = strokeSlider.getValue();
             }
         });
 

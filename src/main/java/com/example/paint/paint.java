@@ -7,7 +7,11 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+
+import java.io.File;
 import java.io.IOException;
+import java.net.URL;
+
 import javafx.scene.control.MenuBar;
 
 public class paint extends Application {
@@ -34,7 +38,10 @@ public class paint extends Application {
 
         //add objects to scene
         stackPane.getChildren().add(canvas);
-
+        //add style sheet
+        File f = new File("style.css");
+        scene.getStylesheets().clear();
+        scene.getStylesheets().add("file:///" + f.getAbsolutePath().replace("\\", "/"));
         //Load Window
         stage.setScene(scene);
         stage.show();
