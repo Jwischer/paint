@@ -27,7 +27,7 @@
 - [X] Save Image
 - [X] Have a working space that resizes to fit the image being opened
 - [X] Have scroll bars 
-- [ ] Allow user to control the width of the line drawn
+- [X] Allow user to control the width of the line drawn
 - [X] Have a color chooser
 - [ ] have a help menu item with help and about options
 
