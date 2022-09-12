@@ -29,6 +29,7 @@
 - [X] Have scroll bars 
 - [X] Allow user to control the width of the line drawn
 - [X] Have a color chooser
+- [X] Undo button
 - [ ] have a help menu item with help and about options
 
 ### Links:
