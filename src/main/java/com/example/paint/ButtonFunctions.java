@@ -21,13 +21,13 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
 
 public class ButtonFunctions {
-    ButtonFunctions(MenuItem openfile, MenuItem save, MenuItem saveas, MenuItem exit, MenuItem border, MenuItem clear, MenuItem pickColor, MenuItem drawLine, MenuItem strokeWidth, Canvas canvas, Stage stage){
+    ButtonFunctions(MenuItem openfile, MenuItem save, MenuItem saveas, MenuItem exit, MenuItem border, MenuItem clear,
+                    MenuItem pickColor, MenuItem drawLine, MenuItem strokeWidth, MenuItem undo, Canvas canvas, Stage stage){
         Slider strokeSlider = new Slider(0,50,10);
         System.out.println(strokeSlider.getStyle());
         strokeSlider.setShowTickMarks(true);
@@ -57,6 +57,7 @@ public class ButtonFunctions {
         final double[] firstPos = {0,0};
         final double[] lastPos = {0,0};
         final double[] drawWidth = {0};
+        final WritableImage[] canvasUndo = new WritableImage[1];
 
         //Open File Menu Function
         openfile.setOnAction(e -> {
@@ -117,6 +118,8 @@ public class ButtonFunctions {
 
         //Border Menu Function
         border.setOnAction((ActionEvent event) -> {
+            canvasUndo[0] = new WritableImage((int) canvas.getWidth(), (int) canvas.getHeight());
+            canvasUndo[0] = canvas.snapshot(null, canvasUndo[0]);
             //Make a writable image of current state of canvas
             WritableImage writableImage = canvasToWritableImage(canvas);
             //Make canvas bigger to make room for border
@@ -133,6 +136,8 @@ public class ButtonFunctions {
 
         //Clear Canvas Menu Function
         clear.setOnAction(e -> {
+            canvasUndo[0] = new WritableImage((int) canvas.getWidth(), (int) canvas.getHeight());
+            canvasUndo[0] = canvas.snapshot(null, canvasUndo[0]);
             //Clear the canvas
             clearCanvas(canvas);
         });
@@ -166,7 +171,9 @@ public class ButtonFunctions {
             System.out.println("Mouse Released");
             //if looking for end of line
             if(lineDrawing[1]){
-                //Record first position
+                canvasUndo[0] = new WritableImage((int) canvas.getWidth(), (int) canvas.getHeight());
+                canvasUndo[0] = canvas.snapshot(null, canvasUndo[0]);
+                //Record second position
                 lastPos[0] = event.getX();
                 lastPos[1] = event.getY();
                 //Stop looking for mouse events
@@ -189,6 +196,10 @@ public class ButtonFunctions {
             public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
                 drawWidth[0] = strokeSlider.getValue();
             }
+        });
+
+        undo.setOnAction(e -> {
+            canvasReplace(canvas, canvasUndo[0]);
         });
 
     }
@@ -216,5 +227,11 @@ public class ButtonFunctions {
         gc.setFill(Color.WHITE);
         //Make a white filled rectangle that covers the whole canvas
         gc.fillRect(0,0,canvas.getWidth(), canvas.getHeight());
+    }
+
+    public static void canvasReplace(Canvas canvas,WritableImage image){
+        canvas.setHeight(image.getHeight());
+        canvas.setWidth(image.getWidth());
+        canvas.getGraphicsContext2D().drawImage(image,0,0);
     }
 }

@@ -48,12 +48,16 @@ public class MyMenu {
         //Create and add Line option to tools menu
         MenuItem strokeWidth = new MenuItem("Stroke Width");
         settingsmenu.getItems().add(strokeWidth);
+        //Create and add Line option to tools menu
+        MenuItem undoOption = new MenuItem("Undo");
+        toolsmenu.getItems().add(undoOption);
         //add menus to menu bar
         menuBar.getMenus().addAll(filemenu);
         menuBar.getMenus().addAll(toolsmenu);
         menuBar.getMenus().addAll(settingsmenu);
 
         //Instantiate ButtonFunctions using the menu options
-        ButtonFunctions buttonFunctions = new ButtonFunctions(openfile, save, saveas, exit, border, clear, pickColor, line, strokeWidth, canvas, stage);
+        ButtonFunctions buttonFunctions = new ButtonFunctions(openfile, save, saveas, exit, border, clear,
+                                                              pickColor, line, strokeWidth, undoOption ,canvas, stage);
     }
 }
