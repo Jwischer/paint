@@ -12,10 +12,12 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Slider;
+import javafx.scene.control.ToolBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -27,7 +29,7 @@ import java.io.IOException;
 
 public class ButtonFunctions {
     ButtonFunctions(MenuItem openfile, MenuItem save, MenuItem saveas, MenuItem exit, MenuItem border, MenuItem clear,
-                    MenuItem pickColor, MenuItem drawLine, MenuItem strokeWidth, MenuItem undo, Canvas canvas, Stage stage){
+                    MenuItem drawLine, MenuItem strokeWidth, MenuItem undo, Canvas canvas, Stage stage, ToolBar underMenuBar){
         Slider strokeSlider = new Slider(0,50,10);
         System.out.println(strokeSlider.getStyle());
         strokeSlider.setShowTickMarks(true);
@@ -43,12 +45,8 @@ public class ButtonFunctions {
         //obtain Canvas graphics context for drawing
         GraphicsContext gc = canvas.getGraphicsContext2D();
         //Create new Color Pickers
-        Stage pickerStage = new Stage();
-        FlowPane flow = new FlowPane();
-        Scene pickerScene = new Scene(flow, 300, 300);
         ColorPicker colorPicker = new ColorPicker();
-        flow.getChildren().add(colorPicker);
-        pickerStage.setScene(pickerScene);
+        underMenuBar.getItems().add(colorPicker);
         final Color[] pickerColor = new Color[1];
         //lineDrawing[0] - if line drawing has begun
         //lineDrawing[1] - if firstPos has been set
@@ -140,12 +138,6 @@ public class ButtonFunctions {
             canvasUndo[0] = canvas.snapshot(null, canvasUndo[0]);
             //Clear the canvas
             clearCanvas(canvas);
-        });
-
-        //Pick Color Menu Function
-        pickColor.setOnAction(e -> {
-            System.out.println("T");
-            pickerStage.show();
         });
 
 

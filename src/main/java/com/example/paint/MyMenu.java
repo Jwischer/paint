@@ -4,22 +4,27 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.ToolBar;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.awt.*;
 
 public class MyMenu {
     Canvas canvas;
-    MenuBar menuBar;
+    MenuBar menuBar = new MenuBar();
+    VBox vbox = new VBox();
+    ToolBar toolbar = new ToolBar();
 
-    MyMenu(Canvas canvas, MenuBar menuBar, Stage stage) {
+    MyMenu(Canvas canvas, Stage stage) {
         //Set variables equal to pass through variables
         this.canvas = canvas;
-        this.menuBar = menuBar;
         //Menu Bar
         Menu filemenu = new Menu("File");
         Menu toolsmenu = new Menu("Tools");
         Menu settingsmenu = new Menu("Settings");
+        vbox.getChildren().add(menuBar);
+        vbox.getChildren().add(toolbar);
 
         //Create and add Open File option to file menu
         MenuItem openfile = new MenuItem("Open File...");
@@ -55,9 +60,8 @@ public class MyMenu {
         menuBar.getMenus().addAll(filemenu);
         menuBar.getMenus().addAll(toolsmenu);
         menuBar.getMenus().addAll(settingsmenu);
-
         //Instantiate ButtonFunctions using the menu options
         ButtonFunctions buttonFunctions = new ButtonFunctions(openfile, save, saveas, exit, border, clear,
-                                                              pickColor, line, strokeWidth, undoOption ,canvas, stage);
+                                                                line, strokeWidth, undoOption ,canvas, stage, toolbar);
     }
 }
