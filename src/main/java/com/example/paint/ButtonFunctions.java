@@ -15,6 +15,7 @@ import javafx.scene.control.Slider;
 import javafx.scene.control.ToolBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
+import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
@@ -156,6 +157,18 @@ public class ButtonFunctions {
                 lineDrawing[0] = false;
                 lineDrawing[1] = true;
                 System.out.println("1");
+                event.setDragDetect(true);
+                canvasUndo[0] = new WritableImage((int) canvas.getWidth(), (int) canvas.getHeight());
+                canvasUndo[0] = canvas.snapshot(null, canvasUndo[0]);
+                gc.setLineWidth(drawWidth[0]);
+            }
+        });
+
+        canvas.setOnMouseDragged((MouseEvent event) -> {
+            if(!lineDrawing[0] && lineDrawing[1]) {
+                gc.strokeLine(firstPos[0], firstPos[1], event.getX(), event.getY());
+                canvasReplace(canvas, canvasUndo[0]);
+                gc.strokeLine(firstPos[0], firstPos[1], event.getX(), event.getY());
             }
         });
 
@@ -171,9 +184,8 @@ public class ButtonFunctions {
                 //Stop looking for mouse events
                 lineDrawing[1] = false;
                 System.out.println("2");
-                gc.setStroke(pickerColor[0]);
-                gc.setLineWidth(drawWidth[0]); //CHANGE TO VARIABLE LATER
                 gc.strokeLine(firstPos[0], firstPos[1], lastPos[0], lastPos[1]);
+                event.setDragDetect(false);
             }
         });
 
@@ -181,6 +193,7 @@ public class ButtonFunctions {
         colorPicker.setOnAction(new EventHandler() {
             public void handle(Event t) {
                 pickerColor[0] = colorPicker.getValue();
+                gc.setStroke(pickerColor[0]);
             }
         });
 
