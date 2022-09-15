@@ -4,17 +4,11 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.ToolBar;
-import javafx.scene.control.Tooltip;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
 import java.io.File;
 import java.io.IOException;
-
-import javafx.scene.control.MenuBar;
 
 public class paint extends Application {
     public void start(Stage stage) throws IOException {

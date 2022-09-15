@@ -6,48 +6,52 @@ import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import javafx.scene.Scene;
+import javafx.geometry.HPos;
+import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.ColorPicker;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.Slider;
-import javafx.scene.control.ToolBar;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
-import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.HBox;
+import java.math.*;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-
 import javax.imageio.ImageIO;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
 
+import static java.lang.Math.round;
+
 public class ButtonFunctions {
     ButtonFunctions(MenuItem openfile, MenuItem save, MenuItem saveas, MenuItem exit, MenuItem border, MenuItem clear,
-                    MenuItem drawLine, MenuItem strokeWidth, MenuItem undo, Canvas canvas, Stage stage, ToolBar underMenuBar){
+                    MenuItem drawLine, MenuItem strokeWidth, MenuItem undo, Button aboutButton , Canvas canvas, Stage stage, ColorPicker colorPicker){
+        //Create a slider for stroke width
         Slider strokeSlider = new Slider(0,50,10);
-        System.out.println(strokeSlider.getStyle());
+        //Text box for user width input
+        TextField sliderTextField = new TextField("10");
+        HBox sliderBox = new HBox();
+        //Change slider appearance
         strokeSlider.setShowTickMarks(true);
         strokeSlider.setShowTickLabels(true);
         strokeSlider.setSnapToTicks(true);
         strokeSlider.setMinorTickCount(10);
         strokeSlider.setMajorTickUnit(10);
-        strokeWidth.setGraphic(strokeSlider);
+        //Add slider and text box to slider menu
+        sliderBox.getChildren().add(strokeSlider);
+        sliderBox.getChildren().add(sliderTextField);
+        strokeWidth.setGraphic(sliderBox);
         //Create a fileChooser for opening and saving images
         FileChooser fileChooser = new FileChooser();
         //Create a string array to store the path to the opened image
         final String[] path = new String[1];
         //obtain Canvas graphics context for drawing
         GraphicsContext gc = canvas.getGraphicsContext2D();
-        //Create new Color Pickers
-        ColorPicker colorPicker = new ColorPicker();
-        underMenuBar.getItems().add(colorPicker);
+        //Color that the color picker has selected
         final Color[] pickerColor = new Color[1];
         //lineDrawing[0] - if line drawing has begun
         //lineDrawing[1] - if firstPos has been set
@@ -55,8 +59,12 @@ public class ButtonFunctions {
         //Stores the positions for drawing a line
         final double[] firstPos = {0,0};
         final double[] lastPos = {0,0};
+        //Width of drawn lines
         final double[] drawWidth = {0};
+        //Stores snapshots of canvas for undoing
         final WritableImage[] canvasUndo = new WritableImage[1];
+        //Set color picker default to black
+        colorPicker.setValue(Color.BLACK);
 
         //Open File Menu Function
         openfile.setOnAction(e -> {
@@ -197,14 +205,25 @@ public class ButtonFunctions {
             }
         });
 
+        sliderTextField.textProperty().addListener(new ChangeListener<String>() {
+            public void changed(ObservableValue<? extends String> observableValue, String s, String t1) {
+                strokeSlider.setValue(Integer.parseInt(sliderTextField.getCharacters().toString()));
+            }
+        });
+
         strokeSlider.valueProperty().addListener(new ChangeListener<Number>() {
             public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
                 drawWidth[0] = strokeSlider.getValue();
+                sliderTextField.setText(String.valueOf(round(strokeSlider.getValue())));
             }
         });
 
         undo.setOnAction(e -> {
             canvasReplace(canvas, canvasUndo[0]);
+        });
+
+        aboutButton.setOnAction(actionEvent  -> {
+            System.out.println("About button pressed");
         });
 
     }
