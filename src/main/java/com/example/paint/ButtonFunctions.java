@@ -6,9 +6,6 @@ import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import javafx.geometry.HPos;
-import javafx.geometry.Pos;
-import javafx.geometry.VPos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
@@ -16,7 +13,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
-import java.math.*;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -224,6 +220,8 @@ public class ButtonFunctions {
 
         aboutButton.setOnAction(actionEvent  -> {
             System.out.println("About button pressed");
+            //Create an instance of aboutMenuB
+            AboutMenu aboutMenu = new AboutMenu();
         });
 
     }
