@@ -3,8 +3,6 @@ package com.example.paint;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-import java.io.FileInputStream;
-
 public class ImageLoader {
     Image aboutImage;
     ImageView aboutView;
