@@ -1,6 +1,6 @@
 # JPaint
 
-## Version 0.5 - 09/09/2022
+## Version 1.0 - 09/16/2022
 
 ### Features:
 
@@ -10,27 +10,22 @@
   
 -  Save File As
   
--  Add Border to Image
+-  Add Colored Border to Image
 
 -  Clear Canvas
-  
-  
+
+-  Draw Lines of Specified Width and Color
+
+-  Scroll Image
+
 ### Bugs:
 
 -  None Known
   
   
 ### Plans:
-
-- [X] Allow user to set any color for border
-- [X] Allow user to draw a line
-- [X] Save Image
-- [X] Have a working space that resizes to fit the image being opened
-- [X] Have scroll bars 
-- [X] Allow user to control the width of the line drawn
-- [X] Have a color chooser
-- [X] Undo button
-- [ ] have a help menu item with help and about options
+- [ ] Pencil Tool
+- [ ] Move drawing tools to buttons
 
 ### Links:
 
