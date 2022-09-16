@@ -11,12 +11,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
-import java.awt.*;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.net.URL;
-
-public class AboutMenu {
+public class AboutMenu extends paint {
     AboutMenu(){
         //Create a new window for the about menu
         Stage aboutStage = new Stage();
@@ -72,17 +67,15 @@ public class AboutMenu {
 
         gLink.setOnAction(actionEvent  -> {
             System.out.println("Link Pressed");
-            openWebpage("https://github.com/Jwischer/paint");
+            browser("https://github.com/Jwischer/paint");
         });
     }
 
     public static void openWebpage(String url) {
-        try {
-            Desktop.getDesktop().browse(new URL(url).toURI());
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
-        }
+            //Desktop.getDesktop().browse(new URL(url).toURI());
+    }
+
+    public void browser(String url) {
+        getHostServices().showDocument(url);
     }
 }

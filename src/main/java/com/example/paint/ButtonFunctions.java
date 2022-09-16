@@ -47,6 +47,8 @@ public class ButtonFunctions {
         final String[] path = new String[1];
         //obtain Canvas graphics context for drawing
         GraphicsContext gc = canvas.getGraphicsContext2D();
+        //Default Line Width to 10
+        gc.setLineWidth(10);
         //Color that the color picker has selected
         final Color[] pickerColor = new Color[1];
         //lineDrawing[0] - if line drawing has begun
@@ -59,6 +61,8 @@ public class ButtonFunctions {
         final double[] drawWidth = {0};
         //Stores snapshots of canvas for undoing
         final WritableImage[] canvasUndo = new WritableImage[1];
+        //Image used for line preview
+        final WritableImage[] linePreviewImage = new WritableImage[1];
         //Set color picker default to black
         colorPicker.setValue(Color.BLACK);
 
@@ -145,8 +149,9 @@ public class ButtonFunctions {
             clearCanvas(canvas);
         });
 
-
+        //When draw line is clicked
         drawLine.setOnAction(e -> {
+            //Start drawing when mouse is clicked
             lineDrawing[0] = true;
         });
 
@@ -154,24 +159,28 @@ public class ButtonFunctions {
             System.out.println("Mouse Pressed");
             //If drawing a line
             if(lineDrawing[0]){
+                canvasUndo[0] = new WritableImage((int) canvas.getWidth(), (int) canvas.getHeight());
                 //Record first position
                 firstPos[0] = event.getX();
                 firstPos[1] = event.getY();
                 //Start looking for mouse release
                 lineDrawing[0] = false;
                 lineDrawing[1] = true;
-                System.out.println("1");
                 event.setDragDetect(true);
-                canvasUndo[0] = new WritableImage((int) canvas.getWidth(), (int) canvas.getHeight());
-                canvasUndo[0] = canvas.snapshot(null, canvasUndo[0]);
+                //Save current status of canvas
+                linePreviewImage[0] = new WritableImage((int) canvas.getWidth(), (int) canvas.getHeight());
+                linePreviewImage[0] = canvas.snapshot(null, canvasUndo[0]);
+                //Set line width to slider value
                 gc.setLineWidth(drawWidth[0]);
             }
         });
 
         canvas.setOnMouseDragged((MouseEvent event) -> {
+            //If second position of line is not set draw a preview
             if(!lineDrawing[0] && lineDrawing[1]) {
-                gc.strokeLine(firstPos[0], firstPos[1], event.getX(), event.getY());
-                canvasReplace(canvas, canvasUndo[0]);
+                //Clear canvas of line previews
+                canvasReplace(canvas, linePreviewImage[0]);
+                //Draw a line from the first point to current mouse position
                 gc.strokeLine(firstPos[0], firstPos[1], event.getX(), event.getY());
             }
         });
@@ -180,8 +189,6 @@ public class ButtonFunctions {
             System.out.println("Mouse Released");
             //if looking for end of line
             if(lineDrawing[1]){
-                canvasUndo[0] = new WritableImage((int) canvas.getWidth(), (int) canvas.getHeight());
-                canvasUndo[0] = canvas.snapshot(null, canvasUndo[0]);
                 //Record second position
                 lastPos[0] = event.getX();
                 lastPos[1] = event.getY();
@@ -201,15 +208,20 @@ public class ButtonFunctions {
             }
         });
 
+        //When text field changes
         sliderTextField.textProperty().addListener(new ChangeListener<String>() {
             public void changed(ObservableValue<? extends String> observableValue, String s, String t1) {
+                //Set slider equal to text field value
                 strokeSlider.setValue(Integer.parseInt(sliderTextField.getCharacters().toString()));
             }
         });
 
+        //When slider changes
         strokeSlider.valueProperty().addListener(new ChangeListener<Number>() {
             public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
+                //set drawWidth to slider value
                 drawWidth[0] = strokeSlider.getValue();
+                //Set text field equal to slider value
                 sliderTextField.setText(String.valueOf(round(strokeSlider.getValue())));
             }
         });
@@ -219,9 +231,8 @@ public class ButtonFunctions {
         });
 
         aboutButton.setOnAction(actionEvent  -> {
-            System.out.println("About button pressed");
-            //Create an instance of aboutMenuB
-            AboutMenu aboutMenu = new AboutMenu();
+            //Create an instance of aboutMenu
+            AboutMenu aboutMenu =  new AboutMenu();
         });
 
     }

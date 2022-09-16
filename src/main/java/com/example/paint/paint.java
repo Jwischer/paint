@@ -49,4 +49,8 @@ public class paint extends Application {
     public static void main(String[] args) {
         launch();
     }
+
+    public void browser(String url) {
+        getHostServices().showDocument(url);
+    }
 }
