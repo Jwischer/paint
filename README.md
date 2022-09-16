@@ -20,7 +20,7 @@
 
 ### Bugs:
 
--  None Known
+-  Github link in about menu does not open on non-windows os
   
   
 ### Plans:
