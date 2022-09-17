@@ -12,7 +12,7 @@ import java.io.IOException;
 
 public class paint extends Application {
     public void start(Stage stage) throws IOException {
-        Canvas canvas = new Canvas(320,240);
+        Canvas canvas = new Canvas(300,220);
 
         //set up border pane
         BorderPane border = new BorderPane();

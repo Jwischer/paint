@@ -11,11 +11,12 @@ import javafx.stage.Stage;
 
 import java.awt.*;
 
-public class MyMenu {
+public class MyMenu{
     Canvas canvas;
     MenuBar menuBar = new MenuBar();
     VBox vbox = new VBox();
     ToolBar toolbar = new ToolBar();
+
 
     MyMenu(Canvas canvas, Stage stage) {
         //Set variables equal to pass through variables
@@ -68,7 +69,9 @@ public class MyMenu {
         toolbar.getItems().add(colorPicker);
         toolbar.getItems().add(aboutButton);
         //Instantiate ButtonFunctions using the menu options
-        ButtonFunctions buttonFunctions = new ButtonFunctions(openfile, save, saveas, exit, border, clear,
-                                                                line, strokeWidth, undoOption,aboutButton,canvas, stage, colorPicker);
+        FileMenuFunctions fileMenuFunctions = new FileMenuFunctions(canvas, stage, openfile, save, saveas, exit);
+        SettingsMenuFunctions settingsMenuFunctions = new SettingsMenuFunctions(strokeWidth);
+        ToolbarFunctions toolbarFunctions = new ToolbarFunctions(canvas, aboutButton, colorPicker);
+        ToolsMenuFunctions toolsMenuFunctions = new ToolsMenuFunctions(canvas, border,clear, line, undoOption, colorPicker, settingsMenuFunctions);
     }
 }
