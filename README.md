@@ -28,7 +28,7 @@ None Known
 - [ ] Move drawing tools to buttons
 - [ ] Square, Rectangle, Elipse, Circle tools
 - [ ] Keyboard Shortcuts
-- [ ] Color Text Labels
+- [X] Color Text Labels
 - [ ] Resize Canvas
 - [ ] Dashed Line
 - [ ] Tabs
