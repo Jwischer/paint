@@ -14,7 +14,7 @@ import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class FileMenuFunctions extends paint{
+public class FileMenuFunctions{
     FileChooser fileChooser;
 
     FileMenuFunctions(Canvas canvas, Stage stage, MenuItem openfile, MenuItem save, MenuItem saveas, MenuItem exit){

@@ -11,7 +11,7 @@ import javafx.scene.paint.Color;
 import static java.lang.Math.abs;
 
 public class ToolsMenuFunctions {
-    ToolsMenuFunctions(Canvas canvas,  MenuItem border, MenuItem clear, CheckMenuItem drawLine, CheckMenuItem drawRectangle, MenuItem undo, ColorPicker colorPicker, SettingsMenuFunctions settingsMenuFunctions){
+    ToolsMenuFunctions(Canvas canvas,  MenuItem border, MenuItem clear,CheckMenuItem pencil, CheckMenuItem drawLine, CheckMenuItem drawRectangle,CheckMenuItem drawSquare,CheckMenuItem drawEllipse,CheckMenuItem drawCircle, MenuItem undo, ColorPicker colorPicker, SettingsMenuFunctions settingsMenuFunctions){
         //Stores the positions for drawing a line
         final double[] firstPos = {0,0};
         final double[] lastPos = {0,0};
@@ -57,7 +57,7 @@ public class ToolsMenuFunctions {
         canvas.setOnMousePressed((MouseEvent event) -> {
             System.out.println("Mouse Pressed");
             //If drawing a line
-            if(drawLine.isSelected() || drawRectangle.isSelected())
+            if(pencil.isSelected() || drawLine.isSelected() || drawRectangle.isSelected() || drawSquare.isSelected() || drawEllipse.isSelected() || drawCircle.isSelected())
                 drawWidth[0] = settingsMenuFunctions.strokeSlider.getValue();
                 pickerColor[0] = colorPicker.getValue();
                 canvasUndo[0] = new WritableImage((int) canvas.getWidth(), (int) canvas.getHeight());
@@ -91,6 +91,23 @@ public class ToolsMenuFunctions {
                     gc.strokeRect(firstPos[0], firstPos[1], abs(event.getX() - firstPos[0]), abs(event.getY() - firstPos[1]));
                 } else{
                     gc.strokeRect(event.getX(), event.getY(), abs(firstPos[0]-event.getX()), abs(firstPos[1]-event.getY()));
+                }
+            } else if (drawSquare.isSelected()){
+                //Clear canvas of square previews
+                canvasReplace(canvas, previewImage[0]);
+                //Draw a square from first point to current mouse position
+                if(event.getX()-firstPos[0] >= 0 && event.getY()-firstPos[1] < 0){
+                    gc.strokeRect(firstPos[0], firstPos[1] - abs(event.getX() - firstPos[0]), abs(event.getX() - firstPos[0]), abs(event.getX() - firstPos[0]));
+                    System.out.println("1");
+                } else if (event.getX()-firstPos[0] < 0 && event.getY()-firstPos[1] >= 0){
+                    gc.strokeRect(firstPos[0]-abs(event.getX() - firstPos[0]), firstPos[1], abs(event.getX() - firstPos[0]), abs(event.getX() - firstPos[0]));
+                    System.out.println("2");
+                } else if(event.getX()-firstPos[0]>=0 && event.getY()-firstPos[1]>=0) {
+                    gc.strokeRect(firstPos[0], firstPos[1], abs(event.getX() - firstPos[0]), abs(event.getX() - firstPos[0]));
+                    System.out.println("3");
+                } else{
+                    gc.strokeRect(firstPos[0] - abs(event.getX() - firstPos[0]), firstPos[1] - abs(event.getX() - firstPos[0]), abs(event.getX() - firstPos[0]), abs(event.getX() - firstPos[0]));
+                    System.out.println("4");
                 }
             }
         });

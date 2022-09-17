@@ -55,12 +55,24 @@ public class MyMenu{
         //Create and add Clear Canvas option to tools menu
         MenuItem clear = new MenuItem("Clear Canvas");
         toolsMenu.getItems().add(clear);
+        //Create and add pencil option to tools menu
+        CheckMenuItem pencil = new CheckMenuItem("Pencil");
+        drawingSubMenu.getItems().add(pencil);
         //Create and add Line option to tools menu
         CheckMenuItem line = new CheckMenuItem("Draw Line");
         drawingSubMenu.getItems().add(line);
         //Create and add Rectangle option to tools menu
         CheckMenuItem rectangle = new CheckMenuItem("Draw Rectangle");
         drawingSubMenu.getItems().add(rectangle);
+        //Create and add Square option to tools menu
+        CheckMenuItem square = new CheckMenuItem("Draw Square");
+        drawingSubMenu.getItems().add(square);
+        //Create and add oval option to tools menu
+        CheckMenuItem ellipse = new CheckMenuItem("Draw Ellipse");
+        drawingSubMenu.getItems().add(ellipse);
+        //Create and add circle option to tools menu
+        CheckMenuItem circle = new CheckMenuItem("Draw Circle");
+        drawingSubMenu.getItems().add(circle);
         //Create and add Stroke Width option to tools menu
         MenuItem strokeWidth = new MenuItem("Stroke Width");
         settingsMenu.getItems().add(strokeWidth);
@@ -77,6 +89,6 @@ public class MyMenu{
         FileMenuFunctions fileMenuFunctions = new FileMenuFunctions(canvas, stage, openfile, save, saveas, exit);
         SettingsMenuFunctions settingsMenuFunctions = new SettingsMenuFunctions(strokeWidth);
         ToolbarFunctions toolbarFunctions = new ToolbarFunctions(canvas, aboutButton, colorPicker);
-        ToolsMenuFunctions toolsMenuFunctions = new ToolsMenuFunctions(canvas, border,clear, line, rectangle, undoOption, colorPicker, settingsMenuFunctions);
+        ToolsMenuFunctions toolsMenuFunctions = new ToolsMenuFunctions(canvas, border,clear, pencil, line, rectangle, square, ellipse, circle, undoOption, colorPicker, settingsMenuFunctions);
     }
 }
