@@ -8,12 +8,10 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 
+import static java.lang.Math.abs;
+
 public class ToolsMenuFunctions {
-    ColorPicker colorPicker;
-    ToolsMenuFunctions(Canvas canvas,  MenuItem border, MenuItem clear, MenuItem drawLine, MenuItem undo, ColorPicker colorPicker, SettingsMenuFunctions settingsMenuFunctions){
-        //lineDrawing[0] - if line drawing has begun
-        //lineDrawing[1] - if firstPos has been set
-        final boolean[] lineDrawing = {false, false};
+    ToolsMenuFunctions(Canvas canvas,  MenuItem border, MenuItem clear, CheckMenuItem drawLine, CheckMenuItem drawRectangle, MenuItem undo, ColorPicker colorPicker, SettingsMenuFunctions settingsMenuFunctions){
         //Stores the positions for drawing a line
         final double[] firstPos = {0,0};
         final double[] lastPos = {0,0};
@@ -21,8 +19,8 @@ public class ToolsMenuFunctions {
         final double[] drawWidth = {0};
         //Stores snapshots of canvas for undoing
         final WritableImage[] canvasUndo = new WritableImage[1];
-        //Image used for line preview
-        final WritableImage[] linePreviewImage = new WritableImage[1];
+        //Image used for drawing previews
+        final WritableImage[] previewImage = new WritableImage[1];
         GraphicsContext gc = canvas.getGraphicsContext2D();
         //Color that the color picker has selected
         final Color[] pickerColor = new Color[1];
@@ -56,56 +54,44 @@ public class ToolsMenuFunctions {
             clearCanvas(canvas);
         });
 
-        //When draw line is clicked
-        drawLine.setOnAction(e -> {
-            pickerColor[0] = colorPicker.getValue();
-            drawWidth[0] = settingsMenuFunctions.strokeSlider.getValue();
-            //Start drawing when mouse is clicked
-            lineDrawing[0] = true;
-        });
-
         canvas.setOnMousePressed((MouseEvent event) -> {
             System.out.println("Mouse Pressed");
             //If drawing a line
-            if(lineDrawing[0]){
+            if(drawLine.isSelected() || drawRectangle.isSelected())
+                drawWidth[0] = settingsMenuFunctions.strokeSlider.getValue();
+                pickerColor[0] = colorPicker.getValue();
                 canvasUndo[0] = new WritableImage((int) canvas.getWidth(), (int) canvas.getHeight());
                 //Record first position
                 firstPos[0] = event.getX();
                 firstPos[1] = event.getY();
-                //Start looking for mouse release
-                lineDrawing[0] = false;
-                lineDrawing[1] = true;
                 event.setDragDetect(true);
                 //Save current status of canvas
-                linePreviewImage[0] = new WritableImage((int) canvas.getWidth(), (int) canvas.getHeight());
-                linePreviewImage[0] = canvas.snapshot(null, canvasUndo[0]);
+                previewImage[0] = new WritableImage((int) canvas.getWidth(), (int) canvas.getHeight());
+                previewImage[0] = canvas.snapshot(null, canvasUndo[0]);
                 //Set line width to slider value
                 gc.setLineWidth(drawWidth[0]);
-            }
         });
 
         canvas.setOnMouseDragged((MouseEvent event) -> {
             //If second position of line is not set draw a preview
-            if(!lineDrawing[0] && lineDrawing[1]) {
+            if(drawLine.isSelected()) {
                 //Clear canvas of line previews
-                canvasReplace(canvas, linePreviewImage[0]);
+                canvasReplace(canvas, previewImage[0]);
                 //Draw a line from the first point to current mouse position
                 gc.strokeLine(firstPos[0], firstPos[1], event.getX(), event.getY());
-            }
-        });
-
-        canvas.setOnMouseReleased((MouseEvent event) -> {
-            System.out.println("Mouse Released");
-            //if looking for end of line
-            if(lineDrawing[1]){
-                //Record second position
-                lastPos[0] = event.getX();
-                lastPos[1] = event.getY();
-                //Stop looking for mouse events
-                lineDrawing[1] = false;
-                System.out.println("2");
-                gc.strokeLine(firstPos[0], firstPos[1], lastPos[0], lastPos[1]);
-                event.setDragDetect(false);
+            } else if (drawRectangle.isSelected()){
+                //Clear canvas of rectangle previews
+                canvasReplace(canvas, previewImage[0]);
+                //Draw a rectangle from first point to current mouse position
+                if(event.getX()-firstPos[0] >= 0 && event.getY()-firstPos[1] < 0){
+                    gc.strokeRect(firstPos[0], firstPos[1]-abs(event.getY() - firstPos[1]), abs(event.getX() - firstPos[0]), abs(event.getY() - firstPos[1]));
+                } else if (event.getX()-firstPos[0] < 0 && event.getY()-firstPos[1] >= 0){
+                    gc.strokeRect(firstPos[0]-abs(event.getX() - firstPos[0]), firstPos[1], abs(event.getX() - firstPos[0]), abs(event.getY() - firstPos[1]));
+                } else if(event.getX()-firstPos[0]>=0 && event.getY()-firstPos[1]>=0) {
+                    gc.strokeRect(firstPos[0], firstPos[1], abs(event.getX() - firstPos[0]), abs(event.getY() - firstPos[1]));
+                } else{
+                    gc.strokeRect(event.getX(), event.getY(), abs(firstPos[0]-event.getX()), abs(firstPos[1]-event.getY()));
+                }
             }
         });
 

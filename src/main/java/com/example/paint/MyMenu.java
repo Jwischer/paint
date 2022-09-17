@@ -24,9 +24,11 @@ public class MyMenu{
         //instantiate imageLoader to grab images
         ImageLoader imageLoader = new ImageLoader();
         //Menu Bar
-        Menu filemenu = new Menu("File");
-        Menu toolsmenu = new Menu("Tools");
-        Menu settingsmenu = new Menu("Settings");
+        Menu fileMenu = new Menu("File");
+        Menu toolsMenu = new Menu("Tools");
+        Menu settingsMenu = new Menu("Settings");
+        Menu drawingSubMenu = new Menu("Drawing");
+        toolsMenu.getItems().add(drawingSubMenu);
         //Create new Color Picker
         ColorPicker colorPicker = new ColorPicker();
         vbox.getChildren().add(menuBar);
@@ -37,41 +39,44 @@ public class MyMenu{
         aboutButton.setGraphic(imageLoader.aboutView);
         //Create and add Open File option to file menu
         MenuItem openfile = new MenuItem("Open File...");
-        filemenu.getItems().add(openfile);
+        fileMenu.getItems().add(openfile);
         //Create and add Save option to file menu
         MenuItem save = new MenuItem("Save");
-        filemenu.getItems().add(save);
+        fileMenu.getItems().add(save);
         //Create and add Save As option to file menu
         MenuItem saveas = new MenuItem("Save As...");
-        filemenu.getItems().add(saveas);
+        fileMenu.getItems().add(saveas);
         //Create and add Exit option to file menu
         MenuItem exit = new MenuItem("Exit");
-        filemenu.getItems().add(exit);
+        fileMenu.getItems().add(exit);
         //Create and add Add Border option to tools menu
         MenuItem border = new MenuItem("Add Border");
-        toolsmenu.getItems().add(border);
+        toolsMenu.getItems().add(border);
         //Create and add Clear Canvas option to tools menu
         MenuItem clear = new MenuItem("Clear Canvas");
-        toolsmenu.getItems().add(clear);
+        toolsMenu.getItems().add(clear);
         //Create and add Line option to tools menu
-        MenuItem line = new MenuItem("Draw Line");
-        toolsmenu.getItems().add(line);
-        //Create and add Line option to tools menu
+        CheckMenuItem line = new CheckMenuItem("Draw Line");
+        drawingSubMenu.getItems().add(line);
+        //Create and add Rectangle option to tools menu
+        CheckMenuItem rectangle = new CheckMenuItem("Draw Rectangle");
+        drawingSubMenu.getItems().add(rectangle);
+        //Create and add Stroke Width option to tools menu
         MenuItem strokeWidth = new MenuItem("Stroke Width");
-        settingsmenu.getItems().add(strokeWidth);
+        settingsMenu.getItems().add(strokeWidth);
         //Create and add Line option to tools menu
         MenuItem undoOption = new MenuItem("Undo");
-        toolsmenu.getItems().add(undoOption);
+        toolsMenu.getItems().add(undoOption);
         //add menus to menu bar
-        menuBar.getMenus().addAll(filemenu);
-        menuBar.getMenus().addAll(toolsmenu);
-        menuBar.getMenus().addAll(settingsmenu);
+        menuBar.getMenus().addAll(fileMenu);
+        menuBar.getMenus().addAll(toolsMenu);
+        menuBar.getMenus().addAll(settingsMenu);
         toolbar.getItems().add(colorPicker);
         toolbar.getItems().add(aboutButton);
         //Instantiate ButtonFunctions using the menu options
         FileMenuFunctions fileMenuFunctions = new FileMenuFunctions(canvas, stage, openfile, save, saveas, exit);
         SettingsMenuFunctions settingsMenuFunctions = new SettingsMenuFunctions(strokeWidth);
         ToolbarFunctions toolbarFunctions = new ToolbarFunctions(canvas, aboutButton, colorPicker);
-        ToolsMenuFunctions toolsMenuFunctions = new ToolsMenuFunctions(canvas, border,clear, line, undoOption, colorPicker, settingsMenuFunctions);
+        ToolsMenuFunctions toolsMenuFunctions = new ToolsMenuFunctions(canvas, border,clear, line, rectangle, undoOption, colorPicker, settingsMenuFunctions);
     }
 }
