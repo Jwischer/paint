@@ -25,14 +25,17 @@ None Known
   
 ### Plans:
 - [ ] Pencil Tool
-- [ ] Move drawing tools to buttons
-- [ ] Square, Rectangle, Elipse, Circle tools
+- [ ] Square Tool
+- [X] Rectangle Tool
+- [ ] Elipse Tool
+- [ ] Circle Tool
 - [ ] Keyboard Shortcuts
 - [X] Color Text Labels
 - [ ] Resize Canvas
 - [ ] Dashed Line
 - [ ] Tabs
 - [ ] Smart Save
+- [ ] Move drawing tools to buttons
 
 ### Links:
 
