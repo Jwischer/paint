@@ -27,8 +27,8 @@ None Known
 - [ ] Pencil Tool
 - [X] Square Tool
 - [X] Rectangle Tool
-- [ ] Elipse Tool
-- [ ] Circle Tool
+- [X] Elipse Tool
+- [X] Circle Tool
 - [ ] Keyboard Shortcuts
 - [X] Color Text Labels
 - [ ] Resize Canvas
