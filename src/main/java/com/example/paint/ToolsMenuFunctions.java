@@ -90,7 +90,7 @@ public class ToolsMenuFunctions {
                 } else if(event.getX()-firstPos[0]>=0 && event.getY()-firstPos[1]>=0) {
                     gc.strokeRect(firstPos[0], firstPos[1], abs(event.getX() - firstPos[0]), abs(event.getY() - firstPos[1]));
                 } else{
-                    gc.strokeRect(event.getX(), event.getY(), abs(firstPos[0]-event.getX()), abs(firstPos[1]-event.getY()));
+                    gc.strokeRect(firstPos[0] - abs(event.getX() - firstPos[0]), firstPos[1] - abs(event.getY() - firstPos[1]), abs(firstPos[0]-event.getX()), abs(firstPos[1]-event.getY()));
                 }
             } else if (drawSquare.isSelected()){
                 //Clear canvas of square previews
