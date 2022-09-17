@@ -33,7 +33,7 @@ None Known
 - [X] Color Text Labels
 - [ ] Resize Canvas
 - [ ] Dashed Line
-- [ ] Tabs
+- [X] Tabs
 - [ ] Smart Save
 - [ ] Move drawing tools to buttons
 
