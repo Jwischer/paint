@@ -6,21 +6,20 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.awt.*;
 
 public class MyMenu{
-    Canvas canvas;
     MenuBar menuBar = new MenuBar();
     VBox vbox = new VBox();
     ToolBar toolbar = new ToolBar();
 
 
-    MyMenu(Canvas canvas, Stage stage) {
-        //Set variables equal to pass through variables
-        this.canvas = canvas;
+    MyMenu(Stage stage, TabPane tabPane, BorderPane borderPane) {
         //instantiate imageLoader to grab images
         ImageLoader imageLoader = new ImageLoader();
         //Menu Bar
@@ -85,10 +84,11 @@ public class MyMenu{
         menuBar.getMenus().addAll(settingsMenu);
         toolbar.getItems().add(colorPicker);
         toolbar.getItems().add(aboutButton);
+        TabArrays tabArrays = new TabArrays();
         //Instantiate ButtonFunctions using the menu options
-        FileMenuFunctions fileMenuFunctions = new FileMenuFunctions(canvas, stage, openfile, save, saveas, exit);
+        FileMenuFunctions fileMenuFunctions = new FileMenuFunctions(stage, openfile, save, saveas, exit, tabPane, tabArrays);
         SettingsMenuFunctions settingsMenuFunctions = new SettingsMenuFunctions(strokeWidth);
-        ToolbarFunctions toolbarFunctions = new ToolbarFunctions(canvas, aboutButton, colorPicker);
-        ToolsMenuFunctions toolsMenuFunctions = new ToolsMenuFunctions(canvas, border,clear, pencil, line, rectangle, square, ellipse, circle, undoOption, colorPicker, settingsMenuFunctions);
+        ToolbarFunctions toolbarFunctions = new ToolbarFunctions(aboutButton, colorPicker, tabArrays);
+        ToolsMenuFunctions toolsMenuFunctions = new ToolsMenuFunctions(border,clear, pencil, line, rectangle, square, ellipse, circle, undoOption, colorPicker, settingsMenuFunctions, tabPane, tabArrays);
     }
 }

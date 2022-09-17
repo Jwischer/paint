@@ -17,11 +17,11 @@ import java.io.IOException;
 public class FileMenuFunctions{
     FileChooser fileChooser;
 
-    FileMenuFunctions(Canvas canvas, Stage stage, MenuItem openfile, MenuItem save, MenuItem saveas, MenuItem exit){
+    FileMenuFunctions(Stage stage, MenuItem openfile, MenuItem save, MenuItem saveas, MenuItem exit, TabPane tabPane, TabArrays tabArrays){
         this.fileChooser = new FileChooser();
-        GraphicsContext gc = canvas.getGraphicsContext2D();
         //Create a string array to store the path to the opened image
         final String[] path = new String[1];
+
         //Open File Menu Function
         openfile.setOnAction(e -> {
             //Set up file chooser to default to all images and only open images
@@ -36,11 +36,24 @@ public class FileMenuFunctions{
             //Set path variable equal to the opened file
             path[0] = file.getPath();
             if (file != null) {
+                int j = 0;
+                for (int i = 0; i < 20; i++) {
+                    if (tabArrays.tab[i] == null) {
+                        tabArrays.tab[i] = new Tab(file.getName());
+                        tabArrays.stackCanvas[i] = new StackCanvas();
+                        j = i;
+                        break;
+                    }
+                }
+                GraphicsContext gc = tabArrays.stackCanvas[j].canvas.getGraphicsContext2D();
+                tabArrays.tab[j].setContent(tabArrays.stackCanvas[j].scrollPane);
+                tabPane.getTabs().add(tabArrays.tab[j]);
                 //Create new Image of the selected image
                 Image image = new Image(file.toURI().toString());
                 //Set canvas height and width equal to the image
-                canvas.setHeight(image.getHeight());
-                canvas.setWidth(image.getWidth());
+                tabArrays.stackCanvas[j].canvas.setHeight(image.getHeight());
+                tabArrays.stackCanvas[j].canvas.setWidth(image.getWidth());
+                System.out.println(tabPane.getSelectionModel().getSelectedIndex());
                 //draw the image on the canvas
                 gc.drawImage(image, 0, 0);
             }
@@ -48,14 +61,16 @@ public class FileMenuFunctions{
 
         //Save Menu Function
         save.setOnAction(e -> {
+            int selectedTab = tabPane.getSelectionModel().getSelectedIndex();
             //Convert current state of canvas to a writable image
-            WritableImage writableImage = canvasToWritableImage(canvas);
+            WritableImage writableImage = canvasToWritableImage(tabArrays.stackCanvas[selectedTab].canvas);
             //Save the writable image to the same location as the file that was opened
             saveToFile(writableImage, path[0]);
         });
 
         //Save As Menu Function
         saveas.setOnAction((ActionEvent event) -> {
+            int selectedTab = tabPane.getSelectionModel().getSelectedIndex();
             //Save as either jpg or png with png as default
             fileChooser.getExtensionFilters().setAll(
                     new FileChooser.ExtensionFilter("PNG", "*.png"),
@@ -68,7 +83,7 @@ public class FileMenuFunctions{
             String saveLocation = file.toURI().toString();
             String[] saveloc = saveLocation.split(":", 2);
             //Convert current state of canvas to writable image
-            WritableImage writableImage = canvasToWritableImage(canvas);
+            WritableImage writableImage = canvasToWritableImage(tabArrays.stackCanvas[selectedTab].canvas);
             //save that writable image at location saveLoc[1]
             saveToFile(writableImage, saveloc[1]);
         });
