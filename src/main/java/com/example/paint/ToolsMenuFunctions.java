@@ -98,16 +98,46 @@ public class ToolsMenuFunctions {
                 //Draw a square from first point to current mouse position
                 if(event.getX()-firstPos[0] >= 0 && event.getY()-firstPos[1] < 0){
                     gc.strokeRect(firstPos[0], firstPos[1] - abs(event.getX() - firstPos[0]), abs(event.getX() - firstPos[0]), abs(event.getX() - firstPos[0]));
-                    System.out.println("1");
                 } else if (event.getX()-firstPos[0] < 0 && event.getY()-firstPos[1] >= 0){
                     gc.strokeRect(firstPos[0]-abs(event.getX() - firstPos[0]), firstPos[1], abs(event.getX() - firstPos[0]), abs(event.getX() - firstPos[0]));
-                    System.out.println("2");
                 } else if(event.getX()-firstPos[0]>=0 && event.getY()-firstPos[1]>=0) {
                     gc.strokeRect(firstPos[0], firstPos[1], abs(event.getX() - firstPos[0]), abs(event.getX() - firstPos[0]));
-                    System.out.println("3");
                 } else{
                     gc.strokeRect(firstPos[0] - abs(event.getX() - firstPos[0]), firstPos[1] - abs(event.getX() - firstPos[0]), abs(event.getX() - firstPos[0]), abs(event.getX() - firstPos[0]));
-                    System.out.println("4");
+                }
+            } else if (drawEllipse.isSelected()){
+                //Clear canvas of ellipse previews
+                canvasReplace(canvas, previewImage[0]);
+                //Draw ellipse
+                if(event.getX()-firstPos[0] >= 0 && event.getY()-firstPos[1] < 0){
+                    gc.strokeOval(firstPos[0],firstPos[1]-abs(event.getY()-firstPos[1]),abs(event.getX()-firstPos[0]),abs(event.getY()-firstPos[1]));
+                    System.out.println("1"); //yshift
+                } else if (event.getX()-firstPos[0] < 0 && event.getY()-firstPos[1] >= 0){
+                    gc.strokeOval(firstPos[0]-abs(event.getX()-firstPos[0]),firstPos[1],abs(event.getX()-firstPos[0]),abs(event.getY()-firstPos[1]));
+                    System.out.println("2"); //xshift
+                } else if(event.getX()-firstPos[0]>=0 && event.getY()-firstPos[1]>=0) {
+                    gc.strokeOval(firstPos[0],firstPos[1],abs(event.getX()-firstPos[0]),abs(event.getY()-firstPos[1]));
+                    System.out.println("3");
+                } else{
+                    gc.strokeOval(firstPos[0]-abs(event.getX()-firstPos[0]),firstPos[1]-abs(event.getY()-firstPos[1]),abs(event.getX()-firstPos[0]),abs(event.getY()-firstPos[1]));
+                    System.out.println("4"); //double shift
+                }
+            } else if (drawCircle.isSelected()){
+                //Clear canvas of circle previews
+                canvasReplace(canvas, previewImage[0]);
+                //Draw ellipse
+                if(event.getX()-firstPos[0] >= 0 && event.getY()-firstPos[1] < 0){
+                    gc.strokeOval(firstPos[0],firstPos[1]-abs(event.getX()-firstPos[0]),abs(event.getX()-firstPos[0]),abs(event.getX()-firstPos[0]));
+                    System.out.println("1"); //yshift
+                } else if (event.getX()-firstPos[0] < 0 && event.getY()-firstPos[1] >= 0){
+                    gc.strokeOval(firstPos[0]-abs(event.getX()-firstPos[0]),firstPos[1],abs(event.getX()-firstPos[0]),abs(event.getX()-firstPos[0]));
+                    System.out.println("2"); //xshift
+                } else if(event.getX()-firstPos[0]>=0 && event.getY()-firstPos[1]>=0) {
+                    gc.strokeOval(firstPos[0],firstPos[1],abs(event.getX()-firstPos[0]),abs(event.getX()-firstPos[0]));
+                    System.out.println("3");
+                } else{
+                    gc.strokeOval(firstPos[0]-abs(event.getX()-firstPos[0]),firstPos[1]-abs(event.getX()-firstPos[0]),abs(event.getX()-firstPos[0]),abs(event.getX()-firstPos[0]));
+                    System.out.println("4"); //double shift
                 }
             }
         });
