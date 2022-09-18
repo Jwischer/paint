@@ -21,43 +21,49 @@ public class FileMenuFunctions{
         this.fileChooser = new FileChooser();
         //Create a string array to store the path to the opened image
         final String[] path = new String[1];
+        final int nextTab[] = {0};
+        final int maxTabs[] = {20};
 
         //Open File Menu Function
         openfile.setOnAction(e -> {
-            //Set up file chooser to default to all images and only open images
-            fileChooser.getExtensionFilters().setAll(
-                    new FileChooser.ExtensionFilter("All Images", "*.*"),
-                    new FileChooser.ExtensionFilter("PNG", "*.png"),
-                    new FileChooser.ExtensionFilter("JPG", "*.jpg")
-            );
-            fileChooser.setTitle("Open Image File");
-            //Create new file at path given by fileChooser
-            File file = fileChooser.showOpenDialog(null);
-            //Set path variable equal to the opened file
-            path[0] = file.getPath();
-            if (file != null) {
-                int j = 0;
-                for (int i = 0; i < 20; i++) {
-                    if (tabArrays.tab[i] == null) {
-                        tabArrays.tab[i] = new Tab(file.getName());
-                        tabArrays.stackCanvas[i] = new StackCanvas();
-                        j = i;
-                        break;
+                    //Set up file chooser to default to all images and only open images
+                    fileChooser.getExtensionFilters().setAll(
+                            new FileChooser.ExtensionFilter("All Images", "*.*"),
+                            new FileChooser.ExtensionFilter("PNG", "*.png"),
+                            new FileChooser.ExtensionFilter("JPG", "*.jpg")
+                    );
+                    fileChooser.setTitle("Open Image File");
+                    //Create new file at path given by fileChooser
+                    File file = fileChooser.showOpenDialog(null);
+                    //Set path variable equal to the opened file
+                    path[0] = file.getPath();
+                    if (file != null) {
+                        tabArrays.tab[nextTab[0]] = new Tab(file.getName());
+                        tabArrays.stackCanvas[nextTab[0]] = new StackCanvas();
+                        tabArrays.tab[nextTab[0]].setOnCloseRequest(event -> {
+                            System.out.println("Closed Tab");
+                            for(int i = tabPane.getSelectionModel().getSelectedIndex(); i<maxTabs[0]-1; i++){
+                                System.out.println(tabPane.getSelectionModel().getSelectedIndex());
+                                tabArrays.stackCanvas[i] = tabArrays.stackCanvas[i+1];
+                                tabArrays.tab[i] = tabArrays.tab[i+1];
+                            }
+                            nextTab[0]--;
+                            System.out.println(nextTab[0]);
+                        });
                     }
-                }
-                GraphicsContext gc = tabArrays.stackCanvas[j].canvas.getGraphicsContext2D();
-                tabArrays.tab[j].setContent(tabArrays.stackCanvas[j].scrollPane);
-                tabPane.getTabs().add(tabArrays.tab[j]);
+                GraphicsContext gc = tabArrays.stackCanvas[nextTab[0]].canvas.getGraphicsContext2D();
+                tabArrays.tab[nextTab[0]].setContent(tabArrays.stackCanvas[nextTab[0]].scrollPane);
+                tabPane.getTabs().add(tabArrays.tab[nextTab[0]]);
                 //Create new Image of the selected image
                 Image image = new Image(file.toURI().toString());
                 //Set canvas height and width equal to the image
-                tabArrays.stackCanvas[j].canvas.setHeight(image.getHeight());
-                tabArrays.stackCanvas[j].canvas.setWidth(image.getWidth());
+                tabArrays.stackCanvas[nextTab[0]].canvas.setHeight(image.getHeight());
+                tabArrays.stackCanvas[nextTab[0]].canvas.setWidth(image.getWidth());
                 System.out.println(tabPane.getSelectionModel().getSelectedIndex());
                 //draw the image on the canvas
                 gc.drawImage(image, 0, 0);
-            }
-        });
+                nextTab[0]++;
+            });
 
         //Save Menu Function
         save.setOnAction(e -> {
@@ -93,6 +99,8 @@ public class FileMenuFunctions{
             //Close application
             stage.close();
         });
+
+
     }
 
     public static void saveToFile (WritableImage image, String location) {
