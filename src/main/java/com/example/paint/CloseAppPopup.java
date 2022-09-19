@@ -51,12 +51,13 @@ public class CloseAppPopup {
         yes.setOnAction(actionEvent -> {
             System.out.println("Y");
             for(int i=0;i<tabArrays.maxTabs ;i++){
-                int selectedTab = tabPane.getSelectionModel().getSelectedIndex();
-                //Convert current state of canvas to a writable image
-                WritableImage writableImage = canvasToWritableImage(tabArrays.stackCanvas[i].canvas);
-                //Save the writable image to the same location as the file that was opened
-                //CREATE AN ARRAY OF PATHS FOR SAVE COMMANDS
-                saveToFile(writableImage, tabArrays.path[i]);
+                if(tabArrays.path[i] != null) {
+                    //Convert current state of canvas to a writable image
+                    WritableImage writableImage = canvasToWritableImage(tabArrays.stackCanvas[i].canvas);
+                    //Save the writable image to the same location as the file that was opened
+                    //CREATE AN ARRAY OF PATHS FOR SAVE COMMANDS
+                    saveToFile(writableImage, tabArrays.path[i]);
+                }
             }
             stage.close();
             stageToClose.close();
