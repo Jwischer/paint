@@ -17,40 +17,40 @@ import java.io.IOException;
 public class FileMenuFunctions{
     FileChooser fileChooser;
 
-    FileMenuFunctions(Stage stage, MenuItem openfile, MenuItem save, MenuItem saveas, MenuItem exit, TabPane tabPane, TabArrays tabArrays){
+    FileMenuFunctions(Stage stage, MenuItem openfile, MenuItem openFileST, MenuItem save, MenuItem saveas, MenuItem exit, TabPane tabPane, TabArrays tabArrays){
         this.fileChooser = new FileChooser();
         //Create a string array to store the path to the opened image
-        final String[] path = new String[1];
         final int nextTab[] = {0};
-        final int maxTabs[] = {20};
+        final int maxTabs[] = {40};
 
         //Open File Menu Function
         openfile.setOnAction(e -> {
-                    //Set up file chooser to default to all images and only open images
-                    fileChooser.getExtensionFilters().setAll(
-                            new FileChooser.ExtensionFilter("All Images", "*.*"),
-                            new FileChooser.ExtensionFilter("PNG", "*.png"),
-                            new FileChooser.ExtensionFilter("JPG", "*.jpg")
-                    );
-                    fileChooser.setTitle("Open Image File");
-                    //Create new file at path given by fileChooser
-                    File file = fileChooser.showOpenDialog(null);
-                    //Set path variable equal to the opened file
-                    path[0] = file.getPath();
-                    if (file != null) {
-                        tabArrays.tab[nextTab[0]] = new Tab(file.getName());
-                        tabArrays.stackCanvas[nextTab[0]] = new StackCanvas();
-                        tabArrays.tab[nextTab[0]].setOnCloseRequest(event -> {
-                            System.out.println("Closed Tab");
-                            for(int i = tabPane.getSelectionModel().getSelectedIndex(); i<maxTabs[0]-1; i++){
-                                System.out.println(tabPane.getSelectionModel().getSelectedIndex());
-                                tabArrays.stackCanvas[i] = tabArrays.stackCanvas[i+1];
-                                tabArrays.tab[i] = tabArrays.tab[i+1];
-                            }
-                            nextTab[0]--;
-                            System.out.println(nextTab[0]);
-                        });
-                    }
+            if(nextTab[0] <= maxTabs[0]) { //if have not reached max tabs
+                //Set up file chooser to default to all images and only open images
+                fileChooser.getExtensionFilters().setAll(
+                        new FileChooser.ExtensionFilter("All Images", "*.*"),
+                        new FileChooser.ExtensionFilter("PNG", "*.png"),
+                        new FileChooser.ExtensionFilter("JPG", "*.jpg")
+                );
+                fileChooser.setTitle("Open Image File");
+                //Create new file at path given by fileChooser
+                File file = fileChooser.showOpenDialog(null);
+                //Set path variable equal to the opened file
+                if (file != null) {
+                    tabArrays.path[nextTab[0]] = file.getPath();
+                    tabArrays.tab[nextTab[0]] = new Tab(file.getName());
+                    tabArrays.stackCanvas[nextTab[0]] = new StackCanvas();
+                    tabArrays.tab[nextTab[0]].setOnCloseRequest(event -> {
+                        System.out.println("Closed Tab");
+                        for (int i = tabPane.getSelectionModel().getSelectedIndex(); i < maxTabs[0] - 1; i++) {
+                            System.out.println(tabPane.getSelectionModel().getSelectedIndex());
+                            tabArrays.stackCanvas[i] = tabArrays.stackCanvas[i + 1];
+                            tabArrays.tab[i] = tabArrays.tab[i + 1];
+                        }
+                        nextTab[0]--;
+                        System.out.println(nextTab[0]);
+                    });
+                }
                 GraphicsContext gc = tabArrays.stackCanvas[nextTab[0]].canvas.getGraphicsContext2D();
                 tabArrays.tab[nextTab[0]].setContent(tabArrays.stackCanvas[nextTab[0]].scrollPane);
                 tabPane.getTabs().add(tabArrays.tab[nextTab[0]]);
@@ -63,7 +63,25 @@ public class FileMenuFunctions{
                 //draw the image on the canvas
                 gc.drawImage(image, 0, 0);
                 nextTab[0]++;
-            });
+            } else{
+                //Open dialog for max tabs
+            }
+        });
+
+        openFileST.setOnAction(e -> {
+            if(tabPane.getSelectionModel().getSelectedIndex() >= 0) {
+                fileChooser.setTitle("Open Image File");
+                GraphicsContext gc = tabArrays.stackCanvas[tabPane.getSelectionModel().getSelectedIndex()].canvas.getGraphicsContext2D();
+                File file = fileChooser.showOpenDialog(null);
+                tabArrays.path[tabPane.getSelectionModel().getSelectedIndex()] = file.getPath();
+                if (file != null) {
+                    Image image = new Image(file.toURI().toString());
+                    tabArrays.stackCanvas[tabPane.getSelectionModel().getSelectedIndex()].canvas.setHeight(image.getHeight());
+                    tabArrays.stackCanvas[tabPane.getSelectionModel().getSelectedIndex()].canvas.setWidth(image.getWidth());
+                    gc.drawImage(image, 0, 0);
+                }
+            }
+        });
 
         //Save Menu Function
         save.setOnAction(e -> {
@@ -71,7 +89,7 @@ public class FileMenuFunctions{
             //Convert current state of canvas to a writable image
             WritableImage writableImage = canvasToWritableImage(tabArrays.stackCanvas[selectedTab].canvas);
             //Save the writable image to the same location as the file that was opened
-            saveToFile(writableImage, path[0]);
+            saveToFile(writableImage, tabArrays.path[tabPane.getSelectionModel().getSelectedIndex()]);
         });
 
         //Save As Menu Function
@@ -98,7 +116,7 @@ public class FileMenuFunctions{
         exit.setOnAction(e -> {
             //Close application
             //stage.close();
-            CloseAppPopup closeAppPopup = new CloseAppPopup(stage);
+            CloseAppPopup closeAppPopup = new CloseAppPopup(stage, tabPane, tabArrays);
         });
 
 

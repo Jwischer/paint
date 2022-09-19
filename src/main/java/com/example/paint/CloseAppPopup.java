@@ -5,10 +5,14 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TabPane;
+import javafx.scene.image.WritableImage;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+
+import static com.example.paint.FileMenuFunctions.canvasToWritableImage;
+import static com.example.paint.FileMenuFunctions.saveToFile;
 
 public class CloseAppPopup {
     Label question;
@@ -18,7 +22,7 @@ public class CloseAppPopup {
     Stage stage;
     Scene scene;
     HBox hBox = new HBox();
-    CloseAppPopup(Stage stageToClose){
+    CloseAppPopup(Stage stageToClose, TabPane tabPane, TabArrays tabArrays){
         this.yes = new Button("Close Without Saving");
         this.yesandsave = new Button("Save and Close");
         this.no = new Button("Go Back");
@@ -46,7 +50,14 @@ public class CloseAppPopup {
 
         yes.setOnAction(actionEvent -> {
             System.out.println("Y");
-            //add save function here
+            for(int i=0;i<tabArrays.maxTabs ;i++){
+                int selectedTab = tabPane.getSelectionModel().getSelectedIndex();
+                //Convert current state of canvas to a writable image
+                WritableImage writableImage = canvasToWritableImage(tabArrays.stackCanvas[i].canvas);
+                //Save the writable image to the same location as the file that was opened
+                //CREATE AN ARRAY OF PATHS FOR SAVE COMMANDS
+                saveToFile(writableImage, tabArrays.path[i]);
+            }
             stage.close();
             stageToClose.close();
         });

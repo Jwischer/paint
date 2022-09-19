@@ -27,7 +27,9 @@ public class MyMenu{
         Menu toolsMenu = new Menu("Tools");
         Menu settingsMenu = new Menu("Settings");
         Menu drawingSubMenu = new Menu("Drawing");
+        Menu openFileSubMenu = new Menu("Open File");
         toolsMenu.getItems().add(drawingSubMenu);
+        fileMenu.getItems().add(openFileSubMenu);
         //Create new Color Picker
         ColorPicker colorPicker = new ColorPicker();
         vbox.getChildren().add(menuBar);
@@ -37,8 +39,11 @@ public class MyMenu{
         Button aboutButton = new Button();
         aboutButton.setGraphic(imageLoader.aboutView);
         //Create and add Open File option to file menu
-        MenuItem openfile = new MenuItem("Open File...");
-        fileMenu.getItems().add(openfile);
+        MenuItem openFileNT = new MenuItem("In New Tab");
+        openFileSubMenu.getItems().add(openFileNT);
+        //Create and add Open File option to file menu
+        MenuItem openFileST = new MenuItem("In Same Tab");
+        openFileSubMenu.getItems().add(openFileST);
         //Create and add Save option to file menu
         MenuItem save = new MenuItem("Save");
         fileMenu.getItems().add(save);
@@ -85,8 +90,9 @@ public class MyMenu{
         toolbar.getItems().add(colorPicker);
         toolbar.getItems().add(aboutButton);
         TabArrays tabArrays = new TabArrays();
+
         //Instantiate ButtonFunctions using the menu options
-        FileMenuFunctions fileMenuFunctions = new FileMenuFunctions(stage, openfile, save, saveas, exit, tabPane, tabArrays);
+        FileMenuFunctions fileMenuFunctions = new FileMenuFunctions(stage, openFileNT, openFileST, save, saveas, exit, tabPane, tabArrays);
         SettingsMenuFunctions settingsMenuFunctions = new SettingsMenuFunctions(strokeWidth);
         ToolbarFunctions toolbarFunctions = new ToolbarFunctions(aboutButton, colorPicker, tabArrays);
         ToolsMenuFunctions toolsMenuFunctions = new ToolsMenuFunctions(border,clear, pencil, line, rectangle, square, ellipse, circle, undoOption, colorPicker, settingsMenuFunctions, tabPane, tabArrays);
