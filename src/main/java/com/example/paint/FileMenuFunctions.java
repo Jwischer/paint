@@ -97,7 +97,8 @@ public class FileMenuFunctions{
         //Exit Menu Function
         exit.setOnAction(e -> {
             //Close application
-            stage.close();
+            //stage.close();
+            CloseAppPopup closeAppPopup = new CloseAppPopup(stage);
         });
 
 
