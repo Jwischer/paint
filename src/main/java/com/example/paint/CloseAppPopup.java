@@ -17,23 +17,26 @@ import static com.example.paint.FileMenuFunctions.saveToFile;
 public class CloseAppPopup {
     Label question;
     Button yes;
-    Button yesandsave;
+    Button yesAndSaveAll;
+    Button yesAndChooseSave;
     Button no;
     Stage stage;
     Scene scene;
     HBox hBox = new HBox();
     CloseAppPopup(Stage stageToClose, TabPane tabPane, TabArrays tabArrays){
         this.yes = new Button("Close Without Saving");
-        this.yesandsave = new Button("Save and Close");
+        this.yesAndSaveAll = new Button("Save All Tabs and Close");
+        this.yesAndChooseSave = new Button("Choose Saved Tabs and Close");
         this.no = new Button("Go Back");
         this.question = new Label("Are you sure you want to close?");
         GridPane gridPane = new GridPane();
         this.scene = new Scene(gridPane);
         this.stage = new Stage();
         hBox.getChildren().add(yes);
-        hBox.getChildren().add(yesandsave);
+        hBox.getChildren().add(yesAndSaveAll);
+        hBox.getChildren().add(yesAndChooseSave);
         hBox.getChildren().add(no);
-        hBox.setSpacing(100);
+        hBox.setSpacing(60);
         stage.setScene(scene);
         gridPane.setAlignment(Pos.CENTER);
         gridPane.add(question, 1, 1);
@@ -48,19 +51,22 @@ public class CloseAppPopup {
             stageToClose.close();
         });
 
-        yes.setOnAction(actionEvent -> {
-            System.out.println("Y");
+        yesAndSaveAll.setOnAction(actionEvent -> {
+            System.out.println("YS");
             for(int i=0;i<tabArrays.maxTabs ;i++){
                 if(tabArrays.path[i] != null) {
                     //Convert current state of canvas to a writable image
                     WritableImage writableImage = canvasToWritableImage(tabArrays.stackCanvas[i].canvas);
                     //Save the writable image to the same location as the file that was opened
-                    //CREATE AN ARRAY OF PATHS FOR SAVE COMMANDS
                     saveToFile(writableImage, tabArrays.path[i]);
                 }
             }
             stage.close();
             stageToClose.close();
+        });
+
+        yesAndChooseSave.setOnAction(actionEvent -> {
+            //Allow user to choose which tabs they want to save when closing
         });
 
         no.setOnAction(actionEvent -> {

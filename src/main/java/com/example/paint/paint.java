@@ -13,6 +13,7 @@ public class paint extends Application {
     public void start(Stage stage) throws IOException {
         //set up border pane
         TabPane tabPane = new TabPane();
+        tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
         BorderPane border = new BorderPane();
         //Create a new window
         Scene scene = new Scene(border, 320, 240);

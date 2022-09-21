@@ -125,8 +125,6 @@ public class ToolsMenuFunctions {
                         }
                     }
                 });
-
-
                 System.out.println("changed to tab " + selectedTab[0]);
                 System.out.println(canvas[0].toString());
             }
