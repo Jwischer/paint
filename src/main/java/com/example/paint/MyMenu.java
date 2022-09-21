@@ -65,6 +65,9 @@ public class MyMenu{
         //Create and add Line option to tools menu
         CheckMenuItem line = new CheckMenuItem("Draw Line");
         drawingSubMenu.getItems().add(line);
+        //Create and add dashed line option to tools menu
+        CheckMenuItem dashedLine = new CheckMenuItem("Draw Dashed Line");
+        drawingSubMenu.getItems().add(dashedLine);
         //Create and add Rectangle option to tools menu
         CheckMenuItem rectangle = new CheckMenuItem("Draw Rectangle");
         drawingSubMenu.getItems().add(rectangle);
@@ -80,13 +83,15 @@ public class MyMenu{
         //Create and add Stroke Width option to tools menu
         MenuItem strokeWidth = new MenuItem("Stroke Width");
         settingsMenu.getItems().add(strokeWidth);
-        //Create and add Line option to tools menu
+        //Create and add undo option to tools menu
         MenuItem undoOption = new MenuItem("Undo");
         toolsMenu.getItems().add(undoOption);
         //add menus to menu bar
         menuBar.getMenus().addAll(fileMenu);
         menuBar.getMenus().addAll(toolsMenu);
         menuBar.getMenus().addAll(settingsMenu);
+        Button eyedropper = new Button("Grab Color");
+        toolbar.getItems().add(eyedropper);
         toolbar.getItems().add(colorPicker);
         toolbar.getItems().add(aboutButton);
         TabArrays tabArrays = new TabArrays();
@@ -95,6 +100,6 @@ public class MyMenu{
         FileMenuFunctions fileMenuFunctions = new FileMenuFunctions(stage, openFileNT, openFileST, save, saveas, exit, tabPane, tabArrays);
         SettingsMenuFunctions settingsMenuFunctions = new SettingsMenuFunctions(strokeWidth);
         ToolbarFunctions toolbarFunctions = new ToolbarFunctions(aboutButton, colorPicker, tabArrays);
-        ToolsMenuFunctions toolsMenuFunctions = new ToolsMenuFunctions(border,clear, pencil, line, rectangle, square, ellipse, circle, undoOption, colorPicker, settingsMenuFunctions, tabPane, tabArrays);
+        ToolsMenuFunctions toolsMenuFunctions = new ToolsMenuFunctions(border,clear, pencil, line, dashedLine, rectangle, square, ellipse, circle, undoOption, colorPicker, settingsMenuFunctions, tabPane, tabArrays, eyedropper);
     }
 }

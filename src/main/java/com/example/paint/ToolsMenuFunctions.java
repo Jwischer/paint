@@ -14,7 +14,7 @@ import javafx.scene.paint.Color;
 import static java.lang.Math.abs;
 
 public class ToolsMenuFunctions {
-    ToolsMenuFunctions(MenuItem border, MenuItem clear, CheckMenuItem pencil, CheckMenuItem drawLine, CheckMenuItem drawRectangle, CheckMenuItem drawSquare, CheckMenuItem drawEllipse, CheckMenuItem drawCircle, MenuItem undo, ColorPicker colorPicker, SettingsMenuFunctions settingsMenuFunctions, TabPane tabPane, TabArrays tabArrays){
+    ToolsMenuFunctions(MenuItem border, MenuItem clear, CheckMenuItem pencil, CheckMenuItem drawLine,CheckMenuItem drawDashedLine, CheckMenuItem drawRectangle, CheckMenuItem drawSquare, CheckMenuItem drawEllipse, CheckMenuItem drawCircle, MenuItem undo, ColorPicker colorPicker, SettingsMenuFunctions settingsMenuFunctions, TabPane tabPane, TabArrays tabArrays, Button eyedropper){
         //Stores the positions for drawing a line
         final double[] firstPos = {0,0};
         //Width of drawn lines
@@ -27,6 +27,8 @@ public class ToolsMenuFunctions {
         final Color[] pickerColor = new Color[1];
         final int selectedTab[] = {0};
         final Canvas[] canvas = {new Canvas()};
+        final boolean getColor[] = {false};
+        final Color[] grabberColor = new Color[1];
 
         tabPane.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
             public void changed(ObservableValue<? extends Number> ov, Number oldValue, Number newValue) {
@@ -35,6 +37,15 @@ public class ToolsMenuFunctions {
 
                 //Set Mouse Events
                 canvas[0].setOnMousePressed((MouseEvent event) -> {
+                    if(getColor[0]){
+                        System.out.println("Color Grabbed");
+                        WritableImage pixelImage = new WritableImage((int) tabArrays.stackCanvas[selectedTab[0]].canvas.getWidth(), (int) tabArrays.stackCanvas[selectedTab[0]].canvas.getHeight());
+                        pixelImage = tabArrays.stackCanvas[selectedTab[0]].canvas.snapshot(null, pixelImage);
+                        grabberColor[0] = pixelImage.getPixelReader().getColor((int)event.getX(), (int)event.getY());
+                        System.out.println(grabberColor[0].toString());
+                        colorPicker.setValue(grabberColor[0]);
+                        getColor[0] = false;
+                    }
                     GraphicsContext gc = tabArrays.stackCanvas[selectedTab[0]].canvas.getGraphicsContext2D();
                     pickerColor[0] = colorPicker.getValue();
                     gc.setStroke(pickerColor[0]);
@@ -58,11 +69,21 @@ public class ToolsMenuFunctions {
                 canvas[0].setOnMouseDragged((MouseEvent event) -> {
                     GraphicsContext gc = tabArrays.stackCanvas[selectedTab[0]].canvas.getGraphicsContext2D();
                     //If second position of line is not set draw a preview
-                    if(drawLine.isSelected()) {
+                    if(pencil.isSelected()){}
+                    else if(drawLine.isSelected()) {
+                        gc.setLineDashes(0);
                         //Clear canvas of line previews
                         canvasReplace(tabArrays.stackCanvas[selectedTab[0]].canvas, previewImage[0]);
                         //Draw a line from the first point to current mouse position
                         gc.strokeLine(firstPos[0], firstPos[1], event.getX(), event.getY());
+                    } else if(drawDashedLine.isSelected()){
+                        gc.setLineDashes(20);
+                        gc.setLineDashOffset(5);
+                        //Clear canvas of line previews
+                        canvasReplace(tabArrays.stackCanvas[selectedTab[0]].canvas, previewImage[0]);
+                        //Draw a line from the first point to current mouse position
+                        gc.strokeLine(firstPos[0], firstPos[1], event.getX(), event.getY());
+                        //gc.strokeLine(0, 0, 300, 300);
                     } else if (drawRectangle.isSelected()){
                         //Clear canvas of rectangle previews
                         canvasReplace(tabArrays.stackCanvas[selectedTab[0]].canvas, previewImage[0]);
@@ -161,6 +182,12 @@ public class ToolsMenuFunctions {
         undo.setOnAction(e -> {
             canvasReplace(tabArrays.stackCanvas[selectedTab[0]].canvas, canvasUndo[0]);
         });
+
+        eyedropper.setOnAction(actionEvent -> {
+            getColor[0] = true;
+        });
+
+
 
 
     }
