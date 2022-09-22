@@ -32,7 +32,7 @@ None Known
 - [ ] Keyboard Shortcuts
 - [X] Color Text Labels
 - [ ] Resize Canvas
-- [ ] Dashed Line
+- [X] Dashed Line
 - [X] Tabs
 - [ ] Smart Save
 - [ ] Move drawing tools to buttons
