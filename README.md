@@ -29,7 +29,7 @@ None Known
 - [X] Rectangle Tool
 - [X] Elipse Tool
 - [X] Circle Tool
-- [ ] Keyboard Shortcuts
+- [X] Keyboard Shortcuts
 - [X] Color Text Labels
 - [X] Resize Canvas
 - [X] Dashed Line
