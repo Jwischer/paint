@@ -51,25 +51,34 @@ public class ToolsMenuFunctions {
                     gc.setStroke(pickerColor[0]);
                     System.out.println("Mouse Pressed");
                     //If drawing a line
-                    if(pencil.isSelected() || drawLine.isSelected() || drawRectangle.isSelected() || drawSquare.isSelected() || drawEllipse.isSelected() || drawCircle.isSelected())
+                    if(pencil.isSelected() || drawLine.isSelected() || drawRectangle.isSelected() || drawSquare.isSelected() || drawEllipse.isSelected() || drawCircle.isSelected()) {
+                        if(pencil.isSelected()){
+                            gc.beginPath();
+                            gc.moveTo(event.getX(), event.getY());
+                            gc.stroke();
+                        }
                         drawWidth[0] = settingsMenuFunctions.strokeSlider.getValue();
-                    pickerColor[0] = colorPicker.getValue();
-                    canvasUndo[0] = new WritableImage((int) tabArrays.stackCanvas[selectedTab[0]].canvas.getWidth(), (int) tabArrays.stackCanvas[selectedTab[0]].canvas.getHeight());
-                    //Record first position
-                    firstPos[0] = event.getX();
-                    firstPos[1] = event.getY();
-                    event.setDragDetect(true);
-                    //Save current status of canvas
-                    previewImage[0] = new WritableImage((int) tabArrays.stackCanvas[selectedTab[0]].canvas.getWidth(), (int) tabArrays.stackCanvas[selectedTab[0]].canvas.getHeight());
-                    previewImage[0] = tabArrays.stackCanvas[selectedTab[0]].canvas.snapshot(null, canvasUndo[0]);
-                    //Set line width to slider value
-                    gc.setLineWidth(drawWidth[0]);
+                        pickerColor[0] = colorPicker.getValue();
+                        canvasUndo[0] = new WritableImage((int) tabArrays.stackCanvas[selectedTab[0]].canvas.getWidth(), (int) tabArrays.stackCanvas[selectedTab[0]].canvas.getHeight());
+                        //Record first position
+                        firstPos[0] = event.getX();
+                        firstPos[1] = event.getY();
+                        event.setDragDetect(true);
+                        //Save current status of canvas
+                        previewImage[0] = new WritableImage((int) tabArrays.stackCanvas[selectedTab[0]].canvas.getWidth(), (int) tabArrays.stackCanvas[selectedTab[0]].canvas.getHeight());
+                        previewImage[0] = tabArrays.stackCanvas[selectedTab[0]].canvas.snapshot(null, canvasUndo[0]);
+                        //Set line width to slider value
+                        gc.setLineWidth(drawWidth[0]);
+                    }
                 });
 
                 canvas[0].setOnMouseDragged((MouseEvent event) -> {
                     GraphicsContext gc = tabArrays.stackCanvas[selectedTab[0]].canvas.getGraphicsContext2D();
                     //If second position of line is not set draw a preview
-                    if(pencil.isSelected()){}
+                    if(pencil.isSelected()){
+                        gc.lineTo(event.getX(), event.getY());
+                        gc.stroke();
+                    }
                     else if(drawLine.isSelected()) {
                         gc.setLineDashes(0);
                         //Clear canvas of line previews
