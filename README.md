@@ -24,6 +24,7 @@ None Known
   
   
 ### Plans:
+//- - - - Sprint 3 - - - - //
 - [X] Pencil Tool
 - [X] Square Tool
 - [X] Rectangle Tool
@@ -35,7 +36,7 @@ None Known
 - [X] Dashed Line
 - [X] Tabs
 - [ ] Smart Save
-
+//- - - - Sprint 4 - - - - - //
 - [ ] Redo/Undo using a stack
 - [ ] Blank starting image
 - [ ] Clear canvas tool
@@ -44,7 +45,7 @@ None Known
 - [ ] Select and copy/paste a piece of the image
 - [ ] Select and move a piece of the image
 - [ ] An additional shape of choice
-
+// - - - - Extras - - - - - //
 - [ ] Move drawing tools to buttons
 
 ### Links:
