@@ -196,8 +196,49 @@ public class ToolsMenuFunctions {
             getColor[0] = true;
         });
 
-
-
+        //When one tool is selected, unselect the other tools
+        pencil.setOnAction(actionEvent -> {
+            drawLine.setSelected(false);
+            drawRectangle.setSelected(false);
+            drawSquare.setSelected(false);
+            drawEllipse.setSelected(false);
+            drawCircle.setSelected(false);
+        });
+        drawLine.setOnAction(actionEvent -> {
+            pencil.setSelected(false);
+            drawRectangle.setSelected(false);
+            drawSquare.setSelected(false);
+            drawEllipse.setSelected(false);
+            drawCircle.setSelected(false);
+        });
+        drawRectangle.setOnAction(actionEvent -> {
+            pencil.setSelected(false);
+            drawLine.setSelected(false);
+            drawSquare.setSelected(false);
+            drawEllipse.setSelected(false);
+            drawCircle.setSelected(false);
+        });
+        drawSquare.setOnAction(actionEvent -> {
+            pencil.setSelected(false);
+            drawLine.setSelected(false);
+            drawRectangle.setSelected(false);
+            drawEllipse.setSelected(false);
+            drawCircle.setSelected(false);
+        });
+        drawEllipse.setOnAction(actionEvent -> {
+            pencil.setSelected(false);
+            drawLine.setSelected(false);
+            drawRectangle.setSelected(false);
+            drawSquare.setSelected(false);
+            drawCircle.setSelected(false);
+        });
+        drawCircle.setOnAction(actionEvent -> {
+            pencil.setSelected(false);
+            drawLine.setSelected(false);
+            drawRectangle.setSelected(false);
+            drawSquare.setSelected(false);
+            drawEllipse.setSelected(false);
+        });
 
     }
 

@@ -6,6 +6,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
@@ -23,11 +26,11 @@ public class MyMenu{
         //instantiate imageLoader to grab images
         ImageLoader imageLoader = new ImageLoader();
         //Menu Bar
-        Menu fileMenu = new Menu("File");
-        Menu toolsMenu = new Menu("Tools");
-        Menu settingsMenu = new Menu("Settings");
-        Menu drawingSubMenu = new Menu("Drawing");
-        Menu openFileSubMenu = new Menu("Open File");
+        Menu fileMenu = new Menu("_File"); //Shortcut Alt + F
+        Menu toolsMenu = new Menu("_Tools"); //Shortcut Alt + T
+        Menu settingsMenu = new Menu("_Settings"); //Shortcut Alt + S
+        Menu drawingSubMenu = new Menu("_Drawing"); //Shortcut Alt + D (When Tools is Open)
+        Menu openFileSubMenu = new Menu("_Open File"); //Shortcut Alt + O (When File is Open)
         toolsMenu.getItems().add(drawingSubMenu);
         fileMenu.getItems().add(openFileSubMenu);
         //Create new Color Picker
@@ -90,8 +93,8 @@ public class MyMenu{
         menuBar.getMenus().addAll(fileMenu);
         menuBar.getMenus().addAll(toolsMenu);
         menuBar.getMenus().addAll(settingsMenu);
-        Button eyedropper = new Button("Grab Color");
-        Button resize = new Button("Resize Canvas");
+        Button eyedropper = new Button("_Grab Color"); //Shortcut Alt + G
+        Button resize = new Button("_Resize Canvas"); //Shortcut Alt + R
         toolbar.getItems().add(resize);
         toolbar.getItems().add(colorPicker);
         toolbar.getItems().add(eyedropper);
@@ -99,6 +102,7 @@ public class MyMenu{
         TabArrays tabArrays = new TabArrays();
 
         //Instantiate ButtonFunctions using the menu options
+        KeyboardShortcuts keyboardShortcuts = new KeyboardShortcuts(pencil, line, dashedLine, square, rectangle, circle, ellipse, undoOption);
         FileMenuFunctions fileMenuFunctions = new FileMenuFunctions(stage, openFileNT, openFileST, save, saveas, exit, tabPane, tabArrays);
         SettingsMenuFunctions settingsMenuFunctions = new SettingsMenuFunctions(strokeWidth);
         ToolbarFunctions toolbarFunctions = new ToolbarFunctions(aboutButton, colorPicker, tabArrays, resize, tabPane);
