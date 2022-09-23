@@ -35,6 +35,16 @@ None Known
 - [X] Dashed Line
 - [X] Tabs
 - [ ] Smart Save
+
+- [ ] Redo/Undo using a stack
+- [ ] Blank starting image
+- [ ] Clear canvas tool
+- [ ] Eraser
+- [ ] Be able to draw a n-sided polygon
+- [ ] Select and copy/paste a piece of the image
+- [ ] Select and move a piece of the image
+- [ ] An additional shape of choice
+
 - [ ] Move drawing tools to buttons
 
 ### Links:
