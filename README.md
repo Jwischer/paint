@@ -24,7 +24,7 @@ None Known
   
   
 ### Plans:
-- [ ] Pencil Tool
+- [X] Pencil Tool
 - [X] Square Tool
 - [X] Rectangle Tool
 - [X] Elipse Tool
