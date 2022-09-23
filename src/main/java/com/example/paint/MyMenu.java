@@ -91,15 +91,17 @@ public class MyMenu{
         menuBar.getMenus().addAll(toolsMenu);
         menuBar.getMenus().addAll(settingsMenu);
         Button eyedropper = new Button("Grab Color");
-        toolbar.getItems().add(eyedropper);
+        Button resize = new Button("Resize Canvas");
+        toolbar.getItems().add(resize);
         toolbar.getItems().add(colorPicker);
+        toolbar.getItems().add(eyedropper);
         toolbar.getItems().add(aboutButton);
         TabArrays tabArrays = new TabArrays();
 
         //Instantiate ButtonFunctions using the menu options
         FileMenuFunctions fileMenuFunctions = new FileMenuFunctions(stage, openFileNT, openFileST, save, saveas, exit, tabPane, tabArrays);
         SettingsMenuFunctions settingsMenuFunctions = new SettingsMenuFunctions(strokeWidth);
-        ToolbarFunctions toolbarFunctions = new ToolbarFunctions(aboutButton, colorPicker, tabArrays);
+        ToolbarFunctions toolbarFunctions = new ToolbarFunctions(aboutButton, colorPicker, tabArrays, resize, tabPane);
         ToolsMenuFunctions toolsMenuFunctions = new ToolsMenuFunctions(border,clear, pencil, line, dashedLine, rectangle, square, ellipse, circle, undoOption, colorPicker, settingsMenuFunctions, tabPane, tabArrays, eyedropper);
     }
 }

@@ -10,7 +10,7 @@ import javafx.scene.paint.Color;
 
 public class ToolbarFunctions {
     ColorPicker colorPicker;
-    ToolbarFunctions(Button aboutButton, ColorPicker colorPicker, TabArrays tabArrays){
+    ToolbarFunctions(Button aboutButton, ColorPicker colorPicker, TabArrays tabArrays, Button resize, TabPane tabPane){
         this.colorPicker = colorPicker;
         //Color that the color picker has selected
         final Color[] pickerColor = new Color[1];
@@ -24,6 +24,11 @@ public class ToolbarFunctions {
         aboutButton.setOnAction(actionEvent  -> {
             //Create an instance of aboutMenu
             AboutMenu aboutMenu =  new AboutMenu();
+        });
+
+        resize.setOnAction(actionEvent -> {
+            //Open window with text boxes for input of x and y
+            ResizeWindow resizeWindow = new ResizeWindow(tabPane, tabArrays);
         });
     }
 }
