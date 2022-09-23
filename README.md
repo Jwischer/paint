@@ -31,7 +31,7 @@ None Known
 - [X] Circle Tool
 - [ ] Keyboard Shortcuts
 - [X] Color Text Labels
-- [ ] Resize Canvas
+- [X] Resize Canvas
 - [X] Dashed Line
 - [X] Tabs
 - [ ] Smart Save
