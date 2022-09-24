@@ -1,6 +1,6 @@
 # JPaint
 
-## Version 1.0 - 09/16/2022
+## Version 1.1 - 09/23/2022
 
 ### Features:
 
@@ -18,25 +18,17 @@
 
 -  Scroll Image
 
+-  Many different shape tools
+
+-  Canvas resize
+
 ### Bugs:
 
 None Known
   
   
 ### Plans:
-#### //- - - - Sprint 3 - - - - //
-- [X] Pencil Tool
-- [X] Square Tool
-- [X] Rectangle Tool
-- [X] Elipse Tool
-- [X] Circle Tool
-- [X] Keyboard Shortcuts
-- [X] Color Text Labels
-- [X] Resize Canvas
-- [X] Dashed Line
-- [X] Tabs
-- [X] Smart Save
-#### //- - - - Sprint 4 - - - - - //
+#### //- - - - Sprint 4 - - - - //
 - [ ] Redo/Undo using a stack
 - [ ] Blank starting image
 - [ ] Clear canvas tool
@@ -45,8 +37,9 @@ None Known
 - [ ] Select and copy/paste a piece of the image
 - [ ] Select and move a piece of the image
 - [ ] An additional shape of choice
-#### // - - - - Extras - - - - - //
+#### // - - - - Extras - - - - //
 - [ ] Move drawing tools to buttons
+- [ ] Make slight adjustments to smart save
 
 ### Links:
 
