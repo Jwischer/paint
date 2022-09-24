@@ -173,11 +173,11 @@ public class FileMenuFunctions {
 
     public static int OnTabClose(TabPane tabPane, int maxTabs, TabArrays tabArrays, int nextTab, int closeIndex) {
         //If closing a border tab set the close graphic to the new selected tab
-        if(closeIndex == 0){
-            tabArrays.tab[closeIndex+1].setGraphic(tabArrays.close[closeIndex+1]);
-        } else if (closeIndex == nextTab-1) {
-            tabArrays.tab[nextTab - 2].setGraphic(tabArrays.close[nextTab - 2]);
-        }
+            if (closeIndex == 0 && tabArrays.tab[closeIndex+1] != null) {
+                tabArrays.tab[closeIndex + 1].setGraphic(tabArrays.close[closeIndex + 1]);
+            } else if (closeIndex == nextTab) {
+                tabArrays.tab[nextTab - 2].setGraphic(tabArrays.close[nextTab - 2]);
+            }
         //Shift all tab array items to the left
         for (int i = closeIndex; i < maxTabs-1; i++) {
             tabArrays.stackCanvas[i] = tabArrays.stackCanvas[i + 1];
