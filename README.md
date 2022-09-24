@@ -1,6 +1,6 @@
 # JPaint
 
-## Version 1.0 - 09/16/2022
+## Version 1.1 - 09/23/2022
 
 ### Features:
 
