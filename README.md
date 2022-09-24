@@ -35,7 +35,7 @@ None Known
 - [X] Resize Canvas
 - [X] Dashed Line
 - [X] Tabs
-- [ ] Smart Save
+- [X] Smart Save
 #### //- - - - Sprint 4 - - - - - //
 - [ ] Redo/Undo using a stack
 - [ ] Blank starting image
