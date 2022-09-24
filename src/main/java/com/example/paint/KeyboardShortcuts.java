@@ -21,7 +21,7 @@ public class KeyboardShortcuts {
         circle.setAccelerator(circleShortcut);
         KeyCombination ellipseShortcut = new KeyCodeCombination(KeyCode.E, KeyCombination.CONTROL_DOWN);
         ellipse.setAccelerator(ellipseShortcut);
-        KeyCombination undoShortcut = new KeyCodeCombination(KeyCode.U, KeyCombination.CONTROL_DOWN);
+        KeyCombination undoShortcut = new KeyCodeCombination(KeyCode.Z, KeyCombination.CONTROL_DOWN);
         undo.setAccelerator(undoShortcut);
     }
 }

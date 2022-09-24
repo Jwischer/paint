@@ -32,8 +32,10 @@ public class ToolsMenuFunctions {
 
         tabPane.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
             public void changed(ObservableValue<? extends Number> ov, Number oldValue, Number newValue) {
-                selectedTab[0] = tabPane.getSelectionModel().getSelectedIndex();
-                canvas[0] = tabArrays.stackCanvas[selectedTab[0]].canvas;
+                if(tabPane.getSelectionModel().getSelectedIndex() >= 0) {
+                    selectedTab[0] = tabPane.getSelectionModel().getSelectedIndex();
+                    canvas[0] = tabArrays.stackCanvas[selectedTab[0]].canvas;
+                }
 
                 //Set Mouse Events
                 canvas[0].setOnMousePressed((MouseEvent event) -> {
@@ -52,6 +54,8 @@ public class ToolsMenuFunctions {
                     System.out.println("Mouse Pressed");
                     //If drawing a line
                     if(pencil.isSelected() || drawLine.isSelected() || drawRectangle.isSelected() || drawSquare.isSelected() || drawEllipse.isSelected() || drawCircle.isSelected()) {
+                        tabArrays.saveWarning[tabPane.getSelectionModel().getSelectedIndex()] = true;
+                        System.out.println("Changed " + tabPane.getSelectionModel().getSelectedIndex() + " to " + tabArrays.saveWarning[tabPane.getSelectionModel().getSelectedIndex()]);
                         if(pencil.isSelected()){
                             gc.beginPath();
                             gc.moveTo(event.getX(), event.getY());

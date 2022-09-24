@@ -9,6 +9,7 @@ public class TabArrays {
     StackCanvas[] stackCanvas;
     String[] path;
     Button[] close;
+    boolean[] saveWarning;
     int maxTabs;
     TabArrays(){
         this.maxTabs = 40;
@@ -16,7 +17,7 @@ public class TabArrays {
         this.stackCanvas = new StackCanvas[maxTabs];
         this.path = new String[maxTabs];
         this.close = new Button[maxTabs];
-
+        this.saveWarning = new boolean[maxTabs];
         stackCanvas[0] = new StackCanvas();
         stackCanvas[0].canvas = new Canvas();
     }

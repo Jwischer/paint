@@ -11,7 +11,6 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-
 import static com.example.paint.FileMenuFunctions.*;
 
 public class TabClosePopup{
@@ -41,26 +40,24 @@ public class TabClosePopup{
         GridPane.setHalignment(hBox, HPos.CENTER);
         GridPane.setHalignment(question, HPos.CENTER);
         stage.show();
-
-        yes.setOnAction(actionEvent -> {
-
-        });
-
-        yesAndSave.setOnAction(actionEvent -> {
-            //Allow user to choose which tabs they want to save when closing
-        });
     }
 
     public static int YesFunction(Stage stage, TabPane tabPane, TabArrays tabArrays, int nextTab, int closeIndex){
         int nextTabNew;
-        tabPane.getTabs().remove(tabPane.getSelectionModel().getSelectedIndex());
+        tabPane.getTabs().remove(closeIndex);
         nextTabNew = OnTabClose(tabPane,tabArrays.maxTabs,tabArrays,nextTab,closeIndex);
         stage.close();
         return nextTabNew;
     }
 
-    public static void YesAndSaveFunction(){
-
+    public static int YesAndSaveFunction(Stage stage, TabPane tabPane, TabArrays tabArrays, int nextTab, int closeIndex){
+        int nextTabNew;
+        WritableImage image = canvasToWritableImage(tabArrays.stackCanvas[closeIndex].canvas);
+        saveToFile(image, tabArrays.path[closeIndex]);
+        tabPane.getTabs().remove(closeIndex);
+        nextTabNew = OnTabClose(tabPane,tabArrays.maxTabs,tabArrays,nextTab,closeIndex);
+        stage.close();
+        return nextTabNew;
     }
 
     public static void NoFunction(Stage stage){
