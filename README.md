@@ -18,24 +18,16 @@
 
 -  Scroll Image
 
+-  Many different shape tools
+
+-  Canvas resize
+
 ### Bugs:
 
 None Known
   
   
 ### Plans:
-#### //- - - - Sprint 3 - - - - //
-- [X] Pencil Tool
-- [X] Square Tool
-- [X] Rectangle Tool
-- [X] Elipse Tool
-- [X] Circle Tool
-- [X] Keyboard Shortcuts
-- [X] Color Text Labels
-- [X] Resize Canvas
-- [X] Dashed Line
-- [X] Tabs
-- [X] Smart Save
 #### //- - - - Sprint 4 - - - - - //
 - [ ] Redo/Undo using a stack
 - [ ] Blank starting image
@@ -47,6 +39,7 @@ None Known
 - [ ] An additional shape of choice
 #### // - - - - Extras - - - - - //
 - [ ] Move drawing tools to buttons
+- [ ] Make slight adjustments to smart save
 
 ### Links:
 
