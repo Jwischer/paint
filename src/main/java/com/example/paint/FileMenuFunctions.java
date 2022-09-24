@@ -27,6 +27,7 @@ public class FileMenuFunctions {
 
         tabPane.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
             public void changed(ObservableValue<? extends Number> ov, Number oldValue, Number newValue) {
+                //Make close button only appear on selected tab
                 if(oldValue.intValue() >= 0) {
                     tabArrays.tab[oldValue.intValue()].setGraphic(null);
                     tabArrays.tab[newValue.intValue()].setGraphic(tabArrays.close[newValue.intValue()]);
@@ -36,7 +37,7 @@ public class FileMenuFunctions {
 
         //Open File Menu Function
         openfile.setOnAction(e -> {
-            if (nextTab[0] <= maxTabs[0]) { //if have not reached max tabs
+            if (nextTab[0] < maxTabs[0]) { //if have not reached max tabs
                 //Set up file chooser to default to all images and only open images
                 fileChooser.getExtensionFilters().setAll(
                         new FileChooser.ExtensionFilter("All Images", "*.*"),
@@ -49,33 +50,31 @@ public class FileMenuFunctions {
                 File file = fileChooser.showOpenDialog(null);
                 //Set path variable equal to the opened file
                 if (file != null) {
+                    //Initialize tab array items for new tab
                     tabArrays.close[nextTab[0]] = new Button("X");
                     tabArrays.path[nextTab[0]] = file.getPath();
                     tabArrays.tab[nextTab[0]] = new Tab(file.getName());
                     tabArrays.stackCanvas[nextTab[0]] = new StackCanvas();
                     tabArrays.saveWarning[nextTab[0]] = false;
+                    //If this is the first tab show the close button
                     if(nextTab[0] == 0) {
                         tabArrays.tab[nextTab[0]].setGraphic(tabArrays.close[nextTab[0]]);
                     }
+                    //Set up close events
                     tabArrays.close[nextTab[0]].setOnAction(actionEvent -> {
+                        //Open new save warning window if needed
                         if(tabArrays.saveWarning[tabPane.getSelectionModel().getSelectedIndex()]) {
                             TabClosePopup tabClosePopup = new TabClosePopup(nextTab[0], tabPane, tabArrays);
                             tabClosePopup.yes.setOnAction(actionEvent1 -> {
-                                System.out.println("Y");
-                                System.out.println("Index: " + tabPane.getSelectionModel().getSelectedIndex());
                                 nextTab[0] = tabClosePopup.YesFunction(tabClosePopup.stage, tabPane, tabArrays, nextTab[0], tabPane.getSelectionModel().getSelectedIndex());
-                                System.out.println(nextTab[0]);
                             });
                             tabClosePopup.yesAndSave.setOnAction(actionEvent1 -> {
-                                System.out.println("YS");
                                 nextTab[0] = tabClosePopup.YesAndSaveFunction(tabClosePopup.stage, tabPane, tabArrays, nextTab[0], tabPane.getSelectionModel().getSelectedIndex());
                             });
                             tabClosePopup.no.setOnAction(actionEvent1 -> {
-                                System.out.println("N");
                                 tabClosePopup.NoFunction(tabClosePopup.stage);
                             });
                         } else {
-                            System.out.println("T: " + tabArrays.saveWarning[tabPane.getSelectionModel().getSelectedIndex()]);
                             nextTab[0] = OnTabClose(tabPane, tabArrays.maxTabs, tabArrays, nextTab[0], tabPane.getSelectionModel().getSelectedIndex());
                             tabPane.getTabs().remove(tabPane.getSelectionModel().getSelectedIndex());
                         }
@@ -94,11 +93,12 @@ public class FileMenuFunctions {
                     nextTab[0]++;
                 }
             } else {
-                //Open dialog for max tabs
+                System.out.println("Max tabs reached");
             }
         });
 
         openFileST.setOnAction(e -> {
+            //Open the file in the active tab
             if (tabPane.getSelectionModel().getSelectedIndex() >= 0) {
                 fileChooser.setTitle("Open Image File");
                 GraphicsContext gc = tabArrays.stackCanvas[tabPane.getSelectionModel().getSelectedIndex()].canvas.getGraphicsContext2D();
@@ -147,8 +147,6 @@ public class FileMenuFunctions {
 
         //Exit Menu Function
         exit.setOnAction(e -> {
-            //Close application
-            //stage.close();
             CloseAppPopup closeAppPopup = new CloseAppPopup(stage, tabPane, tabArrays);
         });
 
@@ -174,13 +172,13 @@ public class FileMenuFunctions {
     }
 
     public static int OnTabClose(TabPane tabPane, int maxTabs, TabArrays tabArrays, int nextTab, int closeIndex) {
+        //If closing a border tab set the close graphic to the new selected tab
         if(closeIndex == 0){
             tabArrays.tab[closeIndex+1].setGraphic(tabArrays.close[closeIndex+1]);
-        } else if (closeIndex == nextTab-1){
-            tabArrays.tab[nextTab-2].setGraphic(tabArrays.close[nextTab-2]);
+        } else if (closeIndex == nextTab-1) {
+            tabArrays.tab[nextTab - 2].setGraphic(tabArrays.close[nextTab - 2]);
         }
-        System.out.println("Closed Tab");
-        System.out.println("Index: " + closeIndex);
+        //Shift all tab array items to the left
         for (int i = closeIndex; i < maxTabs-1; i++) {
             tabArrays.stackCanvas[i] = tabArrays.stackCanvas[i + 1];
             tabArrays.tab[i] = tabArrays.tab[i + 1];

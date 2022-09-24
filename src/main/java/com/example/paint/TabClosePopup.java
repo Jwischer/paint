@@ -22,6 +22,7 @@ public class TabClosePopup{
     Scene scene;
     HBox hBox = new HBox();
     TabClosePopup(int nextTab, TabPane tabPane, TabArrays tabArrays){
+        //Set up scene
         this.yes = new Button("Close Without Saving");
         this.yesAndSave = new Button("Save and Close");
         this.no = new Button("Go Back");
@@ -42,6 +43,7 @@ public class TabClosePopup{
         stage.show();
     }
 
+    //Function for the yes button
     public static int YesFunction(Stage stage, TabPane tabPane, TabArrays tabArrays, int nextTab, int closeIndex){
         int nextTabNew;
         tabPane.getTabs().remove(closeIndex);
@@ -50,6 +52,7 @@ public class TabClosePopup{
         return nextTabNew;
     }
 
+    //Function for the yes and save button
     public static int YesAndSaveFunction(Stage stage, TabPane tabPane, TabArrays tabArrays, int nextTab, int closeIndex){
         int nextTabNew;
         WritableImage image = canvasToWritableImage(tabArrays.stackCanvas[closeIndex].canvas);
@@ -60,8 +63,8 @@ public class TabClosePopup{
         return nextTabNew;
     }
 
+    //Function for the do not save button
     public static void NoFunction(Stage stage){
-        System.out.println("N");
         stage.close();
     }
 }

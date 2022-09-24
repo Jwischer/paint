@@ -15,6 +15,7 @@ public class ResizeWindow {
     Stage stage = new Stage();
     Scene scene = new Scene(gridPane,350,75);
     ResizeWindow(TabPane tabPane, TabArrays tabArrays){
+        //Set up scene
         gridPane.add(xVal, 0 , 0);
         gridPane.add(yVal, 2, 0);
         gridPane.add(confirm,1,1);
@@ -22,9 +23,11 @@ public class ResizeWindow {
         stage.show();
 
         confirm.setOnAction(actionEvent -> {
+            //Get values in text boxes
             int pixelx = Integer.valueOf(xVal.getCharacters().toString());
             int pixely = Integer.valueOf(yVal.getCharacters().toString());
             int canvasIndex = tabPane.getSelectionModel().getSelectedIndex();
+            //Change width and height of canvas to match
             tabArrays.stackCanvas[canvasIndex].canvas.setWidth(pixelx);
             tabArrays.stackCanvas[canvasIndex].canvas.setHeight(pixely);
             stage.close();

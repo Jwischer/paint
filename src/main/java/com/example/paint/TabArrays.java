@@ -18,6 +18,7 @@ public class TabArrays {
         this.path = new String[maxTabs];
         this.close = new Button[maxTabs];
         this.saveWarning = new boolean[maxTabs];
+        //Initialize the first canvas
         stackCanvas[0] = new StackCanvas();
         stackCanvas[0].canvas = new Canvas();
     }
