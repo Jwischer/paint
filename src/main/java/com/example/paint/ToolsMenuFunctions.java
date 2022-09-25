@@ -33,7 +33,142 @@ public class ToolsMenuFunctions {
         final Canvas[] canvas = {new Canvas()};
         final boolean getColor[] = {false};
         final Color[] grabberColor = new Color[1];
+        canvas[0] = tabArrays.stackCanvas[0].canvas;
 
+        //Set Mouse Events
+        //Initialize mouse pressed for first tab
+        canvas[0].setOnMousePressed((MouseEvent event) -> {
+            if(getColor[0]){
+                System.out.println("Color Grabbed");
+                //Turn the current canvas into a writable image
+                WritableImage pixelImage = new WritableImage((int) tabArrays.stackCanvas[selectedTab[0]].canvas.getWidth(), (int) tabArrays.stackCanvas[selectedTab[0]].canvas.getHeight());
+                pixelImage = tabArrays.stackCanvas[selectedTab[0]].canvas.snapshot(null, pixelImage);
+                //Set the color picker to the clicked on color
+                grabberColor[0] = pixelImage.getPixelReader().getColor((int)event.getX(), (int)event.getY());
+                System.out.println(grabberColor[0].toString());
+                colorPicker.setValue(grabberColor[0]);
+                getColor[0] = false;
+            }
+            GraphicsContext gc = tabArrays.stackCanvas[selectedTab[0]].canvas.getGraphicsContext2D();
+            pickerColor[0] = colorPicker.getValue();
+            //Set stroke to color pickers value
+            gc.setStroke(pickerColor[0]);
+            System.out.println("Mouse Pressed");
+            //If drawing anything
+            if(pencil.isSelected() || drawLine.isSelected() || drawRectangle.isSelected() || drawSquare.isSelected() || drawEllipse.isSelected() || drawCircle.isSelected()) {
+                //Show a warning if trying to close before saving
+                tabArrays.saveWarning[tabPane.getSelectionModel().getSelectedIndex()] = true;
+                System.out.println("Changed " + tabPane.getSelectionModel().getSelectedIndex() + " to " + tabArrays.saveWarning[tabPane.getSelectionModel().getSelectedIndex()]);
+                if(pencil.isSelected()){
+                    //Begin making a pencil path if the pencil tool is selected
+                    gc.beginPath();
+                    gc.moveTo(event.getX(), event.getY());
+                    gc.stroke();
+                }
+                drawWidth[0] = settingsMenuFunctions.strokeSlider.getValue();
+                pickerColor[0] = colorPicker.getValue();
+                //Update undo canvas
+                canvasUndo[0] = new WritableImage((int) tabArrays.stackCanvas[selectedTab[0]].canvas.getWidth(), (int) tabArrays.stackCanvas[selectedTab[0]].canvas.getHeight());
+                tabArrays.stackCanvas[selectedTab[0]].canvas.snapshot(null, canvasUndo[0]);
+                undoStack.push(canvasUndo[0]);
+                redoStack.clear();
+                //Record first position
+                firstPos[0] = event.getX();
+                firstPos[1] = event.getY();
+                event.setDragDetect(true);
+                //Save current status of canvas
+                previewImage[0] = new WritableImage((int) tabArrays.stackCanvas[selectedTab[0]].canvas.getWidth(), (int) tabArrays.stackCanvas[selectedTab[0]].canvas.getHeight());
+                tabArrays.stackCanvas[selectedTab[0]].canvas.snapshot(null, previewImage[0]);
+                //Set line width to slider value
+                gc.setLineWidth(drawWidth[0]);
+            }
+        });
+
+        //Initialize mouse drag for first tab
+        canvas[0].setOnMouseDragged((MouseEvent event) -> {
+            GraphicsContext gc = tabArrays.stackCanvas[selectedTab[0]].canvas.getGraphicsContext2D();
+            //If second position of line is not set draw a preview
+            if(pencil.isSelected()){
+                gc.lineTo(event.getX(), event.getY());
+                gc.stroke();
+            }
+            else if(drawLine.isSelected()) {
+                //make line solid
+                gc.setLineDashes(0);
+                //Clear canvas of line previews
+                canvasReplace(tabArrays.stackCanvas[selectedTab[0]].canvas, previewImage[0]);
+                //Draw a line from the first point to current mouse position
+                gc.strokeLine(firstPos[0], firstPos[1], event.getX(), event.getY());
+            } else if(drawDashedLine.isSelected()){
+                //Set up dashed line
+                gc.setLineDashes(20);
+                gc.setLineDashOffset(5);
+                //Clear canvas of dashed line previews
+                canvasReplace(tabArrays.stackCanvas[selectedTab[0]].canvas, previewImage[0]);
+                //Draw a dashed line from the first point to current mouse position
+                gc.strokeLine(firstPos[0], firstPos[1], event.getX(), event.getY());
+                //gc.strokeLine(0, 0, 300, 300);
+            } else if (drawRectangle.isSelected()){
+                //Clear canvas of rectangle previews
+                canvasReplace(tabArrays.stackCanvas[selectedTab[0]].canvas, previewImage[0]);
+                //Draw a rectangle from first point to current mouse position
+                //Each of these if statements deals with a different canvas quadrant
+                if(event.getX()-firstPos[0] >= 0 && event.getY()-firstPos[1] < 0){
+                    gc.strokeRect(firstPos[0], firstPos[1]-abs(event.getY() - firstPos[1]), abs(event.getX() - firstPos[0]), abs(event.getY() - firstPos[1]));
+                } else if (event.getX()-firstPos[0] < 0 && event.getY()-firstPos[1] >= 0){
+                    gc.strokeRect(firstPos[0]-abs(event.getX() - firstPos[0]), firstPos[1], abs(event.getX() - firstPos[0]), abs(event.getY() - firstPos[1]));
+                } else if(event.getX()-firstPos[0]>=0 && event.getY()-firstPos[1]>=0) {
+                    gc.strokeRect(firstPos[0], firstPos[1], abs(event.getX() - firstPos[0]), abs(event.getY() - firstPos[1]));
+                } else{
+                    gc.strokeRect(firstPos[0] - abs(event.getX() - firstPos[0]), firstPos[1] - abs(event.getY() - firstPos[1]), abs(firstPos[0]-event.getX()), abs(firstPos[1]-event.getY()));
+                }
+            } else if (drawSquare.isSelected()){
+                //Clear canvas of square previews
+                canvasReplace(tabArrays.stackCanvas[selectedTab[0]].canvas, previewImage[0]);
+                //Draw a square from first point to current mouse position
+                //Each of these if statements deals with a different canvas quadrant
+                if(event.getX()-firstPos[0] >= 0 && event.getY()-firstPos[1] < 0){
+                    gc.strokeRect(firstPos[0], firstPos[1] - abs(event.getX() - firstPos[0]), abs(event.getX() - firstPos[0]), abs(event.getX() - firstPos[0]));
+                } else if (event.getX()-firstPos[0] < 0 && event.getY()-firstPos[1] >= 0){
+                    gc.strokeRect(firstPos[0]-abs(event.getX() - firstPos[0]), firstPos[1], abs(event.getX() - firstPos[0]), abs(event.getX() - firstPos[0]));
+                } else if(event.getX()-firstPos[0]>=0 && event.getY()-firstPos[1]>=0) {
+                    gc.strokeRect(firstPos[0], firstPos[1], abs(event.getX() - firstPos[0]), abs(event.getX() - firstPos[0]));
+                } else{
+                    gc.strokeRect(firstPos[0] - abs(event.getX() - firstPos[0]), firstPos[1] - abs(event.getX() - firstPos[0]), abs(event.getX() - firstPos[0]), abs(event.getX() - firstPos[0]));
+                }
+            } else if (drawEllipse.isSelected()){
+                //Clear canvas of ellipse previews
+                canvasReplace(tabArrays.stackCanvas[selectedTab[0]].canvas, previewImage[0]);
+                //Draw ellipse
+                //Each of these if statements deals with a different canvas quadrant
+                if(event.getX()-firstPos[0] >= 0 && event.getY()-firstPos[1] < 0){
+                    gc.strokeOval(firstPos[0],firstPos[1]-abs(event.getY()-firstPos[1]),abs(event.getX()-firstPos[0]),abs(event.getY()-firstPos[1]));
+                } else if (event.getX()-firstPos[0] < 0 && event.getY()-firstPos[1] >= 0){
+                    gc.strokeOval(firstPos[0]-abs(event.getX()-firstPos[0]),firstPos[1],abs(event.getX()-firstPos[0]),abs(event.getY()-firstPos[1]));
+                } else if(event.getX()-firstPos[0]>=0 && event.getY()-firstPos[1]>=0) {
+                    gc.strokeOval(firstPos[0],firstPos[1],abs(event.getX()-firstPos[0]),abs(event.getY()-firstPos[1]));
+                } else{
+                    gc.strokeOval(firstPos[0]-abs(event.getX()-firstPos[0]),firstPos[1]-abs(event.getY()-firstPos[1]),abs(event.getX()-firstPos[0]),abs(event.getY()-firstPos[1]));
+                }
+            } else if (drawCircle.isSelected()){
+                //Clear canvas of circle previews
+                canvasReplace(tabArrays.stackCanvas[selectedTab[0]].canvas, previewImage[0]);
+                //Draw ellipse
+                //Each of these if statements deals with a different canvas quadrant
+                if(event.getX()-firstPos[0] >= 0 && event.getY()-firstPos[1] < 0){
+                    gc.strokeOval(firstPos[0],firstPos[1]-abs(event.getX()-firstPos[0]),abs(event.getX()-firstPos[0]),abs(event.getX()-firstPos[0]));
+                } else if (event.getX()-firstPos[0] < 0 && event.getY()-firstPos[1] >= 0){
+                    gc.strokeOval(firstPos[0]-abs(event.getX()-firstPos[0]),firstPos[1],abs(event.getX()-firstPos[0]),abs(event.getX()-firstPos[0]));
+                } else if(event.getX()-firstPos[0]>=0 && event.getY()-firstPos[1]>=0) {
+                    gc.strokeOval(firstPos[0],firstPos[1],abs(event.getX()-firstPos[0]),abs(event.getX()-firstPos[0]));
+                } else{
+                    gc.strokeOval(firstPos[0]-abs(event.getX()-firstPos[0]),firstPos[1]-abs(event.getX()-firstPos[0]),abs(event.getX()-firstPos[0]),abs(event.getX()-firstPos[0]));
+                }
+            }
+        });
+
+
+        //Reinitialize mouse down and drag when selected tab is changed
         tabPane.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
             public void changed(ObservableValue<? extends Number> ov, Number oldValue, Number newValue) {
                 if(tabPane.getSelectionModel().getSelectedIndex() >= 0) {

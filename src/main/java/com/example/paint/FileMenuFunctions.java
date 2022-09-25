@@ -9,6 +9,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
+import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javax.imageio.ImageIO;
@@ -24,6 +25,42 @@ public class FileMenuFunctions {
         //Create a string array to store the path to the opened image
         final int nextTab[] = {0};
         final int maxTabs[] = {tabArrays.maxTabs};
+
+        //Initialize tab array items for new tab
+        tabArrays.close[nextTab[0]] = new Button("X");
+        tabArrays.path[nextTab[0]] = null;
+        tabArrays.tab[nextTab[0]] = new Tab("new tab");
+        tabArrays.stackCanvas[nextTab[0]] = new StackCanvas();
+        tabArrays.saveWarning[nextTab[0]] = false;
+        //If this is the first tab show the close button
+        if (nextTab[0] == 0) {
+            tabArrays.tab[nextTab[0]].setGraphic(tabArrays.close[nextTab[0]]);
+        }
+        //Set up close events
+        tabArrays.close[nextTab[0]].setOnAction(actionEvent -> {
+            //Open new save warning window if needed
+            if (tabArrays.saveWarning[tabPane.getSelectionModel().getSelectedIndex()]) {
+                TabClosePopup tabClosePopup = new TabClosePopup(nextTab[0], tabPane, tabArrays);
+                tabClosePopup.yes.setOnAction(actionEvent1 -> {
+                    nextTab[0] = tabClosePopup.YesFunction(tabClosePopup.stage, tabPane, tabArrays, nextTab[0], tabPane.getSelectionModel().getSelectedIndex());
+                });
+                tabClosePopup.yesAndSave.setOnAction(actionEvent1 -> {
+                    nextTab[0] = tabClosePopup.YesAndSaveFunction(tabClosePopup.stage, tabPane, tabArrays, nextTab[0], tabPane.getSelectionModel().getSelectedIndex());
+                });
+                tabClosePopup.no.setOnAction(actionEvent1 -> {
+                    tabClosePopup.NoFunction(tabClosePopup.stage);
+                });
+            } else {
+                nextTab[0] = OnTabClose(tabPane, tabArrays.maxTabs, tabArrays, nextTab[0], tabPane.getSelectionModel().getSelectedIndex());
+                tabPane.getTabs().remove(tabPane.getSelectionModel().getSelectedIndex());
+            }
+        });
+        tabArrays.tab[nextTab[0]].setContent(tabArrays.stackCanvas[nextTab[0]].scrollPane);
+        tabPane.getTabs().add(tabArrays.tab[nextTab[0]]);
+        //Set canvas height and width equal to the image
+        tabArrays.stackCanvas[nextTab[0]].canvas.setHeight(300);
+        tabArrays.stackCanvas[nextTab[0]].canvas.setWidth(300);
+        nextTab[0]++;
 
         tabPane.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
             public void changed(ObservableValue<? extends Number> ov, Number oldValue, Number newValue) {
