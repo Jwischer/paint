@@ -16,7 +16,7 @@ import java.util.Stack;
 import static java.lang.Math.abs;
 
 public class ToolsMenuFunctions {
-    ToolsMenuFunctions(MenuItem border, MenuItem clear, CheckMenuItem pencil, CheckMenuItem drawLine,CheckMenuItem drawDashedLine, CheckMenuItem drawRectangle, CheckMenuItem drawSquare, CheckMenuItem drawEllipse, CheckMenuItem drawCircle, MenuItem undo, MenuItem redo,ColorPicker colorPicker, SettingsMenuFunctions settingsMenuFunctions, TabPane tabPane, TabArrays tabArrays, Button eyedropper){
+    ToolsMenuFunctions(MenuItem border, MenuItem clear, CheckMenuItem pencil, CheckMenuItem drawLine,CheckMenuItem drawDashedLine, CheckMenuItem drawRectangle, CheckMenuItem drawSquare, CheckMenuItem drawEllipse, CheckMenuItem drawCircle, MenuItem undo, MenuItem redo,ColorPicker colorPicker, SettingsMenuFunctions settingsMenuFunctions, TabPane tabPane, TabArrays tabArrays, Button eyedropper, CheckMenuItem eraser){
         //Stores the positions for drawing a line
         final double[] firstPos = {0,0};
         //Width of drawn lines
@@ -179,6 +179,7 @@ public class ToolsMenuFunctions {
 
                 //Set Mouse Events
                 canvas[0].setOnMousePressed((MouseEvent event) -> {
+                    //Grab Color Code
                     if(getColor[0]){
                         System.out.println("Color Grabbed");
                         //Turn the current canvas into a writable image
@@ -190,24 +191,24 @@ public class ToolsMenuFunctions {
                         colorPicker.setValue(grabberColor[0]);
                         getColor[0] = false;
                     }
+
                     GraphicsContext gc = tabArrays.stackCanvas[selectedTab[0]].canvas.getGraphicsContext2D();
                     pickerColor[0] = colorPicker.getValue();
                     //Set stroke to color pickers value
                     gc.setStroke(pickerColor[0]);
                     System.out.println("Mouse Pressed");
                     //If drawing anything
-                    if(pencil.isSelected() || drawLine.isSelected() || drawRectangle.isSelected() || drawSquare.isSelected() || drawEllipse.isSelected() || drawCircle.isSelected()) {
+                    if(pencil.isSelected() || drawLine.isSelected() || drawRectangle.isSelected() || drawSquare.isSelected() || drawEllipse.isSelected() || drawCircle.isSelected() || eraser.isSelected()) {
                         //Show a warning if trying to close before saving
                         tabArrays.saveWarning[tabPane.getSelectionModel().getSelectedIndex()] = true;
                         System.out.println("Changed " + tabPane.getSelectionModel().getSelectedIndex() + " to " + tabArrays.saveWarning[tabPane.getSelectionModel().getSelectedIndex()]);
-                        if(pencil.isSelected()){
+                        if(pencil.isSelected() || eraser.isSelected()){
                             //Begin making a pencil path if the pencil tool is selected
                             gc.beginPath();
                             gc.moveTo(event.getX(), event.getY());
                             gc.stroke();
                         }
                         drawWidth[0] = settingsMenuFunctions.strokeSlider.getValue();
-                        pickerColor[0] = colorPicker.getValue();
                         //Update undo canvas
                         canvasUndo[0] = new WritableImage((int) tabArrays.stackCanvas[selectedTab[0]].canvas.getWidth(), (int) tabArrays.stackCanvas[selectedTab[0]].canvas.getHeight());
                         tabArrays.stackCanvas[selectedTab[0]].canvas.snapshot(null, canvasUndo[0]);
@@ -228,7 +229,10 @@ public class ToolsMenuFunctions {
                 canvas[0].setOnMouseDragged((MouseEvent event) -> {
                     GraphicsContext gc = tabArrays.stackCanvas[selectedTab[0]].canvas.getGraphicsContext2D();
                     //If second position of line is not set draw a preview
-                    if(pencil.isSelected()){
+                    if(pencil.isSelected() || eraser.isSelected()){
+                        if(eraser.isSelected()){
+                            gc.setStroke(Color.WHITE);
+                        }
                         gc.lineTo(event.getX(), event.getY());
                         gc.stroke();
                     }
@@ -376,6 +380,7 @@ public class ToolsMenuFunctions {
             drawSquare.setSelected(false);
             drawEllipse.setSelected(false);
             drawCircle.setSelected(false);
+            eraser.setSelected(false);
         });
         drawLine.setOnAction(actionEvent -> {
             pencil.setSelected(false);
@@ -383,6 +388,7 @@ public class ToolsMenuFunctions {
             drawSquare.setSelected(false);
             drawEllipse.setSelected(false);
             drawCircle.setSelected(false);
+            eraser.setSelected(false);
         });
         drawRectangle.setOnAction(actionEvent -> {
             pencil.setSelected(false);
@@ -390,6 +396,7 @@ public class ToolsMenuFunctions {
             drawSquare.setSelected(false);
             drawEllipse.setSelected(false);
             drawCircle.setSelected(false);
+            eraser.setSelected(false);
         });
         drawSquare.setOnAction(actionEvent -> {
             pencil.setSelected(false);
@@ -397,6 +404,7 @@ public class ToolsMenuFunctions {
             drawRectangle.setSelected(false);
             drawEllipse.setSelected(false);
             drawCircle.setSelected(false);
+            eraser.setSelected(false);
         });
         drawEllipse.setOnAction(actionEvent -> {
             pencil.setSelected(false);
@@ -404,6 +412,7 @@ public class ToolsMenuFunctions {
             drawRectangle.setSelected(false);
             drawSquare.setSelected(false);
             drawCircle.setSelected(false);
+            eraser.setSelected(false);
         });
         drawCircle.setOnAction(actionEvent -> {
             pencil.setSelected(false);
@@ -411,8 +420,16 @@ public class ToolsMenuFunctions {
             drawRectangle.setSelected(false);
             drawSquare.setSelected(false);
             drawEllipse.setSelected(false);
+            eraser.setSelected(false);
         });
-
+        eraser.setOnAction(actionEvent -> {
+            pencil.setSelected(false);
+            drawLine.setSelected(false);
+            drawRectangle.setSelected(false);
+            drawSquare.setSelected(false);
+            drawEllipse.setSelected(false);
+            drawCircle.setSelected(false);
+        });
     }
 
     public static WritableImage canvasToWritableImage(Canvas canvas){

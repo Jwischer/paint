@@ -1,15 +1,10 @@
 package com.example.paint;
 
-import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyCodeCombination;
-import javafx.scene.input.KeyCombination;
-import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -83,6 +78,9 @@ public class MyMenu{
         //Create and add circle option to tools menu
         CheckMenuItem circle = new CheckMenuItem("Draw Circle");
         drawingSubMenu.getItems().add(circle);
+        //Create and add eraser option to tools menu
+        CheckMenuItem eraser = new CheckMenuItem("Eraser");
+        drawingSubMenu.getItems().add(eraser);
         //Create and add Stroke Width option to tools menu
         MenuItem strokeWidth = new MenuItem("Stroke Width");
         settingsMenu.getItems().add(strokeWidth);
@@ -105,10 +103,10 @@ public class MyMenu{
         TabArrays tabArrays = new TabArrays();
 
         //Instantiate ButtonFunctions using the menu options
-        KeyboardShortcuts keyboardShortcuts = new KeyboardShortcuts(pencil, line, dashedLine, square, rectangle, circle, ellipse, undoOption, redoOption);
+        KeyboardShortcuts keyboardShortcuts = new KeyboardShortcuts(pencil, line, dashedLine, square, rectangle, circle, ellipse, undoOption, redoOption, eraser);
         FileMenuFunctions fileMenuFunctions = new FileMenuFunctions(stage, openFileNT, openFileST, save, saveas, exit, tabPane, tabArrays);
         SettingsMenuFunctions settingsMenuFunctions = new SettingsMenuFunctions(strokeWidth);
         ToolbarFunctions toolbarFunctions = new ToolbarFunctions(aboutButton, colorPicker, tabArrays, resize, tabPane);
-        ToolsMenuFunctions toolsMenuFunctions = new ToolsMenuFunctions(border,clear, pencil, line, dashedLine, rectangle, square, ellipse, circle, undoOption, redoOption, colorPicker, settingsMenuFunctions, tabPane, tabArrays, eyedropper);
+        ToolsMenuFunctions toolsMenuFunctions = new ToolsMenuFunctions(border,clear, pencil, line, dashedLine, rectangle, square, ellipse, circle, undoOption, redoOption, colorPicker, settingsMenuFunctions, tabPane, tabArrays, eyedropper, eraser);
     }
 }
