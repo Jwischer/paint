@@ -78,6 +78,9 @@ public class MyMenu{
         //Create and add circle option to tools menu
         CheckMenuItem circle = new CheckMenuItem("Draw Circle");
         drawingSubMenu.getItems().add(circle);
+        //Create and add polygon option to tools menu
+        CheckMenuItem polygon = new CheckMenuItem("N-Sided Polygon");
+        drawingSubMenu.getItems().add(polygon);
         //Create and add eraser option to tools menu
         CheckMenuItem eraser = new CheckMenuItem("Eraser");
         drawingSubMenu.getItems().add(eraser);
@@ -103,10 +106,10 @@ public class MyMenu{
         TabArrays tabArrays = new TabArrays();
 
         //Instantiate ButtonFunctions using the menu options
-        KeyboardShortcuts keyboardShortcuts = new KeyboardShortcuts(pencil, line, dashedLine, square, rectangle, circle, ellipse, undoOption, redoOption, eraser);
+        KeyboardShortcuts keyboardShortcuts = new KeyboardShortcuts(pencil, line, dashedLine, square, rectangle, circle, ellipse, undoOption, redoOption, eraser, polygon);
         FileMenuFunctions fileMenuFunctions = new FileMenuFunctions(stage, openFileNT, openFileST, save, saveas, exit, tabPane, tabArrays);
         SettingsMenuFunctions settingsMenuFunctions = new SettingsMenuFunctions(strokeWidth);
         ToolbarFunctions toolbarFunctions = new ToolbarFunctions(aboutButton, colorPicker, tabArrays, resize, tabPane);
-        ToolsMenuFunctions toolsMenuFunctions = new ToolsMenuFunctions(border,clear, pencil, line, dashedLine, rectangle, square, ellipse, circle, undoOption, redoOption, colorPicker, settingsMenuFunctions, tabPane, tabArrays, eyedropper, eraser);
+        ToolsMenuFunctions toolsMenuFunctions = new ToolsMenuFunctions(border,clear, pencil, line, dashedLine, rectangle, square, ellipse, circle, undoOption, redoOption, colorPicker, settingsMenuFunctions, tabPane, tabArrays, eyedropper, eraser, polygon);
     }
 }

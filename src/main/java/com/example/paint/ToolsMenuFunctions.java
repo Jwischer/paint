@@ -10,13 +10,14 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Polygon;
 
 import java.util.Stack;
 
 import static java.lang.Math.abs;
 
 public class ToolsMenuFunctions {
-    ToolsMenuFunctions(MenuItem border, MenuItem clear, CheckMenuItem pencil, CheckMenuItem drawLine,CheckMenuItem drawDashedLine, CheckMenuItem drawRectangle, CheckMenuItem drawSquare, CheckMenuItem drawEllipse, CheckMenuItem drawCircle, MenuItem undo, MenuItem redo,ColorPicker colorPicker, SettingsMenuFunctions settingsMenuFunctions, TabPane tabPane, TabArrays tabArrays, Button eyedropper, CheckMenuItem eraser){
+    ToolsMenuFunctions(MenuItem border, MenuItem clear, CheckMenuItem pencil, CheckMenuItem drawLine,CheckMenuItem drawDashedLine, CheckMenuItem drawRectangle, CheckMenuItem drawSquare, CheckMenuItem drawEllipse, CheckMenuItem drawCircle, MenuItem undo, MenuItem redo,ColorPicker colorPicker, SettingsMenuFunctions settingsMenuFunctions, TabPane tabPane, TabArrays tabArrays, Button eyedropper, CheckMenuItem eraser, CheckMenuItem drawPolygon){
         //Stores the positions for drawing a line
         final double[] firstPos = {0,0};
         //Width of drawn lines
@@ -37,7 +38,9 @@ public class ToolsMenuFunctions {
 
         //Set Mouse Events
         //Initialize mouse pressed for first tab
+        //Set Mouse Events
         canvas[0].setOnMousePressed((MouseEvent event) -> {
+            //Grab Color Code
             if(getColor[0]){
                 System.out.println("Color Grabbed");
                 //Turn the current canvas into a writable image
@@ -49,24 +52,24 @@ public class ToolsMenuFunctions {
                 colorPicker.setValue(grabberColor[0]);
                 getColor[0] = false;
             }
+
             GraphicsContext gc = tabArrays.stackCanvas[selectedTab[0]].canvas.getGraphicsContext2D();
             pickerColor[0] = colorPicker.getValue();
             //Set stroke to color pickers value
             gc.setStroke(pickerColor[0]);
             System.out.println("Mouse Pressed");
             //If drawing anything
-            if(pencil.isSelected() || drawLine.isSelected() || drawRectangle.isSelected() || drawSquare.isSelected() || drawEllipse.isSelected() || drawCircle.isSelected()) {
+            if(pencil.isSelected() || drawLine.isSelected() || drawRectangle.isSelected() || drawSquare.isSelected() || drawEllipse.isSelected() || drawCircle.isSelected() || eraser.isSelected() || drawPolygon.isSelected()) {
                 //Show a warning if trying to close before saving
                 tabArrays.saveWarning[tabPane.getSelectionModel().getSelectedIndex()] = true;
                 System.out.println("Changed " + tabPane.getSelectionModel().getSelectedIndex() + " to " + tabArrays.saveWarning[tabPane.getSelectionModel().getSelectedIndex()]);
-                if(pencil.isSelected()){
+                if(pencil.isSelected() || eraser.isSelected()){
                     //Begin making a pencil path if the pencil tool is selected
                     gc.beginPath();
                     gc.moveTo(event.getX(), event.getY());
                     gc.stroke();
                 }
                 drawWidth[0] = settingsMenuFunctions.strokeSlider.getValue();
-                pickerColor[0] = colorPicker.getValue();
                 //Update undo canvas
                 canvasUndo[0] = new WritableImage((int) tabArrays.stackCanvas[selectedTab[0]].canvas.getWidth(), (int) tabArrays.stackCanvas[selectedTab[0]].canvas.getHeight());
                 tabArrays.stackCanvas[selectedTab[0]].canvas.snapshot(null, canvasUndo[0]);
@@ -88,7 +91,10 @@ public class ToolsMenuFunctions {
         canvas[0].setOnMouseDragged((MouseEvent event) -> {
             GraphicsContext gc = tabArrays.stackCanvas[selectedTab[0]].canvas.getGraphicsContext2D();
             //If second position of line is not set draw a preview
-            if(pencil.isSelected()){
+            if(pencil.isSelected() || eraser.isSelected()){
+                if(eraser.isSelected()){
+                    gc.setStroke(Color.WHITE);
+                }
                 gc.lineTo(event.getX(), event.getY());
                 gc.stroke();
             }
@@ -164,6 +170,22 @@ public class ToolsMenuFunctions {
                 } else{
                     gc.strokeOval(firstPos[0]-abs(event.getX()-firstPos[0]),firstPos[1]-abs(event.getX()-firstPos[0]),abs(event.getX()-firstPos[0]),abs(event.getX()-firstPos[0]));
                 }
+            } else if (drawPolygon.isSelected()){
+                System.out.println("poly");
+                canvasReplace(tabArrays.stackCanvas[selectedTab[0]].canvas, previewImage[0]);
+                Polygon polygon = new Polygon();
+                int[] center = {(int)(firstPos[0]),(int)(firstPos[1])};
+                int radius = (int)(event.getX()-firstPos[0]);
+                int sides = 5;
+                setPolygonSides(polygon, center[0], center[1], radius, sides);
+                double[] xPoints = new double[sides];
+                double[] yPoints = new double[sides];
+                //Assign points of the polygon to arrays
+                for(int i=0; i<sides; i++){
+                    xPoints[i] = polygon.getPoints().get(i*2);
+                    yPoints[i] = polygon.getPoints().get(i*2+1);
+                }
+                gc.strokePolygon(xPoints, yPoints, sides);
             }
         });
 
@@ -198,7 +220,7 @@ public class ToolsMenuFunctions {
                     gc.setStroke(pickerColor[0]);
                     System.out.println("Mouse Pressed");
                     //If drawing anything
-                    if(pencil.isSelected() || drawLine.isSelected() || drawRectangle.isSelected() || drawSquare.isSelected() || drawEllipse.isSelected() || drawCircle.isSelected() || eraser.isSelected()) {
+                    if(pencil.isSelected() || drawLine.isSelected() || drawRectangle.isSelected() || drawSquare.isSelected() || drawEllipse.isSelected() || drawCircle.isSelected() || eraser.isSelected() || drawPolygon.isSelected()) {
                         //Show a warning if trying to close before saving
                         tabArrays.saveWarning[tabPane.getSelectionModel().getSelectedIndex()] = true;
                         System.out.println("Changed " + tabPane.getSelectionModel().getSelectedIndex() + " to " + tabArrays.saveWarning[tabPane.getSelectionModel().getSelectedIndex()]);
@@ -308,6 +330,22 @@ public class ToolsMenuFunctions {
                         } else{
                             gc.strokeOval(firstPos[0]-abs(event.getX()-firstPos[0]),firstPos[1]-abs(event.getX()-firstPos[0]),abs(event.getX()-firstPos[0]),abs(event.getX()-firstPos[0]));
                         }
+                    } else if (drawPolygon.isSelected()){
+                        System.out.println("poly");
+                        canvasReplace(tabArrays.stackCanvas[selectedTab[0]].canvas, previewImage[0]);
+                        Polygon polygon = new Polygon();
+                        int[] center = {(int)(firstPos[0]),(int)(firstPos[1])};
+                        int radius = (int)(event.getX()-firstPos[0]);
+                        int sides = 5;
+                        setPolygonSides(polygon, center[0], center[1], radius, sides);
+                        double[] xPoints = new double[sides];
+                        double[] yPoints = new double[sides];
+                        //Assign points of the polygon to arrays
+                        for(int i=0; i<sides; i++){
+                            xPoints[i] = polygon.getPoints().get(i*2);
+                            yPoints[i] = polygon.getPoints().get(i*2+1);
+                        }
+                        gc.strokePolygon(xPoints, yPoints, sides);
                     }
                 });
             }
@@ -454,5 +492,17 @@ public class ToolsMenuFunctions {
         gc.setFill(Color.WHITE);
         //Make a white filled rectangle that covers the whole canvas
         gc.fillRect(0,0,canvas.getWidth(), canvas.getHeight());
+    }
+
+    private static void setPolygonSides(Polygon polygon, double centerX, double centerY, double radius, int sides) {
+        polygon.getPoints().clear();
+        final double angleStep = Math.PI * 2 / sides;
+        double angle = 0; // assumes one point is located directly beneath the center point
+        for (int i = 0; i < sides; i++, angle += angleStep) {
+            polygon.getPoints().addAll(
+                    Math.sin(angle) * radius + centerX, // x coordinate of the corner
+                    Math.cos(angle) * radius + centerY // y coordinate of the corner
+            );
+        }
     }
 }
