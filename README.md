@@ -29,9 +29,9 @@ None Known
   
 ### Plans:
 #### //- - - - Sprint 4 - - - - //
-- [ ] Redo/Undo using a stack
+- [X] Redo/Undo using a stack
 - [ ] Blank starting image
-- [ ] Clear canvas tool
+- [X] Clear canvas tool
 - [ ] Eraser
 - [ ] Be able to draw a n-sided polygon
 - [ ] Select and copy/paste a piece of the image
