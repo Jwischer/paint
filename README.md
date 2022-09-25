@@ -30,7 +30,7 @@ None Known
 ### Plans:
 #### //- - - - Sprint 4 - - - - //
 - [X] Redo/Undo using a stack
-- [ ] Blank starting image
+- [X] Blank starting image
 - [X] Clear canvas tool
 - [ ] Eraser
 - [ ] Be able to draw a n-sided polygon
