@@ -89,6 +89,9 @@ public class MyMenu{
         //Create and add undo option to tools menu
         MenuItem undoOption = new MenuItem("Undo");
         toolsMenu.getItems().add(undoOption);
+        //Create and add redo option to tools menu
+        MenuItem redoOption = new MenuItem("Redo");
+        toolsMenu.getItems().add(redoOption);
         //add menus to menu bar
         menuBar.getMenus().addAll(fileMenu);
         menuBar.getMenus().addAll(toolsMenu);
@@ -102,10 +105,10 @@ public class MyMenu{
         TabArrays tabArrays = new TabArrays();
 
         //Instantiate ButtonFunctions using the menu options
-        KeyboardShortcuts keyboardShortcuts = new KeyboardShortcuts(pencil, line, dashedLine, square, rectangle, circle, ellipse, undoOption);
+        KeyboardShortcuts keyboardShortcuts = new KeyboardShortcuts(pencil, line, dashedLine, square, rectangle, circle, ellipse, undoOption, redoOption);
         FileMenuFunctions fileMenuFunctions = new FileMenuFunctions(stage, openFileNT, openFileST, save, saveas, exit, tabPane, tabArrays);
         SettingsMenuFunctions settingsMenuFunctions = new SettingsMenuFunctions(strokeWidth);
         ToolbarFunctions toolbarFunctions = new ToolbarFunctions(aboutButton, colorPicker, tabArrays, resize, tabPane);
-        ToolsMenuFunctions toolsMenuFunctions = new ToolsMenuFunctions(border,clear, pencil, line, dashedLine, rectangle, square, ellipse, circle, undoOption, colorPicker, settingsMenuFunctions, tabPane, tabArrays, eyedropper);
+        ToolsMenuFunctions toolsMenuFunctions = new ToolsMenuFunctions(border,clear, pencil, line, dashedLine, rectangle, square, ellipse, circle, undoOption, redoOption, colorPicker, settingsMenuFunctions, tabPane, tabArrays, eyedropper);
     }
 }

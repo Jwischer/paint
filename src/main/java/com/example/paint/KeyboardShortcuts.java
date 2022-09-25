@@ -6,7 +6,7 @@ import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 
 public class KeyboardShortcuts {
-    KeyboardShortcuts(MenuItem pencil, MenuItem line,MenuItem dashedLine,MenuItem square,MenuItem rectangle,MenuItem circle,MenuItem ellipse, MenuItem undo){
+    KeyboardShortcuts(MenuItem pencil, MenuItem line,MenuItem dashedLine,MenuItem square,MenuItem rectangle,MenuItem circle,MenuItem ellipse, MenuItem undo, MenuItem redo){
         KeyCombination pencilShortcut = new KeyCodeCombination(KeyCode.P, KeyCombination.CONTROL_DOWN);
         pencil.setAccelerator(pencilShortcut);
         KeyCombination lineShortcut = new KeyCodeCombination(KeyCode.L, KeyCombination.CONTROL_DOWN);
@@ -23,5 +23,7 @@ public class KeyboardShortcuts {
         ellipse.setAccelerator(ellipseShortcut);
         KeyCombination undoShortcut = new KeyCodeCombination(KeyCode.Z, KeyCombination.CONTROL_DOWN);
         undo.setAccelerator(undoShortcut);
+        KeyCombination redoShortcut = new KeyCodeCombination(KeyCode.Y, KeyCombination.CONTROL_DOWN);
+        redo.setAccelerator(redoShortcut);
     }
 }

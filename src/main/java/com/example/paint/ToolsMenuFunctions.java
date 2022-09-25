@@ -11,16 +11,20 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 
+import java.util.Stack;
+
 import static java.lang.Math.abs;
 
 public class ToolsMenuFunctions {
-    ToolsMenuFunctions(MenuItem border, MenuItem clear, CheckMenuItem pencil, CheckMenuItem drawLine,CheckMenuItem drawDashedLine, CheckMenuItem drawRectangle, CheckMenuItem drawSquare, CheckMenuItem drawEllipse, CheckMenuItem drawCircle, MenuItem undo, ColorPicker colorPicker, SettingsMenuFunctions settingsMenuFunctions, TabPane tabPane, TabArrays tabArrays, Button eyedropper){
+    ToolsMenuFunctions(MenuItem border, MenuItem clear, CheckMenuItem pencil, CheckMenuItem drawLine,CheckMenuItem drawDashedLine, CheckMenuItem drawRectangle, CheckMenuItem drawSquare, CheckMenuItem drawEllipse, CheckMenuItem drawCircle, MenuItem undo, MenuItem redo,ColorPicker colorPicker, SettingsMenuFunctions settingsMenuFunctions, TabPane tabPane, TabArrays tabArrays, Button eyedropper){
         //Stores the positions for drawing a line
         final double[] firstPos = {0,0};
         //Width of drawn lines
         final double[] drawWidth = {10};
         //Stores snapshots of canvas for undoing
         final WritableImage[] canvasUndo = new WritableImage[1];
+        Stack<WritableImage> undoStack = new Stack<WritableImage>();
+        Stack<WritableImage> redoStack = new Stack<WritableImage>();
         //Image used for drawing previews
         final WritableImage[] previewImage = new WritableImage[1];
         //Color that the color picker has selected
@@ -71,13 +75,16 @@ public class ToolsMenuFunctions {
                         pickerColor[0] = colorPicker.getValue();
                         //Update undo canvas
                         canvasUndo[0] = new WritableImage((int) tabArrays.stackCanvas[selectedTab[0]].canvas.getWidth(), (int) tabArrays.stackCanvas[selectedTab[0]].canvas.getHeight());
+                        tabArrays.stackCanvas[selectedTab[0]].canvas.snapshot(null, canvasUndo[0]);
+                        undoStack.push(canvasUndo[0]);
+                        redoStack.clear();
                         //Record first position
                         firstPos[0] = event.getX();
                         firstPos[1] = event.getY();
                         event.setDragDetect(true);
                         //Save current status of canvas
                         previewImage[0] = new WritableImage((int) tabArrays.stackCanvas[selectedTab[0]].canvas.getWidth(), (int) tabArrays.stackCanvas[selectedTab[0]].canvas.getHeight());
-                        previewImage[0] = tabArrays.stackCanvas[selectedTab[0]].canvas.snapshot(null, canvasUndo[0]);
+                        tabArrays.stackCanvas[selectedTab[0]].canvas.snapshot(null, previewImage[0]);
                         //Set line width to slider value
                         gc.setLineWidth(drawWidth[0]);
                     }
@@ -172,7 +179,9 @@ public class ToolsMenuFunctions {
             GraphicsContext gc = tabArrays.stackCanvas[selectedTab[0]].canvas.getGraphicsContext2D();
             pickerColor[0] = colorPicker.getValue();
             canvasUndo[0] = new WritableImage((int) tabArrays.stackCanvas[selectedTab[0]].canvas.getWidth(), (int) tabArrays.stackCanvas[selectedTab[0]].canvas.getHeight());
-            canvasUndo[0] = tabArrays.stackCanvas[selectedTab[0]].canvas.snapshot(null, canvasUndo[0]);
+            tabArrays.stackCanvas[selectedTab[0]].canvas.snapshot(null, canvasUndo[0]);
+            undoStack.push(canvasUndo[0]);
+            redoStack.clear();
             //Make a writable image of current state of canvas
             WritableImage writableImage = canvasToWritableImage(tabArrays.stackCanvas[selectedTab[0]].canvas);
             //Make canvas bigger to make room for border
@@ -190,13 +199,35 @@ public class ToolsMenuFunctions {
         //Clear Canvas Menu Function
         clear.setOnAction(e -> {
             canvasUndo[0] = new WritableImage((int) tabArrays.stackCanvas[selectedTab[0]].canvas.getWidth(), (int) tabArrays.stackCanvas[selectedTab[0]].canvas.getHeight());
-            canvasUndo[0] = tabArrays.stackCanvas[selectedTab[0]].canvas.snapshot(null, canvasUndo[0]);
+            tabArrays.stackCanvas[selectedTab[0]].canvas.snapshot(null, canvasUndo[0]);
+            undoStack.push(canvasUndo[0]);
+            redoStack.clear();
             //Clear the canvas
             clearCanvas(tabArrays.stackCanvas[selectedTab[0]].canvas);
         });
 
         undo.setOnAction(e -> {
-            canvasReplace(tabArrays.stackCanvas[selectedTab[0]].canvas, canvasUndo[0]);
+            //Canvas to undo to
+            WritableImage undoImage = undoStack.pop();
+            //Canvas before undo
+            WritableImage currCanvas = new WritableImage((int) tabArrays.stackCanvas[selectedTab[0]].canvas.getWidth(), (int) tabArrays.stackCanvas[selectedTab[0]].canvas.getHeight());
+            tabArrays.stackCanvas[selectedTab[0]].canvas.snapshot(null, currCanvas);
+            //Undo the last action
+            canvasReplace(tabArrays.stackCanvas[selectedTab[0]].canvas, undoImage);
+            //Push the canvas before undoing onto redo stack
+            redoStack.push(currCanvas);
+        });
+
+        redo.setOnAction(e -> {
+            //Canvas to redo to
+            WritableImage redoImage = redoStack.pop();
+            //Canvas before redo
+            WritableImage currCanvas = new WritableImage((int) tabArrays.stackCanvas[selectedTab[0]].canvas.getWidth(), (int) tabArrays.stackCanvas[selectedTab[0]].canvas.getHeight());
+            tabArrays.stackCanvas[selectedTab[0]].canvas.snapshot(null, currCanvas);
+            //Redo the last undo
+            canvasReplace(tabArrays.stackCanvas[selectedTab[0]].canvas, redoImage);
+            //Push canvas before redoing onto the undo stack
+            undoStack.push(currCanvas);
         });
 
         eyedropper.setOnAction(actionEvent -> {
