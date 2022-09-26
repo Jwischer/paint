@@ -32,8 +32,8 @@ None Known
 - [X] Redo/Undo using a stack
 - [X] Blank starting image
 - [X] Clear canvas tool
-- [ ] Eraser
-- [ ] Be able to draw a n-sided polygon
+- [X] Eraser
+- [X] Be able to draw a n-sided polygon
 - [ ] Select and copy/paste a piece of the image
 - [ ] Select and move a piece of the image
 - [ ] An additional shape of choice
