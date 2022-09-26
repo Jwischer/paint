@@ -27,7 +27,7 @@ public class KeyboardShortcuts {
         redo.setAccelerator(redoShortcut);
         KeyCombination eraserShortcut = new KeyCodeCombination(KeyCode.E, KeyCombination.CONTROL_DOWN, KeyCombination.SHIFT_DOWN);
         eraser.setAccelerator(eraserShortcut);
-        KeyCombination polygonShortcut = new KeyCodeCombination(KeyCode.P, KeyCombination.CONTROL_DOWN);
+        KeyCombination polygonShortcut = new KeyCodeCombination(KeyCode.N, KeyCombination.CONTROL_DOWN);
         polygon.setAccelerator(polygonShortcut);
     }
 }

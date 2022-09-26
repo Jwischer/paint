@@ -422,6 +422,7 @@ public class ToolsMenuFunctions {
             drawEllipse.setSelected(false);
             drawCircle.setSelected(false);
             eraser.setSelected(false);
+            drawPolygon.setSelected(false);
         });
         drawLine.setOnAction(actionEvent -> {
             pencil.setSelected(false);
@@ -430,6 +431,7 @@ public class ToolsMenuFunctions {
             drawEllipse.setSelected(false);
             drawCircle.setSelected(false);
             eraser.setSelected(false);
+            drawPolygon.setSelected(false);
         });
         drawRectangle.setOnAction(actionEvent -> {
             pencil.setSelected(false);
@@ -438,6 +440,7 @@ public class ToolsMenuFunctions {
             drawEllipse.setSelected(false);
             drawCircle.setSelected(false);
             eraser.setSelected(false);
+            drawPolygon.setSelected(false);
         });
         drawSquare.setOnAction(actionEvent -> {
             pencil.setSelected(false);
@@ -446,6 +449,7 @@ public class ToolsMenuFunctions {
             drawEllipse.setSelected(false);
             drawCircle.setSelected(false);
             eraser.setSelected(false);
+            drawPolygon.setSelected(false);
         });
         drawEllipse.setOnAction(actionEvent -> {
             pencil.setSelected(false);
@@ -454,6 +458,7 @@ public class ToolsMenuFunctions {
             drawSquare.setSelected(false);
             drawCircle.setSelected(false);
             eraser.setSelected(false);
+            drawPolygon.setSelected(false);
         });
         drawCircle.setOnAction(actionEvent -> {
             pencil.setSelected(false);
@@ -462,6 +467,7 @@ public class ToolsMenuFunctions {
             drawSquare.setSelected(false);
             drawEllipse.setSelected(false);
             eraser.setSelected(false);
+            drawPolygon.setSelected(false);
         });
         eraser.setOnAction(actionEvent -> {
             pencil.setSelected(false);
@@ -470,6 +476,16 @@ public class ToolsMenuFunctions {
             drawSquare.setSelected(false);
             drawEllipse.setSelected(false);
             drawCircle.setSelected(false);
+            drawPolygon.setSelected(false);
+        });
+        drawPolygon.setOnAction(actionEvent -> {
+            pencil.setSelected(false);
+            drawLine.setSelected(false);
+            drawRectangle.setSelected(false);
+            drawSquare.setSelected(false);
+            drawEllipse.setSelected(false);
+            drawCircle.setSelected(false);
+            eraser.setSelected(false);
         });
     }
 

@@ -13,12 +13,18 @@ public class ResizeWindow {
     TextField yVal = new TextField("Y");
     Button confirm = new Button("Apply");
     Stage stage = new Stage();
-    Scene scene = new Scene(gridPane,350,75);
+    Scene scene = new Scene(gridPane,270,60);
     ResizeWindow(TabPane tabPane, TabArrays tabArrays){
         //Set up scene
         gridPane.add(xVal, 0 , 0);
         gridPane.add(yVal, 2, 0);
+        xVal.setPrefWidth(100);
+        xVal.setPrefHeight(20);
+        yVal.setPrefWidth(100);
+        yVal.setPrefHeight(20);
         gridPane.add(confirm,1,1);
+        confirm.setPrefWidth(70);
+        confirm.setPrefHeight(20);
         stage.setScene(scene);
         stage.show();
 

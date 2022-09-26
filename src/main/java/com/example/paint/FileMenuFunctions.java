@@ -221,6 +221,7 @@ public class FileMenuFunctions {
             tabArrays.tab[i] = tabArrays.tab[i + 1];
             tabArrays.path[i] = tabArrays.path[i + 1];
             tabArrays.close[i] = tabArrays.close[i + 1];
+            tabArrays.saveWarning[i] = tabArrays.saveWarning[i + 1];
         }
         nextTab--;
         return nextTab;
