@@ -18,6 +18,9 @@ import static java.lang.Math.abs;
 
 public class ToolsMenuFunctions {
     ToolsMenuFunctions(MenuItem border, MenuItem clear, CheckMenuItem pencil, CheckMenuItem drawLine,CheckMenuItem drawDashedLine, CheckMenuItem drawRectangle, CheckMenuItem drawSquare, CheckMenuItem drawEllipse, CheckMenuItem drawCircle, MenuItem undo, MenuItem redo,ColorPicker colorPicker, SettingsMenuFunctions settingsMenuFunctions, TabPane tabPane, TabArrays tabArrays, Button eyedropper, CheckMenuItem eraser, CheckMenuItem drawPolygon){
+        TextField polyInput = new TextField("3");
+        drawPolygon.setGraphic(polyInput);
+        polyInput.setPrefWidth(30);
         //Stores the positions for drawing a line
         final double[] firstPos = {0,0};
         //Width of drawn lines
@@ -176,7 +179,7 @@ public class ToolsMenuFunctions {
                 Polygon polygon = new Polygon();
                 int[] center = {(int)(firstPos[0]),(int)(firstPos[1])};
                 int radius = (int)(event.getX()-firstPos[0]);
-                int sides = 5;
+                int sides = Integer.parseInt(polyInput.getCharacters().toString());
                 setPolygonSides(polygon, center[0], center[1], radius, sides);
                 double[] xPoints = new double[sides];
                 double[] yPoints = new double[sides];
@@ -336,7 +339,7 @@ public class ToolsMenuFunctions {
                         Polygon polygon = new Polygon();
                         int[] center = {(int)(firstPos[0]),(int)(firstPos[1])};
                         int radius = (int)(event.getX()-firstPos[0]);
-                        int sides = 5;
+                        int sides = Integer.parseInt(polyInput.getCharacters().toString());
                         setPolygonSides(polygon, center[0], center[1], radius, sides);
                         double[] xPoints = new double[sides];
                         double[] yPoints = new double[sides];
