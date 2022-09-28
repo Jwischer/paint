@@ -93,6 +93,12 @@ public class MyMenu{
         //Create and add redo option to tools menu
         MenuItem redoOption = new MenuItem("Redo");
         toolsMenu.getItems().add(redoOption);
+        MenuItem selectImage = new MenuItem("Select");
+        toolsMenu.getItems().add(selectImage);
+        MenuItem copyOption = new MenuItem("Copy");
+        toolsMenu.getItems().add(copyOption);
+        MenuItem pasteOption = new MenuItem("Paste");
+        toolsMenu.getItems().add(pasteOption);
         //add menus to menu bar
         menuBar.getMenus().addAll(fileMenu);
         menuBar.getMenus().addAll(toolsMenu);
@@ -110,6 +116,6 @@ public class MyMenu{
         FileMenuFunctions fileMenuFunctions = new FileMenuFunctions(stage, openFileNT, openFileST, save, saveas, exit, tabPane, tabArrays);
         SettingsMenuFunctions settingsMenuFunctions = new SettingsMenuFunctions(strokeWidth);
         ToolbarFunctions toolbarFunctions = new ToolbarFunctions(aboutButton, colorPicker, tabArrays, resize, tabPane);
-        ToolsMenuFunctions toolsMenuFunctions = new ToolsMenuFunctions(border,clear, pencil, line, dashedLine, rectangle, square, ellipse, circle, undoOption, redoOption, colorPicker, settingsMenuFunctions, tabPane, tabArrays, eyedropper, eraser, polygon);
+        ToolsMenuFunctions toolsMenuFunctions = new ToolsMenuFunctions(border,clear, pencil, line, dashedLine, rectangle, square, ellipse, circle, undoOption, redoOption, colorPicker, settingsMenuFunctions, tabPane, tabArrays, eyedropper, eraser, polygon, selectImage, copyOption, pasteOption);
     }
 }

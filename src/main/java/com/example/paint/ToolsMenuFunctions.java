@@ -3,6 +3,7 @@ package com.example.paint;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
@@ -14,7 +15,7 @@ import javafx.scene.shape.Polygon;
 import static java.lang.Math.abs;
 
 public class ToolsMenuFunctions {
-    ToolsMenuFunctions(MenuItem border, MenuItem clear, CheckMenuItem pencil, CheckMenuItem drawLine,CheckMenuItem drawDashedLine, CheckMenuItem drawRectangle, CheckMenuItem drawSquare, CheckMenuItem drawEllipse, CheckMenuItem drawCircle, MenuItem undo, MenuItem redo,ColorPicker colorPicker, SettingsMenuFunctions settingsMenuFunctions, TabPane tabPane, TabArrays tabArrays, Button eyedropper, CheckMenuItem eraser, CheckMenuItem drawPolygon){
+    ToolsMenuFunctions(MenuItem border, MenuItem clear, CheckMenuItem pencil, CheckMenuItem drawLine,CheckMenuItem drawDashedLine, CheckMenuItem drawRectangle, CheckMenuItem drawSquare, CheckMenuItem drawEllipse, CheckMenuItem drawCircle, MenuItem undo, MenuItem redo,ColorPicker colorPicker, SettingsMenuFunctions settingsMenuFunctions, TabPane tabPane, TabArrays tabArrays, Button eyedropper, CheckMenuItem eraser, CheckMenuItem drawPolygon, MenuItem selectImage, MenuItem copyOption, MenuItem pasteOption){
         TextField polyInput = new TextField("3");
         drawPolygon.setGraphic(polyInput);
         polyInput.setPrefWidth(30);
@@ -33,6 +34,9 @@ public class ToolsMenuFunctions {
         final boolean getColor[] = {false};
         final Color[] grabberColor = new Color[1];
         canvas[0] = tabArrays.stackCanvas[0].canvas;
+        boolean selectImagePart[] = {false};
+        final WritableImage selectedImage[] = new WritableImage[1];
+        final WritableImage copiedImage[] = new WritableImage[1];
 
         //Set Mouse Events
         //Initialize mouse pressed for first tab
@@ -185,6 +189,10 @@ public class ToolsMenuFunctions {
                 }
                 gc.strokePolygon(xPoints, yPoints, sides);
             }
+        });
+
+        canvas[0].setOnMouseReleased(mouseEvent -> {
+            if(selectImagePart[0]){}
         });
 
 
@@ -406,6 +414,19 @@ public class ToolsMenuFunctions {
 
         eyedropper.setOnAction(actionEvent -> {
             getColor[0] = true;
+        });
+
+        selectImage.setOnAction(actionEvent -> {
+            //toggle select image part bool
+            selectImagePart[0] = !selectImagePart[0];
+        });
+
+        copyOption.setOnAction(actionEvent -> {
+
+        });
+
+        pasteOption.setOnAction(actionEvent -> {
+
         });
 
         //When one tool is selected, unselect the other tools
