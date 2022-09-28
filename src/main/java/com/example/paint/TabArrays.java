@@ -15,16 +15,17 @@ public class TabArrays {
     String[] path;
     Button[] close;
     boolean[] saveWarning;
-    int maxTabs;
+    int maxTabs = 40;
     Stack<WritableImage>[] undoArr = new Stack[maxTabs];
     Stack<WritableImage>[] redoArr = new Stack[maxTabs];
     TabArrays(){
         //Initialize stacks
+        this.maxTabs = 40;
         for(int i=0; i<maxTabs;i++) {
             undoArr[i] = new Stack<WritableImage>();
             redoArr[i] = new Stack<WritableImage>();
+            System.out.println("undoArr at " + i + " initialized");
         }
-        this.maxTabs = 40;
         this.tab = new Tab[maxTabs];
         this.stackCanvas = new StackCanvas[maxTabs];
         this.path = new String[maxTabs];
