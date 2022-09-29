@@ -34,7 +34,7 @@ None Known
 - [X] Clear canvas tool
 - [X] Eraser
 - [X] Be able to draw a n-sided polygon
-- [ ] Select and copy/paste a piece of the image
+- [X] Select and copy/paste a piece of the image
 - [ ] Select and move a piece of the image
 - [ ] An additional shape of choice
 #### // - - - - Extras - - - - //
