@@ -35,8 +35,8 @@ None Known
 - [X] Eraser
 - [X] Be able to draw a n-sided polygon
 - [X] Select and copy/paste a piece of the image
-- [ ] Select and move a piece of the image
-- [ ] An additional shape of choice
+- [X] Select and move a piece of the image
+- [X] An additional shape of choice
 #### // - - - - Extras - - - - //
 - [ ] Move drawing tools to buttons
 - [ ] Make slight adjustments to smart save
