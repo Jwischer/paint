@@ -16,7 +16,7 @@ import javafx.scene.shape.Polygon;
 import static java.lang.Math.abs;
 
 public class ToolsMenuFunctions {
-    ToolsMenuFunctions(MenuItem border, MenuItem clear, CheckMenuItem pencil, CheckMenuItem drawLine,CheckMenuItem drawDashedLine, CheckMenuItem drawRectangle, CheckMenuItem drawSquare, CheckMenuItem drawEllipse, CheckMenuItem drawCircle, CheckMenuItem drawTriangle ,MenuItem undo, MenuItem redo,ColorPicker colorPicker, SettingsMenuFunctions settingsMenuFunctions, TabPane tabPane, TabArrays tabArrays, Button eyedropper, CheckMenuItem eraser, CheckMenuItem drawPolygon, MenuItem selectImage, MenuItem copyOption, MenuItem pasteOption){
+    ToolsMenuFunctions(MenuItem border, MenuItem clear, CheckMenuItem pencil, CheckMenuItem drawLine,CheckMenuItem drawDashedLine, CheckMenuItem drawRectangle, CheckMenuItem drawSquare, CheckMenuItem drawEllipse, CheckMenuItem drawCircle, CheckMenuItem drawTriangle ,MenuItem undo, MenuItem redo,ColorPicker colorPicker, SettingsMenuFunctions settingsMenuFunctions, TabPane tabPane, TabArrays tabArrays, Button eyedropper, CheckMenuItem eraser, CheckMenuItem drawPolygon, MenuItem selectImage, MenuItem copyOption, MenuItem pasteOption, MenuItem cutOption){
         TextField polyInput = new TextField("3");
         drawPolygon.setGraphic(polyInput);
         polyInput.setPrefWidth(30);
@@ -37,6 +37,7 @@ public class ToolsMenuFunctions {
         canvas[0] = tabArrays.stackCanvas[0].canvas;
         final boolean selectImagePart[] = {false, false};
         final boolean pasteImage[] = {false};
+        final boolean cutImage[] = {false};
         final WritableImage selectedImage[] = new WritableImage[1];
         final WritableImage copiedImage[] = new WritableImage[1];
         final WritableImage selectedUndo[] = new WritableImage[1];
@@ -94,7 +95,7 @@ public class ToolsMenuFunctions {
                 //Show a warning if trying to close before saving
                 tabArrays.saveWarning[tabPane.getSelectionModel().getSelectedIndex()] = true;
                 System.out.println("Changed " + tabPane.getSelectionModel().getSelectedIndex() + " to " + tabArrays.saveWarning[tabPane.getSelectionModel().getSelectedIndex()]);
-                if(pencil.isSelected() || eraser.isSelected()){
+                if (pencil.isSelected() || eraser.isSelected()) {
                     //Begin making a pencil path if the pencil tool is selected
                     gc.beginPath();
                     gc.moveTo(event.getX(), event.getY());
@@ -103,9 +104,11 @@ public class ToolsMenuFunctions {
                 drawWidth[0] = settingsMenuFunctions.strokeSlider.getValue();
                 //Update undo canvas
                 canvasUndo[0] = new WritableImage((int) tabArrays.stackCanvas[selectedTab[0]].canvas.getWidth(), (int) tabArrays.stackCanvas[selectedTab[0]].canvas.getHeight());
-                tabArrays.stackCanvas[selectedTab[0]].canvas.snapshot(null, canvasUndo[0]);
-                tabArrays.undoArr[selectedTab[0]].push(canvasUndo[0]);
-                tabArrays.redoArr[selectedTab[0]].clear();
+                if (!pasteImage[0]) {
+                    tabArrays.stackCanvas[selectedTab[0]].canvas.snapshot(null, canvasUndo[0]);
+                    tabArrays.undoArr[selectedTab[0]].push(canvasUndo[0]);
+                    tabArrays.redoArr[selectedTab[0]].clear();
+                }
                 //Record first position
                 event.setDragDetect(true);
                 //Save current status of canvas
@@ -129,9 +132,9 @@ public class ToolsMenuFunctions {
                 gc.drawImage(copiedImage[0], abs(event.getX()-(copiedImage[0].getWidth()/2)), abs(event.getY()-(copiedImage[0].getHeight()/2)));
             } else if (pencil.isSelected() || eraser.isSelected()) {
                 if (eraser.isSelected()) {
-                    gc.setLineDashes(0);
                     gc.setStroke(Color.WHITE);
                 }
+                gc.setLineDashes(0);
                 gc.lineTo(event.getX(), event.getY());
                 gc.stroke();
             } else if (drawLine.isSelected()) {
@@ -230,9 +233,11 @@ public class ToolsMenuFunctions {
             } else if(drawTriangle.isSelected()){
                 canvasReplace(tabArrays.stackCanvas[selectedTab[0]].canvas, previewImage[0]);
                 Polygon polygon = new Polygon();
+                //Declare the center and sides of the polygon
                 int[] center = {(int) (firstPos[0]), (int) (firstPos[1])};
                 int radius = (int) (event.getX() - firstPos[0]);
                 int sides = 3;
+                //set points of the polygon based on passed variables
                 setPolygonSides(polygon, center[0], center[1], radius, sides);
                 double[] xPoints = new double[sides];
                 double[] yPoints = new double[sides];
@@ -241,8 +246,10 @@ public class ToolsMenuFunctions {
                     xPoints[i] = polygon.getPoints().get(i * 2);
                     yPoints[i] = polygon.getPoints().get(i * 2 + 1);
                 }
+                //Stroke polygon from the arrays
                 gc.strokePolygon(xPoints, yPoints, sides);
             } else if (selectionBox.isSelected()) {
+                //Draw dashed box
                 System.out.println("Sel");
                 gc.setStroke(Color.BLACK);
                 gc.setLineWidth(2);
@@ -267,10 +274,12 @@ public class ToolsMenuFunctions {
         canvas[0].setOnMouseReleased((MouseEvent event) -> {
             GraphicsContext gc = canvas[0].getGraphicsContext2D();
             System.out.println("mouse released");
+            //If selecting image
             if(selectImagePart[0]){
                 System.out.println("Selected");
                 selectImagePart[0] = false;
                 selectImagePart[1] = true;
+                //Create and set bounds
                 Rectangle2D bound;
                 if (event.getX() - firstPos[0] >= 0 && event.getY() - firstPos[1] < 0) {
                     bound = new Rectangle2D(firstPos[0], firstPos[1] - abs(event.getY() - firstPos[1]), abs(event.getX() - firstPos[0]), abs(event.getY() - firstPos[1]));
@@ -281,12 +290,15 @@ public class ToolsMenuFunctions {
                 } else {
                     bound = new Rectangle2D(firstPos[0] - abs(event.getX() - firstPos[0]), firstPos[1] - abs(event.getY() - firstPos[1]), abs(firstPos[0] - event.getX()), abs(firstPos[1] - event.getY()));
                 }
+                //Create snapshot parameters with the created bound
                 SnapshotParameters params = new SnapshotParameters();
                 params.setViewport(bound);
+                //Take a snapshot with the bounds
                 selectedRedo[0] = canvas[0].snapshot(null, selectedRedo[0]);
                 canvasReplace(canvas[0],selectedUndo[0]);
                 selectedImage[0] = canvas[0].snapshot(params, null);
                 canvasReplace(canvas[0],selectedRedo[0]);
+                //No longer draw selection box
                 selectionBox.setSelected(false);
             }
             if(pasteImage[0]){
@@ -363,9 +375,11 @@ public class ToolsMenuFunctions {
                         drawWidth[0] = settingsMenuFunctions.strokeSlider.getValue();
                         //Update undo canvas
                         canvasUndo[0] = new WritableImage((int) tabArrays.stackCanvas[selectedTab[0]].canvas.getWidth(), (int) tabArrays.stackCanvas[selectedTab[0]].canvas.getHeight());
-                        tabArrays.stackCanvas[selectedTab[0]].canvas.snapshot(null, canvasUndo[0]);
-                        tabArrays.undoArr[selectedTab[0]].push(canvasUndo[0]);
-                        tabArrays.redoArr[selectedTab[0]].clear();
+                        if (!pasteImage[0]) {
+                            tabArrays.stackCanvas[selectedTab[0]].canvas.snapshot(null, canvasUndo[0]);
+                            tabArrays.undoArr[selectedTab[0]].push(canvasUndo[0]);
+                            tabArrays.redoArr[selectedTab[0]].clear();
+                        }
                         //Record first position
                         event.setDragDetect(true);
                         //Save current status of canvas
@@ -389,9 +403,9 @@ public class ToolsMenuFunctions {
                         gc.drawImage(copiedImage[0], abs(event.getX()-(copiedImage[0].getWidth()/2)), abs(event.getY()-(copiedImage[0].getHeight()/2)));
                     } else if (pencil.isSelected() || eraser.isSelected()) {
                         if (eraser.isSelected()) {
-                            gc.setLineDashes(0);
                             gc.setStroke(Color.WHITE);
                         }
+                        gc.setLineDashes(0);
                         gc.lineTo(event.getX(), event.getY());
                         gc.stroke();
                     } else if (drawLine.isSelected()) {
@@ -488,6 +502,7 @@ public class ToolsMenuFunctions {
                         }
                         gc.strokePolygon(xPoints, yPoints, sides);
                     } else if(drawTriangle.isSelected()){
+                        gc.setLineDashes(0);
                         canvasReplace(tabArrays.stackCanvas[selectedTab[0]].canvas, previewImage[0]);
                         Polygon polygon = new Polygon();
                         int[] center = {(int) (firstPos[0]), (int) (firstPos[1])};
@@ -623,14 +638,29 @@ public class ToolsMenuFunctions {
         });
 
         copyOption.setOnAction(actionEvent -> {
+            //Put the selected image into copied image
             copiedImage[0] = selectedImage[0];
+            //Undo the dotted box
             canvasReplace(canvas[0], selectedUndo[0]);
+            //No longer select images
             selectImagePart[1] = false;
         });
 
         pasteOption.setOnAction(actionEvent -> {
             System.out.println("paste");
+            //Look to paste image on next mouse click
             pasteImage[0] = true;
+        });
+
+        cutOption.setOnAction(actionEvent -> {
+            //Put the selected image into copied image
+            copiedImage[0] = selectedImage[0];
+            //Undo the dotted box
+            canvasReplace(canvas[0], selectedUndo[0]);
+            //Set cut bool to true
+            cutImage[0] = true;
+            //No longer select images
+            selectImagePart[1] = false;
         });
 
         //When one tool is selected, unselect the other tools

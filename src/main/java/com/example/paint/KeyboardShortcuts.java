@@ -6,7 +6,7 @@ import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 
 public class KeyboardShortcuts {
-    KeyboardShortcuts(MenuItem pencil, MenuItem line,MenuItem dashedLine,MenuItem square,MenuItem rectangle,MenuItem circle,MenuItem ellipse, MenuItem triangle, MenuItem undo, MenuItem redo, MenuItem eraser, MenuItem polygon, MenuItem copy, MenuItem paste, MenuItem select){
+    KeyboardShortcuts(MenuItem pencil, MenuItem line,MenuItem dashedLine,MenuItem square,MenuItem rectangle,MenuItem circle,MenuItem ellipse, MenuItem triangle, MenuItem undo, MenuItem redo, MenuItem eraser, MenuItem polygon, MenuItem copy, MenuItem paste, MenuItem select, MenuItem cut){
         KeyCombination pencilShortcut = new KeyCodeCombination(KeyCode.P, KeyCombination.CONTROL_DOWN);
         pencil.setAccelerator(pencilShortcut);
         KeyCombination lineShortcut = new KeyCodeCombination(KeyCode.L, KeyCombination.CONTROL_DOWN);
@@ -37,5 +37,7 @@ public class KeyboardShortcuts {
         triangle.setAccelerator(triangleShortcut);
         KeyCombination selectShortcut = new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN, KeyCombination.SHIFT_DOWN);
         select.setAccelerator(selectShortcut);
+        KeyCombination cutShortcut = new KeyCodeCombination(KeyCode.X, KeyCombination.CONTROL_DOWN);
+        cut.setAccelerator(cutShortcut);
     }
 }
