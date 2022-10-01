@@ -272,7 +272,6 @@ public class ToolsMenuFunctions {
         });
 
         canvas[0].setOnMouseReleased((MouseEvent event) -> {
-            GraphicsContext gc = canvas[0].getGraphicsContext2D();
             System.out.println("mouse released");
             //If selecting image
             if(selectImagePart[0]){
@@ -303,7 +302,6 @@ public class ToolsMenuFunctions {
             }
             if(pasteImage[0]){
                 pasteImage[0] = false;
-                tabArrays.undoArr[selectedTab[0]].push(pasteUndo[0]);
             }
         });
 
@@ -566,7 +564,6 @@ public class ToolsMenuFunctions {
                     }
                     if(pasteImage[0]){
                         pasteImage[0] = false;
-                        tabArrays.undoArr[selectedTab[0]].push(pasteUndo[0]);
                     }
                 });
             }

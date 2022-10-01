@@ -100,7 +100,7 @@ public class MyMenu{
         MenuItem pasteOption = new MenuItem("Paste");
         toolsMenu.getItems().add(pasteOption);
         MenuItem cutOption = new MenuItem("Cut");
-        toolsMenu.getItems().add(cutOption);
+        //toolsMenu.getItems().add(cutOption);
         CheckMenuItem triangle = new CheckMenuItem("Triangle");
         drawingSubMenu.getItems().add(triangle);
         //add menus to menu bar
