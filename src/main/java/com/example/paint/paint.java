@@ -11,6 +11,7 @@ import java.io.IOException;
 
 public class paint extends Application {
     public void start(Stage stage) throws IOException {
+        SaveTimer saveTimer = new SaveTimer();
         //set up border pane
         TabPane tabPane = new TabPane();
         tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
