@@ -32,6 +32,7 @@ public class FileMenuFunctions {
         tabArrays.tab[nextTab[0]] = new Tab("new tab");
         tabArrays.stackCanvas[nextTab[0]] = new StackCanvas();
         tabArrays.saveWarning[nextTab[0]] = false;
+        tabArrays.saveTimer = new SaveTimer(tabPane, tabArrays);
         //If this is the first tab show the close button
         if (nextTab[0] == 0) {
             tabArrays.tab[nextTab[0]].setGraphic(tabArrays.close[nextTab[0]]);
@@ -141,6 +142,7 @@ public class FileMenuFunctions {
                 GraphicsContext gc = tabArrays.stackCanvas[tabPane.getSelectionModel().getSelectedIndex()].canvas.getGraphicsContext2D();
                 File file = fileChooser.showOpenDialog(null);
                 tabArrays.path[tabPane.getSelectionModel().getSelectedIndex()] = file.getPath();
+                tabArrays.tab[tabPane.getSelectionModel().getSelectedIndex()].setText(file.getName());
                 if (file != null) {
                     Image image = new Image(file.toURI().toString());
                     tabArrays.stackCanvas[tabPane.getSelectionModel().getSelectedIndex()].canvas.setHeight(image.getHeight());
@@ -175,6 +177,8 @@ public class FileMenuFunctions {
             //Get the save location as a string
             String saveLocation = file.toURI().toString();
             String[] saveloc = saveLocation.split(":", 2);
+            tabArrays.path[selectedTab] = saveloc[1];
+            tabArrays.tab[selectedTab].setText(file.getName());
             //Convert current state of canvas to writable image
             WritableImage writableImage = canvasToWritableImage(tabArrays.stackCanvas[selectedTab].canvas);
             //save that writable image at location saveLoc[1]

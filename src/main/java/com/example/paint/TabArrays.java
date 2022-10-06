@@ -8,6 +8,7 @@ import javafx.scene.image.WritableImage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
+import java.util.TimerTask;
 
 public class TabArrays {
     Tab[] tab;
@@ -16,6 +17,8 @@ public class TabArrays {
     Button[] close;
     boolean[] saveWarning;
     int maxTabs = 40;
+    //SaveTimer[] saveTimer;
+    SaveTimer saveTimer;
     Stack<WritableImage>[] undoArr = new Stack[maxTabs];
     Stack<WritableImage>[] redoArr = new Stack[maxTabs];
     TabArrays(){
@@ -26,6 +29,7 @@ public class TabArrays {
             redoArr[i] = new Stack<WritableImage>();
             System.out.println("undoArr at " + i + " initialized");
         }
+        //this.saveTimer = new SaveTimer[maxTabs];
         this.tab = new Tab[maxTabs];
         this.stackCanvas = new StackCanvas[maxTabs];
         this.path = new String[maxTabs];
