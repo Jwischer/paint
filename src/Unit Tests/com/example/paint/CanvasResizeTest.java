@@ -1,10 +1,6 @@
 package com.example.paint;
 
-import javafx.application.Application;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TextField;
-import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -17,9 +13,10 @@ class CanvasResizeTest {
 
     @Test
     void canvasResizeTest() {
+        //Initialize canvas[0]
         canvas[0] = new Canvas(300,300);
+        //Cycle through all possible integers and check that resize sizes them properly
         for(int i=1; i<Integer.MAX_VALUE; i++) {
-            //System.out.println(i);
             xVal = i;
             yVal = i;
             resize();
@@ -29,7 +26,6 @@ class CanvasResizeTest {
     }
 
     void resize(){
-        //Get values in text boxes
         int pixelx = xVal;
         int pixely = yVal;
         //Change width and height of canvas to match

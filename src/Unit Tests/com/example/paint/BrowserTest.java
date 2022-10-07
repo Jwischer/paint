@@ -11,6 +11,7 @@ class BrowserTest extends Application {
 
     @Test
     void browserTest() {
+        //Open known link using browser
         browser("http://google.com");
     }
 
