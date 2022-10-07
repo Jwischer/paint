@@ -14,6 +14,9 @@ import javafx.stage.Stage;
 import static com.example.paint.FileMenuFunctions.canvasToWritableImage;
 import static com.example.paint.FileMenuFunctions.saveToFile;
 
+/**
+ * The popup that appears when you try to close JPaint using the menu function
+ */
 public class CloseAppPopup {
     Label question;
     Button yes;
@@ -22,6 +25,13 @@ public class CloseAppPopup {
     Stage stage;
     Scene scene;
     HBox hBox = new HBox();
+
+    /**
+     *
+     * @param stageToClose
+     * @param tabPane
+     * @param tabArrays
+     */
     CloseAppPopup(Stage stageToClose, TabPane tabPane, TabArrays tabArrays){
         this.yes = new Button("Close Without Saving");
         this.yesandsave = new Button("Save and Close");
@@ -56,7 +66,7 @@ public class CloseAppPopup {
                     WritableImage writableImage = canvasToWritableImage(tabArrays.stackCanvas[i].canvas);
                     //Save the writable image to the same location as the file that was opened
                     //CREATE AN ARRAY OF PATHS FOR SAVE COMMANDS
-                    saveToFile(writableImage, tabArrays.path[i]);
+                    saveToFile(writableImage, tabArrays.path[i], false);
                 }
             }
             stage.close();

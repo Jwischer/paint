@@ -5,13 +5,13 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.image.WritableImage;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.Timer;
@@ -20,23 +20,23 @@ import java.util.TimerTask;
 import static com.example.paint.FileMenuFunctions.canvasToWritableImage;
 import static com.example.paint.FileMenuFunctions.saveToFile;
 
+/**
+ * Contains a timer that controls the autosave feature
+ */
 public class SaveTimer {
     boolean timerOn;
     int timeUntilSave;
     int delay;
 
-    SaveTimer(TabPane tabPane, TabArrays tabArrays) {
+    /**
+     *
+     * @param tabArrays
+     * @param autosaveTimer
+     */
+    SaveTimer(TabArrays tabArrays, Label autosaveTimer) {
         this.timerOn = true;
-        this.timeUntilSave = 20; //seconds
-        this.delay = 20; //seconds
-        //Remove timeline stuff when I rewrite the time until save code
-        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(delay), ev -> {}));
-        timeline.setCycleCount(Animation.INDEFINITE);
-        timeline.play();
-        timeline.currentTimeProperty().addListener((observableValue, oldValue, newValue) -> {
-            System.out.println((int)(delay-newValue.toSeconds()+1));
-        });
-        //End of timeline stuff
+        this.timeUntilSave = 300; //seconds
+        this.delay = timeUntilSave; //seconds
 
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask(){
@@ -52,12 +52,14 @@ public class SaveTimer {
                             for(int i = 0; i<40; i++) {
                                 if(tabArrays.stackCanvas[i] != null && tabArrays.path[i] != null) {
                                     WritableImage writableImage = canvasToWritableImage(tabArrays.stackCanvas[i].canvas);
-                                    saveToFile(writableImage, tabArrays.path[i]);
+                                    saveToFile(writableImage, tabArrays.path[i], false);
                                 }
                             }
                             System.out.println("Hi");
                             timeUntilSave = delay;
                         } else{timeUntilSave--;}
+                        System.out.println(timeUntilSave);
+                        autosaveTimer.setText("Autosave in " + (timeUntilSave) + " Seconds");
                     }
                 });
             }

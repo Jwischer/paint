@@ -7,6 +7,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
+/**
+ * Popup that allows user to resize the canvas
+ */
 public class ResizeWindow {
     GridPane gridPane = new GridPane();
     TextField xVal = new TextField("X");
@@ -14,6 +17,12 @@ public class ResizeWindow {
     Button confirm = new Button("Apply");
     Stage stage = new Stage();
     Scene scene = new Scene(gridPane,270,60);
+
+    /**
+     *
+     * @param tabPane
+     * @param tabArrays
+     */
     ResizeWindow(TabPane tabPane, TabArrays tabArrays){
         //Set up scene
         gridPane.add(xVal, 0 , 0);

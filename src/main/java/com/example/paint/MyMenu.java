@@ -2,6 +2,7 @@ package com.example.paint;
 
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
@@ -10,19 +11,24 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.awt.*;
-
+/**
+ * Contains all the class instances to make the two top menus in JPaint
+ */
 public class MyMenu{
-    MenuBar menuBar = new MenuBar();
-    VBox vbox = new VBox();
-    ToolBar toolbar = new ToolBar();
-
+    MenuBar menuBar;
+    VBox vbox;
+    ToolBar toolbar;
 
     MyMenu(Stage stage, TabPane tabPane, BorderPane borderPane) {
+        menuBar = new MenuBar();
+        vbox = new VBox();
+        toolbar = new ToolBar();
+        menuBar.setId("MenuBar");
         //instantiate imageLoader to grab images
         ImageLoader imageLoader = new ImageLoader();
         //Menu Bar
         Menu fileMenu = new Menu("_File"); //Shortcut Alt + F
-        Menu toolsMenu = new Menu("_Tools"); //Shortcut Alt + T
+        Menu toolsMenu = new Menu("_Tools"); toolsMenu.setId("ToolsMenu"); //Shortcut Alt + T
         Menu settingsMenu = new Menu("_Settings"); //Shortcut Alt + S
         Menu drawingSubMenu = new Menu("_Drawing"); //Shortcut Alt + D (When Tools is Open)
         Menu openFileSubMenu = new Menu("_Open File"); //Shortcut Alt + O (When File is Open)
@@ -59,7 +65,7 @@ public class MyMenu{
         toolsMenu.getItems().add(clear);
         //Create and add pencil option to tools menu
         CheckMenuItem pencil = new CheckMenuItem("Pencil");
-        drawingSubMenu.getItems().add(pencil);
+        drawingSubMenu.getItems().add(pencil); pencil.setId("Pencil");
         //Create and add Line option to tools menu
         CheckMenuItem line = new CheckMenuItem("Draw Line");
         drawingSubMenu.getItems().add(line);
@@ -103,6 +109,8 @@ public class MyMenu{
         //toolsMenu.getItems().add(cutOption);
         CheckMenuItem triangle = new CheckMenuItem("Triangle");
         drawingSubMenu.getItems().add(triangle);
+        CheckMenuItem autosaveTimer = new CheckMenuItem("Autosave Timer");
+        settingsMenu.getItems().add(autosaveTimer);
         //add menus to menu bar
         menuBar.getMenus().addAll(fileMenu);
         menuBar.getMenus().addAll(toolsMenu);
@@ -114,10 +122,12 @@ public class MyMenu{
         toolbar.getItems().add(eyedropper);
         toolbar.getItems().add(aboutButton);
         TabArrays tabArrays = new TabArrays();
+        Label autosaveLabel = new Label("Time Until Autosave: ");
+        toolbar.getItems().add(autosaveLabel);
 
         //Instantiate ButtonFunctions using the menu options
         KeyboardShortcuts keyboardShortcuts = new KeyboardShortcuts(pencil, line, dashedLine, square, rectangle, circle, ellipse, triangle, undoOption, redoOption, eraser, polygon, copyOption, pasteOption, selectImage,cutOption);
-        FileMenuFunctions fileMenuFunctions = new FileMenuFunctions(stage, openFileNT, openFileST, save, saveas, exit, tabPane, tabArrays);
+        FileMenuFunctions fileMenuFunctions = new FileMenuFunctions(stage, openFileNT, openFileST, save, saveas, exit, tabPane, tabArrays, autosaveLabel, autosaveTimer);
         SettingsMenuFunctions settingsMenuFunctions = new SettingsMenuFunctions(strokeWidth);
         ToolbarFunctions toolbarFunctions = new ToolbarFunctions(aboutButton, colorPicker, tabArrays, resize, tabPane);
         ToolsMenuFunctions toolsMenuFunctions = new ToolsMenuFunctions(border,clear, pencil, line, dashedLine, rectangle, square, ellipse, circle, triangle, undoOption, redoOption, colorPicker, settingsMenuFunctions, tabPane, tabArrays, eyedropper, eraser, polygon, selectImage, copyOption, pasteOption, cutOption);

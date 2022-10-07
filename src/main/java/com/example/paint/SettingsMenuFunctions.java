@@ -9,8 +9,16 @@ import javafx.scene.layout.HBox;
 
 import static java.lang.Math.round;
 
+/**
+ * Contains functions for the settings menu
+ */
 public class SettingsMenuFunctions {
     Slider strokeSlider;
+
+    /**
+     *
+     * @param strokeWidth
+     */
     SettingsMenuFunctions(MenuItem strokeWidth){
         //Text box for user width input
         TextField sliderTextField = new TextField("10");

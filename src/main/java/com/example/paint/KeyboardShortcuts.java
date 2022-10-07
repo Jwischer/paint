@@ -5,6 +5,9 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 
+/**
+ * Controls the keyboard shortcuts
+ */
 public class KeyboardShortcuts {
     KeyboardShortcuts(MenuItem pencil, MenuItem line,MenuItem dashedLine,MenuItem square,MenuItem rectangle,MenuItem circle,MenuItem ellipse, MenuItem triangle, MenuItem undo, MenuItem redo, MenuItem eraser, MenuItem polygon, MenuItem copy, MenuItem paste, MenuItem select, MenuItem cut){
         KeyCombination pencilShortcut = new KeyCodeCombination(KeyCode.P, KeyCombination.CONTROL_DOWN);

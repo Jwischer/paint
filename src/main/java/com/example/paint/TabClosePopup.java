@@ -12,6 +12,9 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import static com.example.paint.FileMenuFunctions.*;
 
+/**
+ *  Popup window that appears when a tab is being closed without saving first
+ */
 public class TabClosePopup{
     Label question;
     Button yes;
@@ -20,6 +23,13 @@ public class TabClosePopup{
     Stage stage;
     Scene scene;
     HBox hBox = new HBox();
+
+    /**
+     *
+     * @param nextTab
+     * @param tabPane
+     * @param tabArrays
+     */
     TabClosePopup(int nextTab, TabPane tabPane, TabArrays tabArrays){
         //Set up scene
         this.yes = new Button("Close Without Saving");
@@ -42,7 +52,15 @@ public class TabClosePopup{
         stage.show();
     }
 
-    //Function for the yes button
+    /**
+     * Function for the yes button
+     * @param stage
+     * @param tabPane
+     * @param tabArrays
+     * @param nextTab
+     * @param closeIndex
+     * @return
+     */
     public static int YesFunction(Stage stage, TabPane tabPane, TabArrays tabArrays, int nextTab, int closeIndex){
         int nextTabNew;
         tabPane.getTabs().remove(closeIndex);
@@ -51,18 +69,28 @@ public class TabClosePopup{
         return nextTabNew;
     }
 
-    //Function for the yes and save button
+    /**
+     * Function for the yes and save button
+     * @param stage
+     * @param tabPane
+     * @param tabArrays
+     * @param nextTab
+     * @param closeIndex
+     * @return
+     */
     public static int YesAndSaveFunction(Stage stage, TabPane tabPane, TabArrays tabArrays, int nextTab, int closeIndex){
         int nextTabNew;
         WritableImage image = canvasToWritableImage(tabArrays.stackCanvas[closeIndex].canvas);
-        saveToFile(image, tabArrays.path[closeIndex]);
+        saveToFile(image, tabArrays.path[closeIndex], false);
         tabPane.getTabs().remove(closeIndex);
         nextTabNew = OnTabClose(tabPane,tabArrays.maxTabs,tabArrays,nextTab,closeIndex);
         stage.close();
         return nextTabNew;
     }
-
-    //Function for the do not save button
+    /**
+     * Function for the do not save button
+     * @param stage
+     */
     public static void NoFunction(Stage stage){
         stage.close();
     }

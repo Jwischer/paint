@@ -11,7 +11,10 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
-public class AboutMenu extends paint {
+/**
+ * Popup that contains information about the software
+ */
+public class AboutMenu extends PaintMain {
     AboutMenu(){
         //Create a new window for the about menu
         Stage aboutStage = new Stage();
@@ -29,7 +32,7 @@ public class AboutMenu extends paint {
         gridPane.add(title, 1, 0);
         GridPane.setHalignment(title, HPos.CENTER);
         //SubTitle
-        Label subTitle = new Label("JPaint v1.0");
+        Label subTitle = new Label("JPaint v1.5");
         subTitle.setFont(Font.font("Arial", FontWeight.MEDIUM, 18));
         gridPane.add(subTitle,1,1);
         GridPane.setHalignment(subTitle, HPos.CENTER);
@@ -71,10 +74,10 @@ public class AboutMenu extends paint {
         });
     }
 
-    public static void openWebpage(String url) {
-            //Desktop.getDesktop().browse(new URL(url).toURI());
-    }
-
+    /**
+     * Function that opens the given url in the default browser
+     * @param url
+     */
     public void browser(String url) {
         getHostServices().showDocument(url);
     }

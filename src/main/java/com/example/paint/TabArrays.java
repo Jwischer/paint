@@ -10,6 +10,9 @@ import java.util.List;
 import java.util.Stack;
 import java.util.TimerTask;
 
+/**
+ * Contains the variables that should be unique to each tab
+ */
 public class TabArrays {
     Tab[] tab;
     StackCanvas[] stackCanvas;

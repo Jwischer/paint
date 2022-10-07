@@ -15,7 +15,36 @@ import javafx.scene.shape.Polygon;
 
 import static java.lang.Math.abs;
 
+/**
+ * Contains all the functions for drawing shapes, undo/redo, and selecting some of the image
+ */
 public class ToolsMenuFunctions {
+    /**
+     *
+     * @param border
+     * @param clear
+     * @param pencil
+     * @param drawLine
+     * @param drawDashedLine
+     * @param drawRectangle
+     * @param drawSquare
+     * @param drawEllipse
+     * @param drawCircle
+     * @param drawTriangle
+     * @param undo
+     * @param redo
+     * @param colorPicker
+     * @param settingsMenuFunctions
+     * @param tabPane
+     * @param tabArrays
+     * @param eyedropper
+     * @param eraser
+     * @param drawPolygon
+     * @param selectImage
+     * @param copyOption
+     * @param pasteOption
+     * @param cutOption
+     */
     ToolsMenuFunctions(MenuItem border, MenuItem clear, CheckMenuItem pencil, CheckMenuItem drawLine,CheckMenuItem drawDashedLine, CheckMenuItem drawRectangle, CheckMenuItem drawSquare, CheckMenuItem drawEllipse, CheckMenuItem drawCircle, CheckMenuItem drawTriangle ,MenuItem undo, MenuItem redo,ColorPicker colorPicker, SettingsMenuFunctions settingsMenuFunctions, TabPane tabPane, TabArrays tabArrays, Button eyedropper, CheckMenuItem eraser, CheckMenuItem drawPolygon, MenuItem selectImage, MenuItem copyOption, MenuItem pasteOption, MenuItem cutOption){
         TextField polyInput = new TextField("3");
         drawPolygon.setGraphic(polyInput);
@@ -762,6 +791,11 @@ public class ToolsMenuFunctions {
         });
     }
 
+    /**
+     * Converts given canvas to a writable image
+     * @param canvas
+     * @return
+     */
     public static WritableImage canvasToWritableImage(Canvas canvas){
         //Make a new Writable Image of the canvas width and height
         WritableImage writableImage = new WritableImage((int) canvas.getWidth(), (int) canvas.getHeight());
@@ -771,12 +805,21 @@ public class ToolsMenuFunctions {
         return writableImage;
     }
 
+    /**
+     * Replaces the canvas with the given writable image
+     * @param canvas
+     * @param image
+     */
     public static void canvasReplace(Canvas canvas,WritableImage image){
         canvas.setHeight(image.getHeight());
         canvas.setWidth(image.getWidth());
         canvas.getGraphicsContext2D().drawImage(image,0,0);
     }
 
+    /**
+     * Clears the given canvas
+     * @param canvas
+     */
     public static void clearCanvas(Canvas canvas){
         //get Graphics Context of Canvas
         GraphicsContext gc = canvas.getGraphicsContext2D();
@@ -786,6 +829,14 @@ public class ToolsMenuFunctions {
         gc.fillRect(0,0,canvas.getWidth(), canvas.getHeight());
     }
 
+    /**
+     * Generates a polygon with the given sides, radius, and center and stores it in the given polygon object
+     * @param polygon
+     * @param centerX
+     * @param centerY
+     * @param radius
+     * @param sides
+     */
     private static void setPolygonSides(Polygon polygon, double centerX, double centerY, double radius, int sides) {
         polygon.getPoints().clear();
         final double angleStep = Math.PI * 2 / sides;

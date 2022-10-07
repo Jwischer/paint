@@ -5,6 +5,9 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 
+/**
+ *  Contains the variables that make the canvas appear in the corner
+ */
 public class StackCanvas {
     ScrollPane scrollPane;
     StackPane stackPane;
