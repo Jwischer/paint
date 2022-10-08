@@ -1,6 +1,6 @@
 # JPaint
 
-## Version 1.1 - 09/23/2022
+## Version 2.0 - 09/23/2022
 
 ### Features:
 
@@ -21,6 +21,10 @@
 -  Many different shape tools
 
 -  Canvas resize
+
+-  Autosave Timer
+
+-  Data Corruption Warning
 
 ### Bugs:
 
