@@ -148,7 +148,7 @@ public class MyMenu{
         toolbar.getItems().add(polyInput);
         toolbar.getItems().add(autosaveLabel);
 
-        this.logger = new Logger();
+        this.logger = new Logger(pencil, line, dashedLine, rectangle, square, ellipse, circle, eraser, triangle, polygon);
         //Instantiate ButtonFunctions using the menu options
         FileMenuFunctions fileMenuFunctions = new FileMenuFunctions(stage, openFileNT, openFileST, save, saveas, exit, tabPane, tabArrays, autosaveLabel, autosaveTimer);
         SettingsMenuFunctions settingsMenuFunctions = new SettingsMenuFunctions(strokeWidth);
