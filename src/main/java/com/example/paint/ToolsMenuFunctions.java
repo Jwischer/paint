@@ -45,9 +45,7 @@ public class ToolsMenuFunctions {
      * @param pasteOption
      * @param cutOption
      */
-    ToolsMenuFunctions(MenuItem border, MenuItem clear, CheckMenuItem pencil, CheckMenuItem drawLine,CheckMenuItem drawDashedLine, CheckMenuItem drawRectangle, CheckMenuItem drawSquare, CheckMenuItem drawEllipse, CheckMenuItem drawCircle, CheckMenuItem drawTriangle ,MenuItem undo, MenuItem redo,ColorPicker colorPicker, SettingsMenuFunctions settingsMenuFunctions, TabPane tabPane, TabArrays tabArrays, Button eyedropper, CheckMenuItem eraser, CheckMenuItem drawPolygon, MenuItem selectImage, MenuItem copyOption, MenuItem pasteOption, MenuItem cutOption){
-        TextField polyInput = new TextField("3");
-        drawPolygon.setGraphic(polyInput);
+    ToolsMenuFunctions(MenuItem border, MenuItem clear, ToggleButton pencil, ToggleButton drawLine,ToggleButton drawDashedLine, ToggleButton drawRectangle, ToggleButton drawSquare, ToggleButton drawEllipse, ToggleButton drawCircle, ToggleButton drawTriangle ,MenuItem undo, MenuItem redo,ColorPicker colorPicker, SettingsMenuFunctions settingsMenuFunctions, TabPane tabPane, TabArrays tabArrays, Button eyedropper, ToggleButton eraser, ToggleButton drawPolygon, MenuItem selectImage, MenuItem copyOption, MenuItem pasteOption, MenuItem cutOption, TextField polyInput){
         polyInput.setPrefWidth(30);
         //Stores the positions for drawing a line
         final double[] firstPos = {0,0};
@@ -120,7 +118,7 @@ public class ToolsMenuFunctions {
             gc.setStroke(pickerColor[0]);
             System.out.println("Mouse Pressed");
             //If drawing anything
-            if(pencil.isSelected() || drawLine.isSelected() || drawRectangle.isSelected() || drawSquare.isSelected() || drawEllipse.isSelected() || drawCircle.isSelected() || eraser.isSelected() || drawPolygon.isSelected() || selectionBox.isSelected() || pasteImage[0] || drawTriangle.isSelected()) {
+            if(pencil.isSelected() || drawLine.isSelected() || drawDashedLine.isSelected() || drawRectangle.isSelected() || drawSquare.isSelected() || drawEllipse.isSelected() || drawCircle.isSelected() || eraser.isSelected() || drawPolygon.isSelected() || selectionBox.isSelected() || pasteImage[0] || drawTriangle.isSelected()) {
                 //Show a warning if trying to close before saving
                 tabArrays.saveWarning[tabPane.getSelectionModel().getSelectedIndex()] = true;
                 System.out.println("Changed " + tabPane.getSelectionModel().getSelectedIndex() + " to " + tabArrays.saveWarning[tabPane.getSelectionModel().getSelectedIndex()]);
@@ -692,6 +690,7 @@ public class ToolsMenuFunctions {
         //When one tool is selected, unselect the other tools
         pencil.setOnAction(actionEvent -> {
             drawLine.setSelected(false);
+            drawDashedLine.setSelected(false);
             drawRectangle.setSelected(false);
             drawSquare.setSelected(false);
             drawEllipse.setSelected(false);
@@ -703,6 +702,19 @@ public class ToolsMenuFunctions {
         });
         drawLine.setOnAction(actionEvent -> {
             pencil.setSelected(false);
+            drawDashedLine.setSelected(false);
+            drawRectangle.setSelected(false);
+            drawSquare.setSelected(false);
+            drawEllipse.setSelected(false);
+            drawCircle.setSelected(false);
+            eraser.setSelected(false);
+            drawPolygon.setSelected(false);
+            selectionBox.setSelected(false);
+            drawTriangle.setSelected(false);
+        });
+        drawDashedLine.setOnAction(actionEvent -> {
+            pencil.setSelected(false);
+            drawLine.setSelected(false);
             drawRectangle.setSelected(false);
             drawSquare.setSelected(false);
             drawEllipse.setSelected(false);
@@ -715,6 +727,7 @@ public class ToolsMenuFunctions {
         drawRectangle.setOnAction(actionEvent -> {
             pencil.setSelected(false);
             drawLine.setSelected(false);
+            drawDashedLine.setSelected(false);
             drawSquare.setSelected(false);
             drawEllipse.setSelected(false);
             drawCircle.setSelected(false);
@@ -726,6 +739,7 @@ public class ToolsMenuFunctions {
         drawSquare.setOnAction(actionEvent -> {
             pencil.setSelected(false);
             drawLine.setSelected(false);
+            drawDashedLine.setSelected(false);
             drawRectangle.setSelected(false);
             drawEllipse.setSelected(false);
             drawCircle.setSelected(false);
@@ -737,6 +751,7 @@ public class ToolsMenuFunctions {
         drawEllipse.setOnAction(actionEvent -> {
             pencil.setSelected(false);
             drawLine.setSelected(false);
+            drawDashedLine.setSelected(false);
             drawRectangle.setSelected(false);
             drawSquare.setSelected(false);
             drawCircle.setSelected(false);
@@ -748,6 +763,7 @@ public class ToolsMenuFunctions {
         drawCircle.setOnAction(actionEvent -> {
             pencil.setSelected(false);
             drawLine.setSelected(false);
+            drawDashedLine.setSelected(false);
             drawRectangle.setSelected(false);
             drawSquare.setSelected(false);
             drawEllipse.setSelected(false);
@@ -759,6 +775,7 @@ public class ToolsMenuFunctions {
         eraser.setOnAction(actionEvent -> {
             pencil.setSelected(false);
             drawLine.setSelected(false);
+            drawDashedLine.setSelected(false);
             drawRectangle.setSelected(false);
             drawSquare.setSelected(false);
             drawEllipse.setSelected(false);
@@ -770,6 +787,7 @@ public class ToolsMenuFunctions {
         drawPolygon.setOnAction(actionEvent -> {
             pencil.setSelected(false);
             drawLine.setSelected(false);
+            drawDashedLine.setSelected(false);
             drawRectangle.setSelected(false);
             drawSquare.setSelected(false);
             drawEllipse.setSelected(false);
@@ -781,6 +799,7 @@ public class ToolsMenuFunctions {
         drawTriangle.setOnAction(actionEvent -> {
             pencil.setSelected(false);
             drawLine.setSelected(false);
+            drawDashedLine.setSelected(false);
             drawRectangle.setSelected(false);
             drawSquare.setSelected(false);
             drawEllipse.setSelected(false);

@@ -1,12 +1,15 @@
 package com.example.paint;
 
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -19,11 +22,15 @@ public class MyMenu{
     VBox vbox;
     ToolBar toolbar;
 
-    MyMenu(Stage stage, TabPane tabPane, BorderPane borderPane) {
+    GridPane buttonPane;
+
+    MyMenu(Stage stage, Scene scene, TabPane tabPane, BorderPane borderPane) {
         menuBar = new MenuBar();
         vbox = new VBox();
         toolbar = new ToolBar();
-        menuBar.setId("MenuBar");
+        buttonPane = new GridPane();
+        toolbar.getItems().add(buttonPane);
+        TextField polyInput = new TextField("3");
         //instantiate imageLoader to grab images
         ImageLoader imageLoader = new ImageLoader();
         //Menu Bar
@@ -63,33 +70,48 @@ public class MyMenu{
         //Create and add Clear Canvas option to tools menu
         MenuItem clear = new MenuItem("Clear Canvas");
         toolsMenu.getItems().add(clear);
+        //---------------------------------------------------//
         //Create and add pencil option to tools menu
-        CheckMenuItem pencil = new CheckMenuItem("Pencil");
-        drawingSubMenu.getItems().add(pencil); pencil.setId("Pencil");
+        ToggleButton pencil = new ToggleButton();
+        buttonPane.add(pencil, 0, 0);
+        pencil.setGraphic(imageLoader.pencilView);
         //Create and add Line option to tools menu
-        CheckMenuItem line = new CheckMenuItem("Draw Line");
-        drawingSubMenu.getItems().add(line);
+        ToggleButton line = new ToggleButton();
+        buttonPane.add(line, 1, 0);
+        line.setGraphic(imageLoader.lineView);
         //Create and add dashed line option to tools menu
-        CheckMenuItem dashedLine = new CheckMenuItem("Draw Dashed Line");
-        drawingSubMenu.getItems().add(dashedLine);
+        ToggleButton dashedLine = new ToggleButton();
+        buttonPane.add(dashedLine, 2, 0);
+        dashedLine.setGraphic(imageLoader.dashedView);
         //Create and add Rectangle option to tools menu
-        CheckMenuItem rectangle = new CheckMenuItem("Draw Rectangle");
-        drawingSubMenu.getItems().add(rectangle);
+        ToggleButton rectangle = new ToggleButton();
+        buttonPane.add(rectangle, 3, 0);
+        rectangle.setGraphic(imageLoader.rectangleView);
         //Create and add Square option to tools menu
-        CheckMenuItem square = new CheckMenuItem("Draw Square");
-        drawingSubMenu.getItems().add(square);
+        ToggleButton square = new ToggleButton();
+        buttonPane.add(square, 4, 0);
+        square.setGraphic(imageLoader.squareView);
         //Create and add oval option to tools menu
-        CheckMenuItem ellipse = new CheckMenuItem("Draw Ellipse");
-        drawingSubMenu.getItems().add(ellipse);
+        ToggleButton ellipse = new ToggleButton();
+        buttonPane.add(ellipse, 0, 1);
+        ellipse.setGraphic(imageLoader.ellipseView);
         //Create and add circle option to tools menu
-        CheckMenuItem circle = new CheckMenuItem("Draw Circle");
-        drawingSubMenu.getItems().add(circle);
-        //Create and add polygon option to tools menu
-        CheckMenuItem polygon = new CheckMenuItem("N-Sided Polygon");
-        drawingSubMenu.getItems().add(polygon);
+        ToggleButton circle = new ToggleButton();
+        buttonPane.add(circle, 1, 1);
+        circle.setGraphic(imageLoader.circleView);
         //Create and add eraser option to tools menu
-        CheckMenuItem eraser = new CheckMenuItem("Eraser");
-        drawingSubMenu.getItems().add(eraser);
+        ToggleButton eraser = new ToggleButton();
+        buttonPane.add(eraser, 2, 1);
+        eraser.setGraphic(imageLoader.eraserView);
+        //Add triangle option to tools menu
+        ToggleButton triangle = new ToggleButton();
+        buttonPane.add(triangle, 3, 1);
+        triangle.setGraphic(imageLoader.triangleView);
+        //Create and add polygon option to tools menu
+        ToggleButton polygon = new ToggleButton();
+        buttonPane.add(polygon, 4, 1);
+        polygon.setGraphic(imageLoader.polyView);
+        //------------------------------------------------------------------------//
         //Create and add Stroke Width option to tools menu
         MenuItem strokeWidth = new MenuItem("Stroke Width");
         settingsMenu.getItems().add(strokeWidth);
@@ -107,8 +129,6 @@ public class MyMenu{
         toolsMenu.getItems().add(pasteOption);
         MenuItem cutOption = new MenuItem("Cut");
         //toolsMenu.getItems().add(cutOption);
-        CheckMenuItem triangle = new CheckMenuItem("Triangle");
-        drawingSubMenu.getItems().add(triangle);
         CheckMenuItem autosaveTimer = new CheckMenuItem("Autosave Timer");
         settingsMenu.getItems().add(autosaveTimer);
         //add menus to menu bar
@@ -123,13 +143,14 @@ public class MyMenu{
         toolbar.getItems().add(aboutButton);
         TabArrays tabArrays = new TabArrays();
         Label autosaveLabel = new Label("Time Until Autosave: ");
+        toolbar.getItems().add(polyInput);
         toolbar.getItems().add(autosaveLabel);
 
         //Instantiate ButtonFunctions using the menu options
-        KeyboardShortcuts keyboardShortcuts = new KeyboardShortcuts(pencil, line, dashedLine, square, rectangle, circle, ellipse, triangle, undoOption, redoOption, eraser, polygon, copyOption, pasteOption, selectImage,cutOption);
         FileMenuFunctions fileMenuFunctions = new FileMenuFunctions(stage, openFileNT, openFileST, save, saveas, exit, tabPane, tabArrays, autosaveLabel, autosaveTimer);
         SettingsMenuFunctions settingsMenuFunctions = new SettingsMenuFunctions(strokeWidth);
         ToolbarFunctions toolbarFunctions = new ToolbarFunctions(aboutButton, colorPicker, tabArrays, resize, tabPane);
-        ToolsMenuFunctions toolsMenuFunctions = new ToolsMenuFunctions(border,clear, pencil, line, dashedLine, rectangle, square, ellipse, circle, triangle, undoOption, redoOption, colorPicker, settingsMenuFunctions, tabPane, tabArrays, eyedropper, eraser, polygon, selectImage, copyOption, pasteOption, cutOption);
+        ToolsMenuFunctions toolsMenuFunctions = new ToolsMenuFunctions(border,clear, pencil, line, dashedLine, rectangle, square, ellipse, circle, triangle, undoOption, redoOption, colorPicker, settingsMenuFunctions, tabPane, tabArrays, eyedropper, eraser, polygon, selectImage, copyOption, pasteOption, cutOption, polyInput);
+        KeyboardShortcuts keyboardShortcuts = new KeyboardShortcuts(scene, pencil, line, dashedLine, square, rectangle, circle, ellipse, triangle, undoOption, redoOption, eraser, polygon, copyOption, pasteOption, selectImage,cutOption);
     }
 }
