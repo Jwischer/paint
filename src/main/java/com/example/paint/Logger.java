@@ -11,23 +11,23 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class Logger {
-    File log;
+    File log; //Log file
     int logRate; //Rate of logging in ms
-    int x;
-    DateTimeFormatter dtf;
-    LocalDateTime currTime;
-
-    FileWriter logger;
+    int x; //Test integer
+    DateTimeFormatter dtf; //Format to put the date and time in the log
+    LocalDateTime currTime; //Current local time
+    FileWriter logger; //File Writer for the log
 
     Logger() throws IOException {
-        this.log = new File("src/main/resources/log.txt");
-        this.logger = new FileWriter(log);
-        this.logRate = 1000;
-        this.x = 0;
-        dtf = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm:ss");
-        log.createNewFile();
-        logger.write("---Start of Log---\n");
+        this.log = new File("src/main/resources/log.txt"); //Assign a file path to log to
+        this.logger = new FileWriter(log); //Assign the logger to it
+        this.logRate = 1000; //Set the log rate to one a second
+        this.x = 0; //Initialize test variable
+        dtf = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm:ss"); //Set date and time format
+        log.createNewFile(); //Create the log file
+        logger.write("---Start of Log---\n"); //Write to log
 
+        //Write to the log every so often
         Timer timer = new Timer();
         //Set timer to run once every second
         timer.scheduleAtFixedRate(new TimerTask(){
