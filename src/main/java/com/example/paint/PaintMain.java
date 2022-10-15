@@ -35,7 +35,7 @@ public class PaintMain extends Application {
         this.scene = new Scene(border, 320, 240);
         stage.setTitle("JPaint");
         //Instantiate MyMenu
-        this.myMenu = new MyMenu(stage, scene, tabPane, border);
+        this.myMenu = new MyMenu(stage, scene, tabPane);
         //Set the menu variable of MyMenu to the top
         border.setTop(myMenu.vbox);
         //Set the stack pane to the center
@@ -47,7 +47,6 @@ public class PaintMain extends Application {
         //Load Window
         stage.setScene(scene);
         stage.show();
-
 
     }
 

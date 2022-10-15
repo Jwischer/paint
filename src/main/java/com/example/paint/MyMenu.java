@@ -14,6 +14,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.awt.*;
+import java.io.IOException;
+
 /**
  * Contains all the class instances to make the two top menus in JPaint
  */
@@ -21,14 +23,14 @@ public class MyMenu{
     MenuBar menuBar;
     VBox vbox;
     ToolBar toolbar;
-
+    Logger logger;
     GridPane buttonPane;
 
-    MyMenu(Stage stage, Scene scene, TabPane tabPane, BorderPane borderPane) {
-        menuBar = new MenuBar();
-        vbox = new VBox();
-        toolbar = new ToolBar();
-        buttonPane = new GridPane();
+    MyMenu(Stage stage, Scene scene, TabPane tabPane) throws IOException {
+        this.menuBar = new MenuBar();
+        this.vbox = new VBox();
+        this.toolbar = new ToolBar();
+        this.buttonPane = new GridPane();
         toolbar.getItems().add(buttonPane);
         TextField polyInput = new TextField("3");
         //instantiate imageLoader to grab images
@@ -146,11 +148,20 @@ public class MyMenu{
         toolbar.getItems().add(polyInput);
         toolbar.getItems().add(autosaveLabel);
 
+        this.logger = new Logger();
         //Instantiate ButtonFunctions using the menu options
         FileMenuFunctions fileMenuFunctions = new FileMenuFunctions(stage, openFileNT, openFileST, save, saveas, exit, tabPane, tabArrays, autosaveLabel, autosaveTimer);
         SettingsMenuFunctions settingsMenuFunctions = new SettingsMenuFunctions(strokeWidth);
         ToolbarFunctions toolbarFunctions = new ToolbarFunctions(aboutButton, colorPicker, tabArrays, resize, tabPane);
         ToolsMenuFunctions toolsMenuFunctions = new ToolsMenuFunctions(border,clear, pencil, line, dashedLine, rectangle, square, ellipse, circle, triangle, undoOption, redoOption, colorPicker, settingsMenuFunctions, tabPane, tabArrays, eyedropper, eraser, polygon, selectImage, copyOption, pasteOption, cutOption, polyInput);
         KeyboardShortcuts keyboardShortcuts = new KeyboardShortcuts(scene, pencil, line, dashedLine, square, rectangle, circle, ellipse, triangle, undoOption, redoOption, eraser, polygon, copyOption, pasteOption, selectImage,cutOption);
+
+        stage.setOnCloseRequest(windowEvent -> {
+            try {
+                logger.logger.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 }
