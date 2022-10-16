@@ -742,13 +742,13 @@ public class ToolsMenuFunctions {
         mirrorX.setOnAction(actionEvent -> {
             GraphicsContext gc = tabArrays.stackCanvas[tabPane.getSelectionModel().getSelectedIndex()].canvas.getGraphicsContext2D();
             Image rotImage = tabArrays.stackCanvas[selectedTab[0]].canvas.snapshot(null,null);
-            MirrorX(gc,rotImage);
+            gc.drawImage(rotImage, 0, 0, rotImage.getWidth(), rotImage.getHeight(), 0,rotImage.getHeight(),rotImage.getWidth(),-rotImage.getHeight());
         });
 
         mirrorY.setOnAction(actionEvent -> {
             GraphicsContext gc = tabArrays.stackCanvas[tabPane.getSelectionModel().getSelectedIndex()].canvas.getGraphicsContext2D();
             Image rotImage = tabArrays.stackCanvas[selectedTab[0]].canvas.snapshot(null,null);
-            MirrorY(gc,rotImage);
+            gc.drawImage(rotImage, 0, 0, rotImage.getWidth(), rotImage.getHeight(), rotImage.getWidth(),0,-rotImage.getWidth(),rotImage.getHeight());
         });
 
         //When one tool is selected, unselect the other tools
@@ -957,19 +957,5 @@ public class ToolsMenuFunctions {
             }
         });
         return rotated;
-    }
-
-    public void MirrorY(GraphicsContext g, Image RESOURCE){
-        //(javafx.scene.image.Image,
-        // sourceX,sourceY, sourceWidth,sourceHeight,
-        //outputX,outputY,outputWidth,outputHeight);
-        g.drawImage(RESOURCE, 0, 0, RESOURCE.getWidth(), RESOURCE.getHeight(), RESOURCE.getWidth(),0,-RESOURCE.getWidth(),RESOURCE.getHeight());
-    }
-
-    public void MirrorX(GraphicsContext g, Image RESOURCE){
-        //(javafx.scene.image.Image,
-        // sourceX,sourceY, sourceWidth,sourceHeight,
-        //outputX,outputY,outputWidth,outputHeight);
-        g.drawImage(RESOURCE, 0, 0, RESOURCE.getWidth(), RESOURCE.getHeight(), 0,RESOURCE.getHeight(),RESOURCE.getWidth(),-RESOURCE.getHeight());
     }
 }
