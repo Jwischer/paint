@@ -2,19 +2,33 @@ package com.example.paint;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
+import javafx.scene.transform.Rotate;
+
+import java.awt.*;
+import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
+import java.awt.image.BufferedImageOp;
+import java.awt.image.ImageObserver;
+import java.awt.image.ImagingOpException;
+import java.nio.Buffer;
 
 import static java.lang.Math.abs;
-
 /**
  * Contains all the functions for drawing shapes, undo/redo, and selecting some of the image
  */
@@ -45,7 +59,7 @@ public class ToolsMenuFunctions {
      * @param pasteOption
      * @param cutOption
      */
-    ToolsMenuFunctions(MenuItem border, MenuItem clear, ToggleButton pencil, ToggleButton drawLine,ToggleButton drawDashedLine, ToggleButton drawRectangle, ToggleButton drawSquare, ToggleButton drawEllipse, ToggleButton drawCircle, ToggleButton drawTriangle ,MenuItem undo, MenuItem redo,ColorPicker colorPicker, SettingsMenuFunctions settingsMenuFunctions, TabPane tabPane, TabArrays tabArrays, Button eyedropper, ToggleButton eraser, ToggleButton drawPolygon, MenuItem selectImage, MenuItem copyOption, MenuItem pasteOption, MenuItem cutOption, TextField polyInput){
+    ToolsMenuFunctions(MenuItem border, MenuItem clear, ToggleButton pencil, ToggleButton drawLine,ToggleButton drawDashedLine, ToggleButton drawRectangle, ToggleButton drawSquare, ToggleButton drawEllipse, ToggleButton drawCircle, ToggleButton drawTriangle ,MenuItem undo, MenuItem redo,ColorPicker colorPicker, SettingsMenuFunctions settingsMenuFunctions, TabPane tabPane, TabArrays tabArrays, Button eyedropper, ToggleButton eraser, ToggleButton drawPolygon, MenuItem selectImage, MenuItem copyOption, MenuItem pasteOption, MenuItem cutOption, TextField polyInput,Button mirrorX,Button mirrorY, Button ninetyDeg,Button oneeightyDeg,Button twoseventyDeg){
         polyInput.setPrefWidth(30);
         //Stores the positions for drawing a line
         final double[] firstPos = {0,0};
@@ -687,6 +701,56 @@ public class ToolsMenuFunctions {
             selectImagePart[1] = false;
         });
 
+        ninetyDeg.setOnAction(actionEvent -> {
+            GraphicsContext gc = tabArrays.stackCanvas[tabPane.getSelectionModel().getSelectedIndex()].canvas.getGraphicsContext2D();
+            Image rotImage = tabArrays.stackCanvas[selectedTab[0]].canvas.snapshot(null,null);
+            double newH = tabArrays.stackCanvas[tabPane.getSelectionModel().getSelectedIndex()].canvas.getWidth();
+            double newW = tabArrays.stackCanvas[tabPane.getSelectionModel().getSelectedIndex()].canvas.getHeight();
+            int angle = 90;
+            BufferedImage bImage = SwingFXUtils.fromFXImage(rotImage, null);
+            bImage = rotateImageByDegrees(bImage, angle);
+            rotImage = SwingFXUtils.toFXImage(bImage, null);
+            tabArrays.stackCanvas[selectedTab[0]].canvas.setHeight(newH);
+            tabArrays.stackCanvas[selectedTab[0]].canvas.setWidth(newW);
+            gc.drawImage(rotImage, 0, 0);
+        });
+
+        oneeightyDeg.setOnAction(actionEvent -> {
+            GraphicsContext gc = tabArrays.stackCanvas[tabPane.getSelectionModel().getSelectedIndex()].canvas.getGraphicsContext2D();
+            Image rotImage = tabArrays.stackCanvas[selectedTab[0]].canvas.snapshot(null,null);
+            int angle = 180;
+            BufferedImage bImage = SwingFXUtils.fromFXImage(rotImage, null);
+            bImage = rotateImageByDegrees(bImage, angle);
+            rotImage = SwingFXUtils.toFXImage(bImage, null);
+            gc.drawImage(rotImage, 0, 0);
+        });
+
+        twoseventyDeg.setOnAction(actionEvent -> {
+            GraphicsContext gc = tabArrays.stackCanvas[tabPane.getSelectionModel().getSelectedIndex()].canvas.getGraphicsContext2D();
+            Image rotImage = tabArrays.stackCanvas[selectedTab[0]].canvas.snapshot(null,null);
+            double newH = tabArrays.stackCanvas[tabPane.getSelectionModel().getSelectedIndex()].canvas.getWidth();
+            double newW = tabArrays.stackCanvas[tabPane.getSelectionModel().getSelectedIndex()].canvas.getHeight();
+            int angle = 270;
+            BufferedImage bImage = SwingFXUtils.fromFXImage(rotImage, null);
+            bImage = rotateImageByDegrees(bImage, angle);
+            rotImage = SwingFXUtils.toFXImage(bImage, null);
+            tabArrays.stackCanvas[selectedTab[0]].canvas.setHeight(newH);
+            tabArrays.stackCanvas[selectedTab[0]].canvas.setWidth(newW);
+            gc.drawImage(rotImage, 0, 0);
+        });
+
+        mirrorX.setOnAction(actionEvent -> {
+            GraphicsContext gc = tabArrays.stackCanvas[tabPane.getSelectionModel().getSelectedIndex()].canvas.getGraphicsContext2D();
+            Image rotImage = tabArrays.stackCanvas[selectedTab[0]].canvas.snapshot(null,null);
+            MirrorX(gc,rotImage);
+        });
+
+        mirrorY.setOnAction(actionEvent -> {
+            GraphicsContext gc = tabArrays.stackCanvas[tabPane.getSelectionModel().getSelectedIndex()].canvas.getGraphicsContext2D();
+            Image rotImage = tabArrays.stackCanvas[selectedTab[0]].canvas.snapshot(null,null);
+            MirrorY(gc,rotImage);
+        });
+
         //When one tool is selected, unselect the other tools
         pencil.setOnAction(actionEvent -> {
             drawLine.setSelected(false);
@@ -866,5 +930,46 @@ public class ToolsMenuFunctions {
                     Math.cos(angle) * radius + centerY // y coordinate of the corner
             );
         }
+    }
+
+    public BufferedImage rotateImageByDegrees(BufferedImage img, double angle) {
+        double rads = Math.toRadians(angle);
+        double sin = Math.abs(Math.sin(rads)), cos = Math.abs(Math.cos(rads));
+        int w = img.getWidth();
+        int h = img.getHeight();
+        int newWidth = (int) Math.floor(w * cos + h * sin);
+        int newHeight = (int) Math.floor(h * cos + w * sin);
+
+        BufferedImage rotated = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2d = rotated.createGraphics();
+        AffineTransform at = new AffineTransform();
+        at.translate((newWidth - w) / 2, (newHeight - h) / 2);
+
+        int x = w / 2;
+        int y = h / 2;
+
+        at.rotate(rads, x, y);
+        g2d.setTransform(at);
+        g2d.drawImage(img, 0, 0, new ImageObserver() {
+            @Override
+            public boolean imageUpdate(java.awt.Image img, int infoflags, int x, int y, int width, int height) {
+                return false;
+            }
+        });
+        return rotated;
+    }
+
+    public void MirrorY(GraphicsContext g, Image RESOURCE){
+        //(javafx.scene.image.Image,
+        // sourceX,sourceY, sourceWidth,sourceHeight,
+        //outputX,outputY,outputWidth,outputHeight);
+        g.drawImage(RESOURCE, 0, 0, RESOURCE.getWidth(), RESOURCE.getHeight(), RESOURCE.getWidth(),0,-RESOURCE.getWidth(),RESOURCE.getHeight());
+    }
+
+    public void MirrorX(GraphicsContext g, Image RESOURCE){
+        //(javafx.scene.image.Image,
+        // sourceX,sourceY, sourceWidth,sourceHeight,
+        //outputX,outputY,outputWidth,outputHeight);
+        g.drawImage(RESOURCE, 0, 0, RESOURCE.getWidth(), RESOURCE.getHeight(), 0,RESOURCE.getHeight(),RESOURCE.getWidth(),-RESOURCE.getHeight());
     }
 }

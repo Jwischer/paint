@@ -1,6 +1,7 @@
 package com.example.paint;
 
 import javafx.application.Platform;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.ToggleButton;
 
 import java.io.File;
@@ -19,7 +20,7 @@ public class Logger {
     LocalDateTime currTime; //Current local time
     FileWriter logger; //File Writer for the log
 
-    Logger(ToggleButton pencil,ToggleButton line,ToggleButton dashedLine,ToggleButton rectangle,ToggleButton square,ToggleButton ellipse,ToggleButton circle,ToggleButton eraser,ToggleButton triangle,ToggleButton polygon) throws IOException {
+    Logger(ToggleButton pencil,ToggleButton line,ToggleButton dashedLine,ToggleButton rectangle,ToggleButton square,ToggleButton ellipse,ToggleButton circle,ToggleButton eraser,ToggleButton triangle,ToggleButton polygon, TabPane tabPane) throws IOException {
         this.log = new File("src/main/resources/log.txt"); //Assign a file path to log to
         this.logger = new FileWriter(log); //Assign the logger to it
         this.logRate = 1000; //Set the log rate to one a second
@@ -29,15 +30,14 @@ public class Logger {
         logger.write("---Start of Log---\n"); //Write to log
 
         //Write to the log every so often
-        Timer timer = new Timer();
+        Timer logTimer = new Timer();
         //Set timer to run once every second
-        timer.scheduleAtFixedRate(new TimerTask(){
+        logTimer.scheduleAtFixedRate(new TimerTask(){
             public void run() {
                 Platform.runLater(()-> {
                     try {
                         //What to log
-                        currTime = LocalDateTime.now(); //Update time
-                        logger.write(dtf.format(currTime) + " " + logNum + ": ");
+                        logger.write(dtf.format(currTime) + " " + tabPane.getTabs().get(tabPane.getSelectionModel().getSelectedIndex()).getText() + " " + logNum + ": ");
                         if(pencil.isSelected()){
                             logger.write("Pencil tool selected\n");
                         } else if(line.isSelected()){
@@ -65,5 +65,16 @@ public class Logger {
                 });
             }
         }, logRate,logRate); //Call TimerTask every lograte milliseconds
+
+        //Update the time every second
+        Timer dtfTimer = new Timer();
+        //Set timer to run once every second
+        dtfTimer.scheduleAtFixedRate(new TimerTask(){
+            public void run() {
+                Platform.runLater(()-> {
+                    currTime = LocalDateTime.now(); //Update time
+                });
+            }
+        }, 1000, 1000); //Call TimerTask every second
     }
 }

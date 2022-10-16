@@ -39,9 +39,7 @@ public class MyMenu{
         Menu fileMenu = new Menu("_File"); //Shortcut Alt + F
         Menu toolsMenu = new Menu("_Tools"); toolsMenu.setId("ToolsMenu"); //Shortcut Alt + T
         Menu settingsMenu = new Menu("_Settings"); //Shortcut Alt + S
-        Menu drawingSubMenu = new Menu("_Drawing"); //Shortcut Alt + D (When Tools is Open)
         Menu openFileSubMenu = new Menu("_Open File"); //Shortcut Alt + O (When File is Open)
-        toolsMenu.getItems().add(drawingSubMenu);
         fileMenu.getItems().add(openFileSubMenu);
         //Create new Color Picker
         ColorPicker colorPicker = new ColorPicker();
@@ -117,6 +115,26 @@ public class MyMenu{
         //Create and add Stroke Width option to tools menu
         MenuItem strokeWidth = new MenuItem("Stroke Width");
         settingsMenu.getItems().add(strokeWidth);
+        //Add rotate canvas option to tools menu
+        Button ninetyDeg = new Button("90");
+        Button oneeightyDeg = new Button("180");
+        Button twoseventyDeg = new Button("270");
+        GridPane rotPane = new GridPane();
+        rotPane.add(ninetyDeg,0,0);
+        rotPane.add(oneeightyDeg,0,1);
+        rotPane.add(twoseventyDeg,0,2);
+        MenuItem rotateCanvas = new MenuItem("Rotate Canvas");
+        toolsMenu.getItems().add(rotateCanvas);
+        rotateCanvas.setGraphic(rotPane);
+        //Create and add Mirror option to tools menu
+        MenuItem mirror = new MenuItem("Mirror Image");
+        GridPane mirPane = new GridPane();
+        Button mirrorX = new Button("X");
+        Button mirrorY = new Button("Y");
+        mirPane.add(mirrorX, 0,0);
+        mirPane.add(mirrorY,0,1);
+        toolsMenu.getItems().add(mirror);
+        mirror.setGraphic(mirPane);
         //Create and add undo option to tools menu
         MenuItem undoOption = new MenuItem("Undo");
         toolsMenu.getItems().add(undoOption);
@@ -148,13 +166,14 @@ public class MyMenu{
         toolbar.getItems().add(polyInput);
         toolbar.getItems().add(autosaveLabel);
 
-        this.logger = new Logger(pencil, line, dashedLine, rectangle, square, ellipse, circle, eraser, triangle, polygon);
+        this.logger = new Logger(pencil, line, dashedLine, rectangle, square, ellipse, circle, eraser, triangle, polygon, tabPane);
         //Instantiate ButtonFunctions using the menu options
-        FileMenuFunctions fileMenuFunctions = new FileMenuFunctions(stage, openFileNT, openFileST, save, saveas, exit, tabPane, tabArrays, autosaveLabel, autosaveTimer);
+        FileMenuFunctions fileMenuFunctions = new FileMenuFunctions(stage, openFileNT, openFileST, save, saveas, exit, tabPane, tabArrays, autosaveLabel, autosaveTimer, logger);
         SettingsMenuFunctions settingsMenuFunctions = new SettingsMenuFunctions(strokeWidth);
         ToolbarFunctions toolbarFunctions = new ToolbarFunctions(aboutButton, colorPicker, tabArrays, resize, tabPane);
-        ToolsMenuFunctions toolsMenuFunctions = new ToolsMenuFunctions(border,clear, pencil, line, dashedLine, rectangle, square, ellipse, circle, triangle, undoOption, redoOption, colorPicker, settingsMenuFunctions, tabPane, tabArrays, eyedropper, eraser, polygon, selectImage, copyOption, pasteOption, cutOption, polyInput);
+        ToolsMenuFunctions toolsMenuFunctions = new ToolsMenuFunctions(border,clear, pencil, line, dashedLine, rectangle, square, ellipse, circle, triangle, undoOption, redoOption, colorPicker, settingsMenuFunctions, tabPane, tabArrays, eyedropper, eraser, polygon, selectImage, copyOption, pasteOption, cutOption, polyInput, mirrorX, mirrorY, ninetyDeg, oneeightyDeg, twoseventyDeg);
         KeyboardShortcuts keyboardShortcuts = new KeyboardShortcuts(scene, pencil, line, dashedLine, square, rectangle, circle, ellipse, triangle, undoOption, redoOption, eraser, polygon, copyOption, pasteOption, selectImage,cutOption);
+        Tooltips tooltips = new Tooltips(pencil, line, dashedLine, rectangle, square, ellipse, circle, eraser, triangle, polygon);
 
         stage.setOnCloseRequest(windowEvent -> {
             try {

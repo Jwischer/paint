@@ -36,7 +36,7 @@ public class FileMenuFunctions {
      * @param autosaveLabel
      * @param autosaveTimer
      */
-    FileMenuFunctions(Stage stage, MenuItem openfile, MenuItem openFileST, MenuItem save, MenuItem saveas, MenuItem exit, TabPane tabPane, TabArrays tabArrays, Label autosaveLabel, CheckMenuItem autosaveTimer) {
+    FileMenuFunctions(Stage stage, MenuItem openfile, MenuItem openFileST, MenuItem save, MenuItem saveas, MenuItem exit, TabPane tabPane, TabArrays tabArrays, Label autosaveLabel, CheckMenuItem autosaveTimer, Logger logger) {
         this.fileChooser = new FileChooser();
         //Create a string array to store the path to the opened image
         final int nextTab[] = {0};
@@ -146,6 +146,10 @@ public class FileMenuFunctions {
                     //draw the image on the canvas
                     gc.drawImage(image, 0, 0);
                     nextTab[0]++;
+                    try {
+                        logger.logger.write(logger.dtf.format(logger.currTime) + " " + logger.logNum + ": Openened new tab " + file.getName() + "\n");
+                    } catch (IOException ex) {throw new RuntimeException(ex);}
+                    logger.logNum++;
                 }
             } else {
                 System.out.println("Max tabs reached");
@@ -179,6 +183,10 @@ public class FileMenuFunctions {
             tabArrays.saveWarning[selectedTab] = false;
             tabArrays.saveTimer.timeUntilSave = tabArrays.saveTimer.delay;
             autosaveLabel.setText("Autosave in " + (tabArrays.saveTimer.timeUntilSave) + " Seconds");
+            try {
+                logger.logger.write(logger.dtf.format(logger.currTime) + " " + tabPane.getTabs().get(tabPane.getSelectionModel().getSelectedIndex()).getText() + " " + logger.logNum + ": Saved tab");
+            } catch (IOException ex) {throw new RuntimeException(ex);}
+            logger.logNum++;
         });
 
         //Save As Menu Function
@@ -193,16 +201,20 @@ public class FileMenuFunctions {
             );
             //Create file at the path given by fileChooser
             File file = fileChooser.showSaveDialog(null);
-            String toPath = file.getPath().toString();
-            String toExtension = toPath.substring(toPath.length() - 3);
-            String fromPath = tabArrays.path[selectedTab].toString();
-            String fromExtension = fromPath.substring(fromPath.length() - 3);
-            System.out.println(fromExtension.toLowerCase());
-            System.out.println(toExtension.toLowerCase());
-            if(fromExtension.toLowerCase().equals(toExtension.toLowerCase())){
-                dataWarning[0] = false;
-            } else{dataWarning[0] = true;}
-            System.out.println(dataWarning[0]);
+            if(tabArrays.path[selectedTab] != null) {
+                String toPath = file.getPath().toString();
+                String toExtension = toPath.substring(toPath.length() - 3);
+                String fromPath = tabArrays.path[selectedTab].toString();
+                String fromExtension = fromPath.substring(fromPath.length() - 3);
+                System.out.println(fromExtension.toLowerCase());
+                System.out.println(toExtension.toLowerCase());
+                if (fromExtension.toLowerCase().equals(toExtension.toLowerCase())) {
+                    dataWarning[0] = false;
+                } else {
+                    dataWarning[0] = true;
+                }
+                System.out.println(dataWarning[0]);
+            }
             //Get the save location as a string
             String saveLocation = file.toURI().toString();
             String[] saveloc = saveLocation.split(":", 2);
@@ -215,6 +227,10 @@ public class FileMenuFunctions {
             tabArrays.saveWarning[selectedTab] = false;
             tabArrays.saveTimer.timeUntilSave = tabArrays.saveTimer.delay;
             autosaveLabel.setText("Autosave in " + (tabArrays.saveTimer.timeUntilSave) + " Seconds");
+            try {
+                logger.logger.write(logger.dtf.format(logger.currTime) + " " + tabPane.getTabs().get(tabPane.getSelectionModel().getSelectedIndex()).getText() + " " + logger.logNum + ": Saved tab as " + file.getName() + "\n");
+            } catch (IOException ex) {throw new RuntimeException(ex);}
+            logger.logNum++;
         });
 
         //Exit Menu Function
