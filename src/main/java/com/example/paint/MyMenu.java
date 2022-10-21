@@ -123,7 +123,7 @@ public class MyMenu{
         rotPane.add(ninetyDeg,0,0);
         rotPane.add(oneeightyDeg,0,1);
         rotPane.add(twoseventyDeg,0,2);
-        MenuItem rotateCanvas = new MenuItem("Rotate Canvas");
+        MenuItem rotateCanvas = new MenuItem("Rotate Image");
         toolsMenu.getItems().add(rotateCanvas);
         rotateCanvas.setGraphic(rotPane);
         //Create and add Mirror option to tools menu

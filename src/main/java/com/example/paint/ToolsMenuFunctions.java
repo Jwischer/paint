@@ -85,6 +85,7 @@ public class ToolsMenuFunctions {
         final WritableImage selectedRedo[] = new WritableImage[1];
         final WritableImage pasteUndo[] = new WritableImage[1];
         CheckMenuItem selectionBox = new CheckMenuItem();
+        final Rectangle2D boundRectangle[] = new Rectangle2D[1];
 
         //Set Mouse Events
         //Initialize mouse pressed for first tab
@@ -109,6 +110,7 @@ public class ToolsMenuFunctions {
                 drawTriangle.setSelected(false);
             } else if(selectImagePart[1]){
                 canvasReplace(canvas[0], selectedUndo[0]);
+                selectImagePart[1] = false;
             }
             if(pasteImage[0]){
                 pasteUndo[0] = new WritableImage((int) tabArrays.stackCanvas[selectedTab[0]].canvas.getWidth(), (int) tabArrays.stackCanvas[selectedTab[0]].canvas.getHeight());
@@ -320,19 +322,18 @@ public class ToolsMenuFunctions {
                 selectImagePart[0] = false;
                 selectImagePart[1] = true;
                 //Create and set bounds
-                Rectangle2D bound;
                 if (event.getX() - firstPos[0] >= 0 && event.getY() - firstPos[1] < 0) {
-                    bound = new Rectangle2D(firstPos[0], firstPos[1] - abs(event.getY() - firstPos[1]), abs(event.getX() - firstPos[0]), abs(event.getY() - firstPos[1]));
+                    boundRectangle[0] = new Rectangle2D(firstPos[0], firstPos[1] - abs(event.getY() - firstPos[1]), abs(event.getX() - firstPos[0]), abs(event.getY() - firstPos[1]));
                 } else if (event.getX() - firstPos[0] < 0 && event.getY() - firstPos[1] >= 0) {
-                    bound = new Rectangle2D(firstPos[0] - abs(event.getX() - firstPos[0]), firstPos[1], abs(event.getX() - firstPos[0]), abs(event.getY() - firstPos[1]));
+                    boundRectangle[0] = new Rectangle2D(firstPos[0] - abs(event.getX() - firstPos[0]), firstPos[1], abs(event.getX() - firstPos[0]), abs(event.getY() - firstPos[1]));
                 } else if (event.getX() - firstPos[0] >= 0 && event.getY() - firstPos[1] >= 0) {
-                    bound = new Rectangle2D(firstPos[0], firstPos[1], abs(event.getX() - firstPos[0]), abs(event.getY() - firstPos[1]));
+                    boundRectangle[0] = new Rectangle2D(firstPos[0], firstPos[1], abs(event.getX() - firstPos[0]), abs(event.getY() - firstPos[1]));
                 } else {
-                    bound = new Rectangle2D(firstPos[0] - abs(event.getX() - firstPos[0]), firstPos[1] - abs(event.getY() - firstPos[1]), abs(firstPos[0] - event.getX()), abs(firstPos[1] - event.getY()));
+                    boundRectangle[0] = new Rectangle2D(firstPos[0] - abs(event.getX() - firstPos[0]), firstPos[1] - abs(event.getY() - firstPos[1]), abs(firstPos[0] - event.getX()), abs(firstPos[1] - event.getY()));
                 }
                 //Create snapshot parameters with the created bound
                 SnapshotParameters params = new SnapshotParameters();
-                params.setViewport(bound);
+                params.setViewport(boundRectangle[0]);
                 //Take a snapshot with the bounds
                 selectedRedo[0] = canvas[0].snapshot(null, selectedRedo[0]);
                 canvasReplace(canvas[0],selectedUndo[0]);
@@ -579,7 +580,6 @@ public class ToolsMenuFunctions {
                 });
 
                 canvas[0].setOnMouseReleased((MouseEvent event) -> {
-                    GraphicsContext gc = canvas[0].getGraphicsContext2D();
                     System.out.println("mouse released");
                     if(selectImagePart[0]){
                         System.out.println("Selected");
@@ -703,52 +703,114 @@ public class ToolsMenuFunctions {
 
         ninetyDeg.setOnAction(actionEvent -> {
             GraphicsContext gc = tabArrays.stackCanvas[tabPane.getSelectionModel().getSelectedIndex()].canvas.getGraphicsContext2D();
-            Image rotImage = tabArrays.stackCanvas[selectedTab[0]].canvas.snapshot(null,null);
-            double newH = tabArrays.stackCanvas[tabPane.getSelectionModel().getSelectedIndex()].canvas.getWidth();
-            double newW = tabArrays.stackCanvas[tabPane.getSelectionModel().getSelectedIndex()].canvas.getHeight();
-            int angle = 90;
-            BufferedImage bImage = SwingFXUtils.fromFXImage(rotImage, null);
-            bImage = rotateImageByDegrees(bImage, angle);
-            rotImage = SwingFXUtils.toFXImage(bImage, null);
-            tabArrays.stackCanvas[selectedTab[0]].canvas.setHeight(newH);
-            tabArrays.stackCanvas[selectedTab[0]].canvas.setWidth(newW);
-            gc.drawImage(rotImage, 0, 0);
+            if(selectImagePart[1]){
+                canvasReplace(canvas[0], selectedUndo[0]);
+                Image rotImage = selectedImage[0];
+                Rectangle2D boundRect = boundRectangle[0];
+                int angle = 90;
+                BufferedImage bImage = SwingFXUtils.fromFXImage(rotImage, null);
+                bImage = rotateImageByDegrees(bImage, angle);
+                rotImage = SwingFXUtils.toFXImage(bImage, null);
+                double xDraw = boundRect.getMaxX()-rotImage.getWidth();
+                double yDraw = boundRect.getMaxY()-rotImage.getHeight();
+                gc.drawImage(rotImage, xDraw, yDraw);
+                selectImagePart[1]=false;
+            } else {
+                Image rotImage = tabArrays.stackCanvas[selectedTab[0]].canvas.snapshot(null, null);
+                double newH = tabArrays.stackCanvas[tabPane.getSelectionModel().getSelectedIndex()].canvas.getWidth();
+                double newW = tabArrays.stackCanvas[tabPane.getSelectionModel().getSelectedIndex()].canvas.getHeight();
+                int angle = 90;
+                BufferedImage bImage = SwingFXUtils.fromFXImage(rotImage, null);
+                bImage = rotateImageByDegrees(bImage, angle);
+                rotImage = SwingFXUtils.toFXImage(bImage, null);
+                tabArrays.stackCanvas[selectedTab[0]].canvas.setHeight(newH);
+                tabArrays.stackCanvas[selectedTab[0]].canvas.setWidth(newW);
+                gc.drawImage(rotImage, 0, 0);
+            }
         });
 
         oneeightyDeg.setOnAction(actionEvent -> {
             GraphicsContext gc = tabArrays.stackCanvas[tabPane.getSelectionModel().getSelectedIndex()].canvas.getGraphicsContext2D();
-            Image rotImage = tabArrays.stackCanvas[selectedTab[0]].canvas.snapshot(null,null);
-            int angle = 180;
-            BufferedImage bImage = SwingFXUtils.fromFXImage(rotImage, null);
-            bImage = rotateImageByDegrees(bImage, angle);
-            rotImage = SwingFXUtils.toFXImage(bImage, null);
-            gc.drawImage(rotImage, 0, 0);
+            if(selectImagePart[1]){
+                canvasReplace(canvas[0], selectedUndo[0]);
+                Image rotImage = selectedImage[0];
+                Rectangle2D boundRect = boundRectangle[0];
+                int angle = 180;
+                BufferedImage bImage = SwingFXUtils.fromFXImage(rotImage, null);
+                bImage = rotateImageByDegrees(bImage, angle);
+                rotImage = SwingFXUtils.toFXImage(bImage, null);
+                double xDraw = boundRect.getMaxX()-rotImage.getWidth();
+                double yDraw = boundRect.getMaxY()-rotImage.getHeight();
+                gc.drawImage(rotImage, xDraw, yDraw);
+                selectImagePart[1]=false;
+            }else {
+                Image rotImage = tabArrays.stackCanvas[selectedTab[0]].canvas.snapshot(null, null);
+                int angle = 180;
+                BufferedImage bImage = SwingFXUtils.fromFXImage(rotImage, null);
+                bImage = rotateImageByDegrees(bImage, angle);
+                rotImage = SwingFXUtils.toFXImage(bImage, null);
+                gc.drawImage(rotImage, 0, 0);
+            }
         });
 
         twoseventyDeg.setOnAction(actionEvent -> {
             GraphicsContext gc = tabArrays.stackCanvas[tabPane.getSelectionModel().getSelectedIndex()].canvas.getGraphicsContext2D();
-            Image rotImage = tabArrays.stackCanvas[selectedTab[0]].canvas.snapshot(null,null);
-            double newH = tabArrays.stackCanvas[tabPane.getSelectionModel().getSelectedIndex()].canvas.getWidth();
-            double newW = tabArrays.stackCanvas[tabPane.getSelectionModel().getSelectedIndex()].canvas.getHeight();
-            int angle = 270;
-            BufferedImage bImage = SwingFXUtils.fromFXImage(rotImage, null);
-            bImage = rotateImageByDegrees(bImage, angle);
-            rotImage = SwingFXUtils.toFXImage(bImage, null);
-            tabArrays.stackCanvas[selectedTab[0]].canvas.setHeight(newH);
-            tabArrays.stackCanvas[selectedTab[0]].canvas.setWidth(newW);
-            gc.drawImage(rotImage, 0, 0);
+            if(selectImagePart[1]){
+                canvasReplace(canvas[0], selectedUndo[0]);
+                Image rotImage = selectedImage[0];
+                Rectangle2D boundRect = boundRectangle[0];
+                int angle = 270;
+                BufferedImage bImage = SwingFXUtils.fromFXImage(rotImage, null);
+                bImage = rotateImageByDegrees(bImage, angle);
+                rotImage = SwingFXUtils.toFXImage(bImage, null);
+                double xDraw = boundRect.getMaxX()-rotImage.getWidth();
+                double yDraw = boundRect.getMaxY()-rotImage.getHeight();
+                gc.drawImage(rotImage, xDraw, yDraw);
+                selectImagePart[1]=false;
+            } else {
+                Image rotImage = tabArrays.stackCanvas[selectedTab[0]].canvas.snapshot(null, null);
+                double newH = tabArrays.stackCanvas[tabPane.getSelectionModel().getSelectedIndex()].canvas.getWidth();
+                double newW = tabArrays.stackCanvas[tabPane.getSelectionModel().getSelectedIndex()].canvas.getHeight();
+                int angle = 270;
+                BufferedImage bImage = SwingFXUtils.fromFXImage(rotImage, null);
+                bImage = rotateImageByDegrees(bImage, angle);
+                rotImage = SwingFXUtils.toFXImage(bImage, null);
+                tabArrays.stackCanvas[selectedTab[0]].canvas.setHeight(newH);
+                tabArrays.stackCanvas[selectedTab[0]].canvas.setWidth(newW);
+                gc.drawImage(rotImage, 0, 0);
+            }
         });
 
         mirrorX.setOnAction(actionEvent -> {
             GraphicsContext gc = tabArrays.stackCanvas[tabPane.getSelectionModel().getSelectedIndex()].canvas.getGraphicsContext2D();
-            Image rotImage = tabArrays.stackCanvas[selectedTab[0]].canvas.snapshot(null,null);
-            gc.drawImage(rotImage, 0, 0, rotImage.getWidth(), rotImage.getHeight(), 0,rotImage.getHeight(),rotImage.getWidth(),-rotImage.getHeight());
+            if(selectImagePart[1]){
+                canvasReplace(canvas[0], selectedUndo[0]);
+                Image rotImage = selectedImage[0];
+                Rectangle2D boundRect = boundRectangle[0];
+                double xDraw = boundRect.getMaxX()-rotImage.getWidth();
+                double yDraw = boundRect.getMaxY()-rotImage.getHeight();
+                gc.drawImage(rotImage, 0, 0, rotImage.getWidth(), rotImage.getHeight(), xDraw, yDraw+rotImage.getHeight(), rotImage.getWidth(), -rotImage.getHeight());
+                selectImagePart[1]=false;
+            }else {
+                Image rotImage = tabArrays.stackCanvas[selectedTab[0]].canvas.snapshot(null, null);
+                gc.drawImage(rotImage, 0, 0, rotImage.getWidth(), rotImage.getHeight(), 0, rotImage.getHeight(), rotImage.getWidth(), -rotImage.getHeight());
+            }
         });
 
         mirrorY.setOnAction(actionEvent -> {
             GraphicsContext gc = tabArrays.stackCanvas[tabPane.getSelectionModel().getSelectedIndex()].canvas.getGraphicsContext2D();
-            Image rotImage = tabArrays.stackCanvas[selectedTab[0]].canvas.snapshot(null,null);
-            gc.drawImage(rotImage, 0, 0, rotImage.getWidth(), rotImage.getHeight(), rotImage.getWidth(),0,-rotImage.getWidth(),rotImage.getHeight());
+            if(selectImagePart[1]){
+                canvasReplace(canvas[0], selectedUndo[0]);
+                Image rotImage = selectedImage[0];
+                Rectangle2D boundRect = boundRectangle[0];
+                double xDraw = boundRect.getMaxX()-rotImage.getWidth();
+                double yDraw = boundRect.getMaxY()-rotImage.getHeight();
+                gc.drawImage(rotImage, 0, 0, rotImage.getWidth(), rotImage.getHeight(), xDraw+rotImage.getWidth(), yDraw, -rotImage.getWidth(), rotImage.getHeight());
+                selectImagePart[1]=false;
+            }else {
+                Image rotImage = tabArrays.stackCanvas[selectedTab[0]].canvas.snapshot(null, null);
+                gc.drawImage(rotImage, 0, 0, rotImage.getWidth(), rotImage.getHeight(), rotImage.getWidth(), 0, -rotImage.getWidth(), rotImage.getHeight());
+            }
         });
 
         //When one tool is selected, unselect the other tools
