@@ -67,7 +67,7 @@ public class ToolsMenuFunctions {
         final double[] drawWidth = {10};
         //Stores snapshots of canvas for undoing
         final WritableImage[] canvasUndo = new WritableImage[1];
-        //Image used for drawing previews
+        //Image used for drawing previews4
         final WritableImage[] previewImage = new WritableImage[1];
         //Color that the color picker has selected
         final Color[] pickerColor = new Color[1];

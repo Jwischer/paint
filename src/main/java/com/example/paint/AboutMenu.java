@@ -32,7 +32,7 @@ public class AboutMenu extends PaintMain {
         gridPane.add(title, 1, 0);
         GridPane.setHalignment(title, HPos.CENTER);
         //SubTitle
-        Label subTitle = new Label("JPaint v1.5");
+        Label subTitle = new Label("JPaint v3.0 - Final Release");
         subTitle.setFont(Font.font("Arial", FontWeight.MEDIUM, 18));
         gridPane.add(subTitle,1,1);
         GridPane.setHalignment(subTitle, HPos.CENTER);

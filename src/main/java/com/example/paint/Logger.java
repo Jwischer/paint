@@ -21,7 +21,7 @@ public class Logger {
     FileWriter logger; //File Writer for the log
 
     Logger(ToggleButton pencil,ToggleButton line,ToggleButton dashedLine,ToggleButton rectangle,ToggleButton square,ToggleButton ellipse,ToggleButton circle,ToggleButton eraser,ToggleButton triangle,ToggleButton polygon, TabPane tabPane) throws IOException {
-        this.log = new File("src/main/resources/log.txt"); //Assign a file path to log to
+        this.log = new File("log.txt"); //Assign a file path to log to
         this.logger = new FileWriter(log); //Assign the logger to it
         this.logRate = 1000; //Set the log rate to one a second
         this.logNum = 0; //Initialize test variable
