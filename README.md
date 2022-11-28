@@ -4,27 +4,26 @@
 
 ### Features:
 
--  Open File
-  
--  Save File
-  
--  Save File As
-  
--  Add Colored Border to Image
-
--  Clear Canvas
-
--  Draw Lines of Specified Width and Color
-
--  Scroll Image
-
--  Many different shape tools
-
--  Canvas resize
-
--  Autosave Timer
-
--  Data Corruption Warning
+- Open/Save image
+	- Draw on image
+	- Rotate image (or part of an image)
+	- Tabs for multiple images
+	- Copy/Paste chunks of an image
+	- Undo/Redo
+	- Action Logging
+	- Resize Image
+	- Color Grabber
+	- Tools:
+	-	Pencil
+	-	Line
+	-	Dashed Line
+	-	Eraser
+	-	Rectangle
+	-	Square
+	-	Circle
+	-	Ellipse
+	-	N-Sided Polygon
+	-	Triangle
 
 ### Bugs:
 
