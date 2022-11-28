@@ -1,6 +1,6 @@
 # JPaint
 
-## Version 2.0 - 09/23/2022
+## Version 3.0 - 11/28/2022
 
 ### Features:
 
@@ -14,27 +14,20 @@
 - Resize Image
 - Color Grabber
 - Tools:
--	Pencil
--	Line
--	Dashed Line
--	Eraser
--	Rectangle
--	Square
--	Circle
--	Ellipse
--	N-Sided Polygon
--	Triangle
+  -	Pencil
+  -	Line
+  -	Dashed Line
+  -	Eraser
+  -	Rectangle
+  -	Square
+  -	Circle
+  -	Ellipse
+  -	N-Sided Polygon
+  -	Triangle
 
 ### Bugs:
 
 None Known
-  
-  
-### Plans:
-
-#### // - - - - Extras - - - - //
-- [ ] Move drawing tools to buttons
-- [ ] Make slight adjustments to smart save
 
 ### Links:
 
